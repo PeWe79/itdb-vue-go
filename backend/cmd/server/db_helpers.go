@@ -40,7 +40,7 @@ var allowedInvoiceUploadExtensions = map[string]struct{}{
 
 func isInvoiceFileType(fileTypeID int64, typeName string) bool {
 	text := strings.TrimSpace(typeName)
-	return fileTypeID == 3 || strings.EqualFold(text, "invoice") || text == "发票"
+	return fileTypeID == 3 || strings.EqualFold(text, "invoice") || text == "bill"
 }
 
 func (a *App) fetchRows(query string, args ...interface{}) ([]map[string]interface{}, error) {
@@ -411,18 +411,18 @@ func enforceDictionaryDeleteRules(tx *sql.Tx, name string, id int64) error {
 			return err
 		}
 		if count > 0 {
-			return fmt.Errorf("该硬件类型已被 %d 条硬件记录使用，无法删除", count)
+			return fmt.Errorf("This hardware type has been %d Hardware record in use; cannot be deleted.", count)
 		}
 	case "filetypes":
 		if id <= 10 {
-			return errors.New("内置文件类型不可删除")
+			return errors.New("This is a built-in file type and cannot be deleted.")
 		}
 		var count int64
 		if err := tx.QueryRow(`SELECT COUNT(id) FROM files WHERE type = ?`, id).Scan(&count); err != nil {
 			return err
 		}
 		if count > 0 {
-			return fmt.Errorf("该文件类型已被 %d 个文件记录使用，无法删除", count)
+			return fmt.Errorf("This file type has been %d This file is in use and cannot be deleted.", count)
 		}
 	case "statustypes":
 		var desc sql.NullString
@@ -431,14 +431,14 @@ func enforceDictionaryDeleteRules(tx *sql.Tx, name string, id int64) error {
 			return err
 		}
 		if statustypes.IsProtectedStatusType(id, desc.String) {
-			return errors.New("内置状态类型不可删除")
+			return errors.New("This is a built-in status type and cannot be deleted.")
 		}
 		var count int64
 		if err := tx.QueryRow(`SELECT COUNT(id) FROM items WHERE status = ?`, id).Scan(&count); err != nil {
 			return err
 		}
 		if count > 0 {
-			return fmt.Errorf("该状态类型已被 %d 条硬件记录使用，无法删除", count)
+			return fmt.Errorf("This status type has been %d Hardware record in use; cannot be deleted.", count)
 		}
 	case "dpttypes":
 		var count int64
@@ -446,18 +446,18 @@ func enforceDictionaryDeleteRules(tx *sql.Tx, name string, id int64) error {
 			return err
 		}
 		if count > 0 {
-			return fmt.Errorf("该所属部门已被 %d 条硬件记录使用，无法删除", count)
+			return fmt.Errorf("This department has been %d Hardware record in use; cannot be deleted.", count)
 		}
 	case "contracttypes":
 		if id <= 1 {
-			return errors.New("内置合同类型不可删除")
+			return errors.New("This is a built-in contract type and cannot be deleted.")
 		}
 		var count int64
 		if err := tx.QueryRow(`SELECT COUNT(id) FROM contracts WHERE type = ?`, id).Scan(&count); err != nil {
 			return err
 		}
 		if count > 0 {
-			return fmt.Errorf("该合同类型已被 %d 条合同记录使用，无法删除", count)
+			return fmt.Errorf("This contract type has been %d Contract record in use; cannot be deleted.", count)
 		}
 		if _, err := tx.Exec(`DELETE FROM contractsubtypes WHERE contypeid = ?`, id); err != nil {
 			return err
@@ -471,12 +471,12 @@ func enforceDictionaryDeleteRules(tx *sql.Tx, name string, id int64) error {
 			return err
 		}
 		if itemCount > 0 || softCount > 0 {
-			return fmt.Errorf("该标记仍有关联（硬件=%d 软件=%d），无法删除", itemCount, softCount)
+			return fmt.Errorf("This tag still has associations (Hardware=%d Software=%d), cannot be deleted", itemCount, softCount)
 		}
 	case "contractsubtypes":
 		return nil
 	default:
-		return errors.New("不支持的字典类型")
+		return errors.New("Unsupported dictionary type")
 	}
 	return nil
 }
@@ -485,18 +485,18 @@ func enforceDictionaryUpdateRules(tx *sql.Tx, name string, id int64) error {
 	switch name {
 	case "filetypes":
 		if id <= 10 {
-			return errors.New("内置文件类型不可编辑")
+			return errors.New("This is a built-in file type and cannot be edited.")
 		}
 	case "statustypes":
 		var desc sql.NullString
 		if err := tx.QueryRow(`SELECT statusdesc FROM statustypes WHERE id = ?`, id).Scan(&desc); err != nil {
 			if errors.Is(err, sql.ErrNoRows) {
-				return errors.New("状态类型不存在")
+				return errors.New("This status type does not exist.")
 			}
 			return err
 		}
 		if statustypes.IsProtectedStatusType(id, desc.String) {
-			return errors.New("内置状态类型不可编辑")
+			return errors.New("This is a built-in status type and cannot be edited.")
 		}
 	}
 	return nil
@@ -505,21 +505,21 @@ func enforceDictionaryUpdateRules(tx *sql.Tx, name string, id int64) error {
 func dictionaryUniqueTextRule(name string) (table string, column string, label string, scopeColumn string, err error) {
 	switch name {
 	case "itemtypes":
-		return "itemtypes", "typedesc", "描述", "", nil
+		return "itemtypes", "typedesc", "Description", "", nil
 	case "filetypes":
-		return "filetypes", "typedesc", "描述", "", nil
+		return "filetypes", "typedesc", "Description", "", nil
 	case "statustypes":
-		return "statustypes", "statusdesc", "描述", "", nil
+		return "statustypes", "statusdesc", "Description", "", nil
 	case "dpttypes":
-		return "dpttypes", "dptname", "部门名称", "", nil
+		return "dpttypes", "dptname", "Department Name", "", nil
 	case "contracttypes":
-		return "contracttypes", "name", "类型名称", "", nil
+		return "contracttypes", "name", "Type Name", "", nil
 	case "contractsubtypes":
-		return "contractsubtypes", "name", "子类型名称", "contypeid", nil
+		return "contractsubtypes", "name", "Subtype Name", "contypeid", nil
 	case "tags":
-		return "tags", "name", "名称", "", nil
+		return "tags", "name", "Name", "", nil
 	default:
-		return "", "", "", "", errors.New("不支持的字典类型")
+		return "", "", "", "", errors.New("Unsupported dictionary type")
 	}
 }
 
@@ -554,7 +554,7 @@ func enforceDictionaryUniqueText(tx *sql.Tx, name string, body map[string]interf
 		return err
 	}
 
-	return fmt.Errorf("%s“%s”已存在", label, text)
+	return fmt.Errorf("%s “%s” already exists", label, text)
 }
 
 func dictionaryInsert(name string, body map[string]interface{}) (string, []interface{}, error) {
@@ -583,7 +583,7 @@ func dictionaryInsert(name string, body map[string]interface{}) (string, []inter
 	case "tags":
 		return `INSERT INTO tags (name) VALUES (?)`, []interface{}{asString(body["name"])}, nil
 	default:
-		return "", nil, errors.New("不支持的字典类型")
+		return "", nil, errors.New("Unsupported dictionary type")
 	}
 }
 
@@ -609,7 +609,7 @@ func dictionaryUpdate(name string, id int64, body map[string]interface{}) (strin
 	case "tags":
 		return `UPDATE tags SET name = ? WHERE id = ?`, []interface{}{asString(body["name"]), id}, nil
 	default:
-		return "", nil, errors.New("不支持的字典类型")
+		return "", nil, errors.New("Unsupported dictionary type")
 	}
 }
 
@@ -630,7 +630,7 @@ func dictionaryDelete(name string) (string, error) {
 	case "tags":
 		return `DELETE FROM tags WHERE id = ?`, nil
 	default:
-		return "", errors.New("不支持的字典类型")
+		return "", errors.New("Unsupported dictionary type")
 	}
 }
 

@@ -66,29 +66,29 @@ function withCreateQuery(to: RouteLocationRaw): RouteLocationRaw {
 const modules: HomeModule[] = [
   {
     key: 'items',
-    title: '硬件',
-    description: '管理硬件资产，包含服务器、交换机、电话等设备。',
+    title: 'Hardware',
+    description: 'Manage hardware assets, including equipment such as servers, switches, and telephones.',
     iconKey: 'items',
     countKey: 'items',
     entry: '/resources/items',
     actions: [
-      { label: '查找', to: '/resources/items', iconKey: 'search' },
-      { label: '新增', to: { path: '/resources/items', query: { create: '1' } }, iconKey: 'plus' },
-      { label: '硬件类型', to: '/dictionaries/itemtypes', iconKey: 'gear' },
-      { label: '状态类型', to: '/dictionaries/statustypes', iconKey: 'gear' },
+      { label: 'Search', to: '/resources/items', iconKey: 'search' },
+      { label: 'Add', to: { path: '/resources/items', query: { create: '1' } }, iconKey: 'plus' },
+      { label: 'Hardware Types', to: '/dictionaries/itemtypes', iconKey: 'gear' },
+      { label: 'Status Types', to: '/dictionaries/statustypes', iconKey: 'gear' },
     ],
   },
   {
     key: 'software',
-    title: '软件',
-    description: '管理软件授权、版本和安装关系。',
+    title: 'software',
+    description: 'Manage software licenses, versions, and installation relationships.',
     iconKey: 'software',
     countKey: 'software',
     entry: '/resources/software',
     actions: [
-      { label: '查找', to: '/resources/software', iconKey: 'search' },
+      { label: 'Search', to: '/resources/software', iconKey: 'search' },
       {
-        label: '新增',
+        label: 'Add',
         to: { path: '/resources/software', query: { create: '1' } },
         iconKey: 'plus',
       },
@@ -96,15 +96,15 @@ const modules: HomeModule[] = [
   },
   {
     key: 'invoices',
-    title: '单据',
-    description: '管理采购单据及其关联信息。',
+    title: 'Invoices',
+    description: 'Manage purchase invoices and their associated information.',
     iconKey: 'invoices',
     countKey: 'invoices',
     entry: '/resources/invoices',
     actions: [
-      { label: '查找', to: '/resources/invoices', iconKey: 'search' },
+      { label: 'Search', to: '/resources/invoices', iconKey: 'search' },
       {
-        label: '新增',
+        label: 'Add',
         to: { path: '/resources/invoices', query: { create: '1' } },
         iconKey: 'plus',
       },
@@ -112,84 +112,84 @@ const modules: HomeModule[] = [
   },
   {
     key: 'reports',
-    title: '报告',
-    description: '查看统计报表与分析结果。',
+    title: 'Reports',
+    description: 'View statistical reports and analysis results.',
     iconKey: 'reports',
     entry: '/reports',
-    actions: [{ label: '查看报告', to: '/reports', iconKey: 'table' }],
+    actions: [{ label: 'View Reports', to: '/reports', iconKey: 'table' }],
   },
   {
     key: 'contracts',
-    title: '合同',
-    description: '管理支持、授权、租赁等合同。',
+    title: 'Contracts',
+    description: 'Manage support, licensing, and rental contracts.',
     iconKey: 'contracts',
     countKey: 'contracts',
     entry: '/resources/contracts',
     actions: [
-      { label: '查找', to: '/resources/contracts', iconKey: 'search' },
+      { label: 'Search', to: '/resources/contracts', iconKey: 'search' },
       {
-        label: '新增',
+        label: 'Add',
         to: { path: '/resources/contracts', query: { create: '1' } },
         iconKey: 'plus',
       },
-      { label: '合同类型', to: '/dictionaries/contracttypes', iconKey: 'gear' },
+      { label: 'Contract Types', to: '/dictionaries/contracttypes', iconKey: 'gear' },
     ],
   },
   {
     key: 'agents',
-    title: '代理',
-    description: '管理厂商、供应商、采购方与承包方。',
+    title: 'Agents',
+    description: 'Manage manufacturers, suppliers, purchasers, and contractors.',
     iconKey: 'agents',
     countKey: 'agents',
     entry: '/resources/agents',
     actions: [
-      { label: '查找', to: '/resources/agents', iconKey: 'search' },
-      { label: '新增', to: { path: '/resources/agents', query: { create: '1' } }, iconKey: 'plus' },
+      { label: 'Search', to: '/resources/agents', iconKey: 'search' },
+      { label: 'Add', to: { path: '/resources/agents', query: { create: '1' } }, iconKey: 'plus' },
     ],
   },
   {
     key: 'browse',
-    title: '浏览数据',
-    description: '按类型、用户、代理等维度进行树形浏览。',
+    title: 'Browse Data',
+    description: 'Browse data by type, user, agent, and other dimensions.',
     iconKey: 'browse',
     entry: '/browse',
-    actions: [{ label: '浏览', to: '/browse', iconKey: 'search' }],
+    actions: [{ label: 'Browse', to: '/browse', iconKey: 'search' }],
   },
   {
     key: 'files',
-    title: '文件',
-    description: '维护文件及其与资产的关联关系。',
+    title: 'Files',
+    description: 'Manage files and their associations with assets.',
     iconKey: 'files',
     countKey: 'files',
     entry: '/resources/files',
     actions: [
-      { label: '查找', to: '/resources/files', iconKey: 'search' },
-      { label: '新增', to: { path: '/resources/files', query: { create: '1' } }, iconKey: 'plus' },
+      { label: 'Search', to: '/resources/files', iconKey: 'search' },
+      { label: 'Add', to: { path: '/resources/files', query: { create: '1' } }, iconKey: 'plus' },
     ],
   },
   {
     key: 'racks',
-    title: '机架',
-    description: '新增与查看机架及占用状态。',
+    title: 'Racks',
+    description: 'Add and view racks and their occupancy status.',
     iconKey: 'racks',
     countKey: 'racks',
     entry: '/resources/racks',
     actions: [
-      { label: '查找', to: '/resources/racks', iconKey: 'search' },
-      { label: '新增', to: { path: '/resources/racks', query: { create: '1' } }, iconKey: 'plus' },
+      { label: 'Search', to: '/resources/racks', iconKey: 'search' },
+      { label: 'Add', to: { path: '/resources/racks', query: { create: '1' } }, iconKey: 'plus' },
     ],
   },
   {
     key: 'locations',
-    title: '地点',
-    description: '管理地点、楼层及区域信息。',
+    title: 'Locations',
+    description: 'Manage locations, floors, and areas.',
     iconKey: 'locations',
     countKey: 'locations',
     entry: '/resources/locations',
     actions: [
-      { label: '查找', to: '/resources/locations', iconKey: 'search' },
+      { label: 'Search', to: '/resources/locations', iconKey: 'search' },
       {
-        label: '新增',
+        label: 'Add',
         to: { path: '/resources/locations', query: { create: '1' } },
         iconKey: 'plus',
       },
@@ -197,22 +197,22 @@ const modules: HomeModule[] = [
   },
   {
     key: 'labels',
-    title: '打印标签',
-    description: '选择并打印资产标签。',
+    title: 'Print Labels',
+    description: 'Select and print asset labels.',
     iconKey: 'labels',
     entry: '/labels',
-    actions: [{ label: '进入打印', to: '/labels', iconKey: 'printer' }],
+    actions: [{ label: 'Print', to: '/labels', iconKey: 'printer' }],
   },
   {
     key: 'settings',
-    title: '设置',
-    description: '维护系统参数、用户、标记等基础配置。',
+    title: 'Settings',
+    description: 'Maintain system parameters, users, tags, and other basic configurations.',
     iconKey: 'settings',
     entry: '/settings',
     actions: [
-      { label: '系统设置', to: '/settings', iconKey: 'gear' },
-      { label: '用户', to: '/resources/users', iconKey: 'users' },
-      { label: '标记', to: '/dictionaries/tags', iconKey: 'tag' },
+      { label: 'System Settings', to: '/settings', iconKey: 'gear' },
+      { label: 'Users', to: '/resources/users', iconKey: 'users' },
+      { label: 'Tags', to: '/dictionaries/tags', iconKey: 'tag' },
     ],
   },
 ];
@@ -222,7 +222,7 @@ const cards = computed(() => {
   return modules.map(module => ({
     ...module,
     actions: module.actions.map(action =>
-      action.label === '新增' ? { ...action, to: withCreateQuery(action.to) } : action
+      action.label === 'Add' ? { ...action, to: withCreateQuery(action.to) } : action
     ),
     count: module.countKey ? Number(counts[module.countKey] ?? 0) : null,
   }));
@@ -237,7 +237,7 @@ async function load() {
   } catch (err: unknown) {
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '首页数据加载失败';
+      'Failed to load homepage data.';
   } finally {
     loading.value = false;
   }
@@ -249,18 +249,18 @@ onMounted(load);
 <template>
   <section class="page-shell">
     <header class="page-header">
-      <h2>首页</h2>
-      <button class="ghost-btn" @click="load">刷新</button>
+      <h2>Homepage</h2>
+      <button class="ghost-btn" @click="load">Refresh</button>
     </header>
 
-    <p v-if="loading">加载中...</p>
+    <p v-if="loading">Loading...</p>
 
     <div v-else class="legacy-home-grid">
       <article v-for="card in cards" :key="card.key" class="legacy-home-card">
         <RouterLink
           :to="card.entry"
           class="legacy-home-media-link quick-tip"
-          :data-quick-tip="`进入${card.title}`"
+          :data-quick-tip="`Enter ${card.title}`"
         >
           <span class="legacy-home-media" v-html="moduleIcons[card.iconKey]" />
         </RouterLink>
@@ -269,7 +269,7 @@ onMounted(load);
           <div class="legacy-home-head">
             <RouterLink :to="card.entry" class="legacy-home-title">{{ card.title }}</RouterLink>
             <span class="legacy-home-count" :class="{ 'is-muted': card.count === null }">
-              {{ card.count === null ? '功能入口' : `总数：${card.count}` }}
+              {{ card.count === null ? 'Function Entry' : `Total: ${card.count}` }}
             </span>
           </div>
 

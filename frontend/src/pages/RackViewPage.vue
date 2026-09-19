@@ -70,9 +70,9 @@ const highlightItemID = computed(() => {
 const rackTitle = computed(() => {
   const row = rack.value;
   if (!row) return '';
-  const label = String(row.label ?? '').trim() || `机架${rackID.value}`;
+  const label = String(row.label ?? '').trim() || `frame${rackID.value}`;
   const units = Number.parseInt(String(row.usize ?? '').trim(), 10);
-  return units > 0 ? `${label},${units}U 晟图` : `${label} 晟图`;
+  return units > 0 ? `${label},${units}U Rack View` : `${label} Rack View`;
 });
 
 const rackMetaText = computed(() => {
@@ -86,16 +86,16 @@ const rackMetaText = computed(() => {
   );
   const area = areaRows.find(entry => Number(entry.id ?? 0) === Number(row.locareaid ?? 0));
   const parts = [
-    `编号: ${rackID.value}`,
-    model ? `型号: ${model}` : '',
-    location ? `地点: ${String(location.name ?? '').trim()}` : '',
-    area ? `区域: ${String(area.areaname ?? '').trim()}` : '',
+    `ID: ${rackID.value}`,
+    model ? `Model: ${model}` : '',
+    location ? `Location: ${String(location.name ?? '').trim()}` : '',
+    area ? `Area: ${String(area.areaname ?? '').trim()}` : '',
   ].filter(Boolean);
   return parts.join(' / ');
 });
 
 function naturalCompare(a: unknown, b: unknown) {
-  return String(a ?? '').localeCompare(String(b ?? ''), 'zh-CN', {
+  return String(a ?? '').localeCompare(String(b ?? ''), 'en-US', {
     numeric: true,
     sensitivity: 'base',
   });
@@ -118,9 +118,9 @@ function firstRackIPv4(ipv4: string) {
 function getRackItemStatusClass(statusText: string) {
   const status = statusText.trim().toLowerCase();
   if (!status) return '';
-  if (status.includes('库存') || status.includes('stored')) return 'rack-view-status-stored';
-  if (status.includes('故障') || status.includes('defective')) return 'rack-view-status-defective';
-  if (status.includes('报废') || status.includes('obsolete')) return 'rack-view-status-obsolete';
+  if (status.includes('in stock') || status.includes('stored')) return 'rack-view-status-stored';
+  if (status.includes('fault') || status.includes('defective')) return 'rack-view-status-defective';
+  if (status.includes('scrap') || status.includes('obsolete')) return 'rack-view-status-obsolete';
   return 'rack-view-status-active';
 }
 
@@ -161,7 +161,7 @@ function getRackItemTitle(row: RackItemRow) {
   return [
     `${row.manufacturer || '-'}`,
     `${row.model || '-'}`,
-    row.id > 0 ? `[ID:${row.id}]` : '[新建]',
+    row.id > 0 ? `[ID:${row.id}]` : '[New]',
   ]
     .join(' ')
     .trim();
@@ -176,10 +176,10 @@ function getRackItemSubtitle(row: RackItemRow) {
 }
 
 function getRackItemTip(row: RackItemRow) {
-  const statusText = row.statusText.trim() ? `状态：${row.statusText.trim()}` : '状态：使用中';
+  const statusText = row.statusText.trim() ? `Status: ${row.statusText.trim()}` : 'Status: In Use';
   const sizeText = row.uSize > 0 ? `${row.uSize}U` : '-';
   const posText = row.rackPosition > 0 ? `${row.rackPosition}` : '-';
-  return `编号：${row.id} / ${statusText} / 位置：${posText}U / 高度：${sizeText}`;
+  return `ID: ${row.id} / ${statusText} / Position: ${posText}U / Height: ${sizeText}`;
 }
 
 function buildRackViewData(
@@ -214,7 +214,7 @@ function buildRackViewData(
 
     if (reverse) {
       if (rackPosition + units - 1 > totalUnits) {
-        warnings.push(`硬件 ${item.id}（${item.model || '-'}）超出机架边界`);
+        warnings.push(`Hardware ${item.id} (${item.model || '-'}) exceeds rack boundary`);
         continue;
       }
       for (let pos = rackPosition; pos < rackPosition + units; pos += 1) {
@@ -222,11 +222,11 @@ function buildRackViewData(
         const isTop = pos === rackPosition ? 1 : 0;
 
         if ((depthMask & 4) === 4 && rowState.F && rowState.F !== item.id)
-          warnings.push(`第 ${pos}U 前侧位置冲突：硬件 ${item.id} 与 ${rowState.F}`);
+          warnings.push(`Position ${pos}U Front Conflict: Hardware ${item.id} with ${rowState.F}`);
         if ((depthMask & 2) === 2 && rowState.M && rowState.M !== item.id)
-          warnings.push(`第 ${pos}U 中部位置冲突：硬件 ${item.id} 与 ${rowState.M}`);
+          warnings.push(`Position ${pos}U Middle Conflict: Hardware ${item.id} with ${rowState.M}`);
         if ((depthMask & 1) === 1 && rowState.B && rowState.B !== item.id)
-          warnings.push(`第 ${pos}U 后侧位置冲突：硬件 ${item.id} 与 ${rowState.B}`);
+          warnings.push(`Position ${pos}U Back Conflict: Hardware ${item.id} with ${rowState.B}`);
 
         if ((depthMask & 4) === 4) {
           rowState.F = item.id;
@@ -245,7 +245,7 @@ function buildRackViewData(
     }
 
     if (rackPosition - units + 1 < 1) {
-      warnings.push(`硬件 ${item.id}（${item.model || '-'}）超出机架边界`);
+      warnings.push(`Hardware ${item.id} (${item.model || '-'}) exceeds rack boundary`);
       continue;
     }
 
@@ -254,11 +254,11 @@ function buildRackViewData(
       const isTop = pos === rackPosition ? 1 : 0;
 
       if ((depthMask & 4) === 4 && rowState.F && rowState.F !== item.id)
-        warnings.push(`第 ${pos}U 前侧位置冲突：硬件 ${item.id} 与 ${rowState.F}`);
+        warnings.push(`Position ${pos}U Front Conflict: Hardware ${item.id} with ${rowState.F}`);
       if ((depthMask & 2) === 2 && rowState.M && rowState.M !== item.id)
-        warnings.push(`第 ${pos}U 中部位置冲突：硬件 ${item.id} 与 ${rowState.M}`);
+        warnings.push(`Position ${pos}U Middle Conflict: Hardware ${item.id} with ${rowState.M}`);
       if ((depthMask & 1) === 1 && rowState.B && rowState.B !== item.id)
-        warnings.push(`第 ${pos}U 后侧位置冲突：硬件 ${item.id} 与 ${rowState.B}`);
+        warnings.push(`Position ${pos}U Back Conflict: Hardware ${item.id} with ${rowState.B}`);
 
       if ((depthMask & 4) === 4) {
         rowState.F = item.id;
@@ -388,7 +388,7 @@ const rackViewData = computed(() =>
 
 async function loadRackView() {
   if (!rackID.value) {
-    loadError.value = '无效的机架编号';
+    loadError.value = 'Invalid rack number';
     return;
   }
 
@@ -427,7 +427,7 @@ async function loadRackView() {
   } catch {
     rack.value = null;
     rackItems.value = [];
-    loadError.value = '机架晟图加载失败';
+    loadError.value = 'Failed to load rack view';
   } finally {
     loading.value = false;
   }
@@ -459,14 +459,14 @@ onMounted(() => {
   <main class="rack-view-page">
     <header class="rack-view-page-head">
       <div>
-        <h1>{{ rackTitle || '机架晟图' }}</h1>
+        <h1>{{ rackTitle || 'Rack View' }}</h1>
         <p v-if="rackMetaText" class="rack-view-page-meta">{{ rackMetaText }}</p>
       </div>
-      <button class="rack-view-page-close" type="button" @click="closeWindow">关闭</button>
+      <button class="rack-view-page-close" type="button" @click="closeWindow">Close</button>
     </header>
 
     <section class="rack-view-page-panel">
-      <p v-if="loading" class="rack-view-page-empty">加载中...</p>
+      <p v-if="loading" class="rack-view-page-empty">Loading...</p>
       <p v-else-if="loadError" class="rack-view-page-error">{{ loadError }}</p>
       <template v-else>
         <div v-if="rackViewData.rows.length > 0" class="rack-view-wrap">
@@ -481,9 +481,9 @@ onMounted(() => {
               <thead>
                 <tr>
                   <th>RU</th>
-                  <th>前</th>
-                  <th>中</th>
-                  <th>后</th>
+                  <th>Front</th>
+                  <th>Middle</th>
+                  <th>Back</th>
                 </tr>
               </thead>
               <tbody>
@@ -565,11 +565,11 @@ onMounted(() => {
           </div>
         </div>
         <p v-else class="rack-view-page-empty">
-          {{ rackTotalUnits > 0 ? '当前机架暂无可显示的晟图内容' : '该机架未设置高度(U)' }}
+          {{ rackTotalUnits > 0 ? 'Current rack has no content to display' : 'This rack is not configured with height (U)' }}
         </p>
 
         <div v-if="rackViewData.moreItems.length > 0" class="rack-view-side-note">
-          <h5>已分配到该机架但未设置机架位置、深度位或高度的硬件</h5>
+          <h5>Hardware allocated to this rack but not configured with rack position, depth, or height</h5>
           <ul>
             <li v-for="row in rackViewData.moreItems" :key="`rack-view-more-${row.id}`">
               <button

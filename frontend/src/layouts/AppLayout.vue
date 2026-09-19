@@ -17,54 +17,54 @@ type ViewHistoryEntry = {
 };
 
 const recentHistoryResourceTitleMap: Record<string, string> = {
-  items: '硬件',
-  software: '软件',
-  invoices: '单据',
-  agents: '代理',
-  files: '文件',
-  contracts: '合同',
-  locations: '地点',
-  users: '用户',
-  racks: '机架',
+  items: 'hardware',
+  software: 'software',
+  invoices: 'invoices',
+  agents: 'agents',
+  files: 'files',
+  contracts: 'contracts',
+  locations: 'locations',
+  users: 'users',
+  racks: 'racks',
 };
 
 const recentHistoryDictionaryTitleMap: Record<string, string> = {
-  itemtypes: '硬件类型',
-  contracttypes: '合同类型',
-  statustypes: '状态类型',
-  filetypes: '文件类型',
-  dpttypes: '所属部门',
-  tags: '标记',
+  itemtypes: 'hardware types',
+  contracttypes: 'contract types',
+  statustypes: 'status types',
+  filetypes: 'file types',
+  dpttypes: 'department types',
+  tags: 'tags',
 };
 
 const mainNavItems = [
-  { to: '/dashboard', label: '首页' },
-  { to: '/resources/items', label: '硬件', tooltip: '硬件清单' },
-  { to: '/resources/software', label: '软件', tooltip: '软件清单' },
-  { to: '/resources/invoices', label: '单据', tooltip: '单据清单' },
-  { to: '/resources/agents', label: '代理', tooltip: '供应商/采购方/承包方/厂商' },
-  { to: '/resources/files', label: '文件', tooltip: '文档, 手册, 认购书, 授权书, ...' },
-  { to: '/resources/contracts', label: '合同', tooltip: '维保, 租赁, ...' },
-  { to: '/resources/locations', label: '地点' },
-  { to: '/resources/users', label: '用户' },
-  { to: '/resources/racks', label: '机架' },
+  { to: '/dashboard', label: 'Front Page' },
+  { to: '/resources/items', label: 'Hardware', tooltip: 'Hardware List' },
+  { to: '/resources/software', label: 'Software', tooltip: 'Software List' },
+  { to: '/resources/invoices', label: 'Invoices', tooltip: 'Invoice List' },
+  { to: '/resources/agents', label: 'Agents', tooltip: 'Suppliers/Procurement Parties/Contractors/Manufacturers' },
+  { to: '/resources/files', label: 'Files', tooltip: 'Documents, Manuals, Purchase Orders, Licenses, ...' },
+  { to: '/resources/contracts', label: 'Contracts', tooltip: 'Support & Maintenance, Leasing, ...' },
+  { to: '/resources/locations', label: 'Locations' },
+  { to: '/resources/users', label: 'Users' },
+  { to: '/resources/racks', label: 'Racks' },
 ];
 
 const dictionaryNavItems = [
-  { to: '/dictionaries/itemtypes', label: '硬件类型' },
-  { to: '/dictionaries/contracttypes', label: '合同类型' },
-  { to: '/dictionaries/statustypes', label: '状态类型' },
-  { to: '/dictionaries/filetypes', label: '文件类型' },
-  { to: '/dictionaries/dpttypes', label: '所属部门' },
-  { to: '/dictionaries/tags', label: '标记' },
+  { to: '/dictionaries/itemtypes', label: 'Hardware Types' },
+  { to: '/dictionaries/contracttypes', label: 'Contract Types' },
+  { to: '/dictionaries/statustypes', label: 'Status Types' },
+  { to: '/dictionaries/filetypes', label: 'File Types' },
+  { to: '/dictionaries/dpttypes', label: 'Department Types' },
+  { to: '/dictionaries/tags', label: 'Tags' },
 ];
 
 const toolNavItems = [
-  { to: '/labels', label: '打印标签' },
-  { to: '/reports', label: '报告' },
-  { to: '/browse', label: '浏览数据' },
-  { to: '/settings', label: '设置' },
-  { to: '/history', label: '操作日志' },
+  { to: '/labels', label: 'Print Labels' },
+  { to: '/reports', label: 'Reports' },
+  { to: '/browse', label: 'Browse Data' },
+  { to: '/settings', label: 'Settings' },
+  { to: '/history', label: 'Operation Log' },
 ];
 
 const dbFileInput = ref<HTMLInputElement | null>(null);
@@ -81,18 +81,18 @@ async function handleDatabaseFileSelected(event: Event) {
   if (!file) return;
 
   if (!file.name.endsWith('.db')) {
-    notice.error('请选择 .db 格式的数据库文件');
+    notice.error('Please select a .db format database file');
     return;
   }
 
   importingDatabase.value = true;
-  notice.info('正在导入数据库，请稍候...');
+  notice.info('Importing database, please wait...');
 
   try {
     const fd = new FormData();
     fd.append('file', file);
     await api.post('/import/database', fd, { timeout: 0 });
-    notice.success('数据库导入成功，即将跳转到登录页...');
+    notice.success('Database imported successfully, redirecting to login page...');
     auth.logout();
     setTimeout(() => {
       window.location.href = '/login';
@@ -108,7 +108,7 @@ const viewRefreshTick = ref(0);
 const downloadingDatabaseBackup = ref(false);
 const downloadingFullBackup = ref(false);
 const recentViewHistory = ref<ViewHistoryEntry[]>([]);
-const recentHistoryQuickTip = '记录新增、编辑操作记录';
+const recentHistoryQuickTip = 'Log records of add and edit operations.';
 // Use path-based key so same-path query changes (e.g. create=1 cleanup) do not remount the page.
 const routeKey = computed(() => `${route.path}::${viewRefreshTick.value}`);
 
@@ -189,7 +189,7 @@ async function downloadDatabaseBackup() {
     '/backups/database',
     `itdb-${formatBackupDate()}.db`,
     downloadingDatabaseBackup,
-    '数据库备份下载失败'
+    'Database backup download failed.'
   );
 }
 
@@ -198,7 +198,7 @@ async function downloadFullBackup() {
     '/backups/full',
     `itdb-${formatBackupDate()}.tar.gz`,
     downloadingFullBackup,
-    '完全备份下载失败'
+    'Full backup download failed.'
   );
 }
 
@@ -229,7 +229,7 @@ function formatRecentViewHistory(entry: ViewHistoryEntry) {
     }
 
     if (pathname.startsWith('/dictionaries/')) {
-      if (subtypeEditID) return `合同子类型: ${subtypeEditID}`;
+      if (subtypeEditID) return `Contract Subtype: ${subtypeEditID}`;
       const dictionaryKey = pathname.split('/').filter(Boolean).pop() ?? '';
       const title = recentHistoryDictionaryTitleMap[dictionaryKey];
       if (title && editID) return `${title}: ${editID}`;
@@ -273,7 +273,7 @@ onBeforeUnmount(() => {
     <aside class="app-sidebar">
       <div class="brand-block">
         <img class="brand-block-logo" src="/images/logo.svg" alt="ITDB" />
-        <h1>资产管理系统</h1>
+        <h1>Asset Management System</h1>
       </div>
 
       <nav class="nav-list">
@@ -315,11 +315,11 @@ onBeforeUnmount(() => {
         <button
           type="button"
           class="nav-link nav-action-btn quick-tip"
-          data-quick-tip="请先确保当前数据已备份"
+          data-quick-tip="Please ensure current data is backed up first"
           :disabled="importingDatabase"
           @click="triggerDatabaseImport"
         >
-          {{ importingDatabase ? '导入中...' : '导入' }}
+          {{ importingDatabase ? 'Importing...' : 'Import' }}
         </button>
         <input
           ref="dbFileInput"
@@ -332,7 +332,7 @@ onBeforeUnmount(() => {
         <button
           type="button"
           class="nav-link nav-action-btn quick-tip"
-          data-quick-tip="下载数据库文件。包含除上传到文件（文档）外的所有数据"
+          data-quick-tip="Download database file. Contains all data except for uploaded files (documents)"
           :disabled="downloadingDatabaseBackup"
           @click="downloadDatabaseBackup"
         >
@@ -366,13 +366,13 @@ onBeforeUnmount(() => {
                 stroke-width="1.8"
               />
             </svg>
-            <span>{{ downloadingDatabaseBackup ? '数据库备份中...' : '数据库备份' }}</span>
+            <span>{{ downloadingDatabaseBackup ? 'Database backup in progress...' : 'Database Backup' }}</span>
           </span>
         </button>
         <button
           type="button"
           class="nav-link nav-action-btn quick-tip"
-          data-quick-tip="下载整个项目备份。排除 node_modules 与 dist 目录"
+          data-quick-tip="Download full project backup. Excludes node_modules and dist directories"
           :disabled="downloadingFullBackup"
           @click="downloadFullBackup"
         >
@@ -394,7 +394,7 @@ onBeforeUnmount(() => {
               />
               <path d="M12 13v7" fill="none" stroke="currentColor" stroke-width="1.8" />
             </svg>
-            <span>{{ downloadingFullBackup ? '完全备份中...' : '完全备份' }}</span>
+            <span>{{ downloadingFullBackup ? 'Full backup in progress...' : 'Full Backup' }}</span>
           </span>
         </button>
 
@@ -403,7 +403,7 @@ onBeforeUnmount(() => {
             class="sidebar-recent-history-title sidebar-recent-history-title-tip"
             :data-quick-tip="recentHistoryQuickTip"
           >
-            最近历史记录
+            Recent History
           </div>
           <div class="sidebar-recent-history-list">
             <RouterLink
@@ -421,9 +421,9 @@ onBeforeUnmount(() => {
       <div class="sidebar-footer">
         <div class="user-pill">
           <span class="mono">{{ auth.user?.username }}</span>
-          <small>{{ auth.isReadOnly ? '只读权限' : '完全权限' }}</small>
+          <small>{{ auth.isReadOnly ? 'Read-only Permission' : 'Full Permission' }}</small>
         </div>
-        <button class="ghost-btn" @click="logout">退出登录</button>
+        <button class="ghost-btn" @click="logout">Logout</button>
       </div>
     </aside>
 

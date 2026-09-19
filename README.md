@@ -520,7 +520,7 @@ ITDB_CORS_ORIGINS=*
 go build -o itdb-backend main.go
 ```
 
-4. 运行后端服务： 
+4. 运行后端服务：
 
 ```bash
 # 方式1：前台运行（终端关闭则服务停止）
@@ -600,14 +600,14 @@ Nginx 中的 `root` 应指向 **包含 `index.html` 的目录本身**（如 `/da
 server {
     listen 80;
     server_name your-domain.com;   # 修改为你的域名/主机名，例如：itdb.cn
-    
+
     # 前端静态资源目录（dist 构建产物）
     root /data/itdb/frontend/dist;  # 按实际部署路径修改
     index index.html;
-    
+
     # 限制上传文件大小（可选）
     client_max_body_size 500m;
-    
+
     # Gzip 压缩配置
     gzip on;
     gzip_vary on;
@@ -618,16 +618,16 @@ server {
                application/rss+xml font/truetype font/opentype
                application/vnd.ms-fontobject image/svg+xml;
     gzip_min_length 1000;
-    
+
     # 日志配置
     access_log /usr/local/nginx/logs/itdb-access.log;
     error_log /usr/local/nginx/logs/itdb-error.log warn;
-    
+
     # 前端路由回退到 index.html（适配前端 history 模式）
     location / {
         try_files $uri $uri/ /index.html;
     }
-    
+
     # 后端 API 反向代理
     location /api/ {
         proxy_pass http://127.0.0.1:8080;  # 与后端 API 相同地址
@@ -642,7 +642,7 @@ server {
         proxy_send_timeout 300s;
         proxy_read_timeout 300s;
     }
-    
+
     # 后端 API 文档
     location /swagger/ {
         proxy_pass http://127.0.0.1:8080;  # 与后端 API 相同地址
@@ -681,7 +681,7 @@ server {
     # 证书路径（替换为实际证书文件）
     ssl_certificate     /usr/local/nginx/ssl/your-domain.com.pem;  # 例如：/usr/local/nginx/ssl/itdb.cn.pem
     ssl_certificate_key /usr/local/nginx/ssl/your-domain.com.key;  # 例如：/usr/local/nginx/ssl/itdb.cn.key
-    
+
     # SSL安全优化
     ssl_protocols              TLSv1.2 TLSv1.3;
     ssl_prefer_server_ciphers  on;
@@ -692,10 +692,10 @@ server {
     # 前端静态资源目录（dist 构建产物）
     root /data/itdb/frontend/dist;  # 按实际部署路径修改
     index index.html;
-    
+
     # 限制上传文件大小（可选）
     client_max_body_size 500m;
-    
+
     # Gzip 压缩配置
     gzip on;
     gzip_vary on;
@@ -710,12 +710,12 @@ server {
     # 日志配置
     access_log /usr/local/nginx/logs/itdb-access.log;
     error_log /usr/local/nginx/logs/itdb-error.log warn;
-    
+
     # 前端路由回退到 index.html（适配前端 history 模式）
     location / {
         try_files $uri $uri/ /index.html;
     }
-    
+
     # 后端 API 反向代理
     location /api/ {
         proxy_pass http://127.0.0.1:8080;  # 与后端 API 相同地址
@@ -730,7 +730,7 @@ server {
         proxy_send_timeout 300s;
         proxy_read_timeout 300s;
     }
-    
+
     # 后端 API 文档
     location /swagger/ {
         proxy_pass http://127.0.0.1:8080;  # 与后端 API 相同地址
@@ -766,7 +766,7 @@ systemctl reload nginx
   - **默认用户名**：`admin`
   - **默认密码**：`admin123`
 
-- **后端健康检查**：`http://your-domain.com/health` 
+- **后端健康检查**：`http://your-domain.com/health`
 
 # 五、API 文档
 

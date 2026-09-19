@@ -473,45 +473,45 @@ const resourceMutationImpact: Record<
 };
 
 const itemEditorTabs: { key: ItemEditorTabKey; label: string }[] = [
-  { key: 'itemData', label: '硬件数据' },
-  { key: 'itemLinks', label: '内部硬件关联' },
-  { key: 'invoiceLinks', label: '关联单据' },
-  { key: 'logs', label: '维护日志' },
-  { key: 'softwareLinks', label: '软件关联' },
-  { key: 'contractLinks', label: '关联合同' },
-  { key: 'files', label: '上传文件' },
+  { key: 'itemData', label: 'Hardware data' },
+  { key: 'itemLinks', label: 'Internal hardware links' },
+  { key: 'invoiceLinks', label: 'Associated invoices' },
+  { key: 'logs', label: 'Maintenance logs' },
+  { key: 'softwareLinks', label: 'Software links' },
+  { key: 'contractLinks', label: 'Contract links' },
+  { key: 'files', label: 'Upload files' },
 ];
 
 const softwareEditorTabs: { key: SoftwareEditorTabKey; label: string }[] = [
-  { key: 'softwareData', label: '软件数据' },
-  { key: 'itemLinks', label: '硬件关联' },
-  { key: 'invoiceLinks', label: '单据关联' },
-  { key: 'contractLinks', label: '合同关联' },
-  { key: 'files', label: '上传文件' },
+  { key: 'softwareData', label: 'Software data' },
+  { key: 'itemLinks', label: 'Hardware links' },
+  { key: 'invoiceLinks', label: 'Invoice links' },
+  { key: 'contractLinks', label: 'Contract links' },
+  { key: 'files', label: 'Upload files' },
 ];
 
 const invoiceEditorTabs: { key: InvoiceEditorTabKey; label: string }[] = [
-  { key: 'invoiceData', label: '单据数据' },
-  { key: 'itemLinks', label: '硬件关联' },
-  { key: 'softwareLinks', label: '软件关联' },
-  { key: 'contractLinks', label: '合同关联' },
-  { key: 'files', label: '上传文件' },
+  { key: 'invoiceData', label: 'Invoice data' },
+  { key: 'itemLinks', label: 'Hardware links' },
+  { key: 'softwareLinks', label: 'Software links' },
+  { key: 'contractLinks', label: 'Contract links' },
+  { key: 'files', label: 'Upload files' },
 ];
 
 const contractEditorTabs: { key: ContractEditorTabKey; label: string }[] = [
-  { key: 'contractData', label: '合同数据' },
-  { key: 'events', label: '事件历史' },
-  { key: 'itemLinks', label: '硬件关联' },
-  { key: 'softwareLinks', label: '软件关联' },
-  { key: 'invoiceLinks', label: '单据关联' },
-  { key: 'files', label: '上传文件' },
+  { key: 'contractData', label: 'Contract data' },
+  { key: 'events', label: 'Event history' },
+  { key: 'itemLinks', label: 'Hardware links' },
+  { key: 'softwareLinks', label: 'Software links' },
+  { key: 'invoiceLinks', label: 'Invoice links' },
+  { key: 'files', label: 'Upload files' },
 ];
 
 const fileEditorTabs: { key: FileEditorTabKey; label: string }[] = [
-  { key: 'fileData', label: '文件数据' },
-  { key: 'itemLinks', label: '硬件关联' },
-  { key: 'softwareLinks', label: '软件关联' },
-  { key: 'contractLinks', label: '合同关联' },
+  { key: 'fileData', label: 'File data' },
+  { key: 'itemLinks', label: 'Hardware links' },
+  { key: 'softwareLinks', label: 'Software links' },
+  { key: 'contractLinks', label: 'Contract links' },
 ];
 
 const pageableResourceKeys = new Set(['items', 'software', 'invoices']);
@@ -539,7 +539,7 @@ const resourcePageConfig: Record<string, { defaultSize: number; sizeOptions: num
 function isInvoiceFileTypeRow(row: Record<string, unknown>) {
   const id = Number(row.id ?? 0);
   const text = String(row.typedesc ?? '').trim();
-  return id === 3 || /^invoice$/i.test(text) || text === '发票';
+  return id === 3 || /^invoice$/i.test(text) || text === 'invoice';
 }
 
 function buildNonInvoiceUploadTypeOptions() {
@@ -608,19 +608,19 @@ const isRackResource = computed(() => resource.value?.key === 'racks');
 const canEditNonInvoiceFileAssociations = computed(
   () => !isFileResource.value || !isInvoiceTypeFile.value
 );
-const actionHeaderText = computed(() => resource.value?.actionHeader ?? '操作');
+const actionHeaderText = computed(() => resource.value?.actionHeader ?? 'Operation');
 const deleteConfirmMessage = computed(() => {
   if (!deleteTarget.value) return '';
   if (deleteTarget.value.kind === 'rows') {
-    return `确认批量删除已选择的 ${deleteTarget.value.ids.length} 条记录吗？`;
+    return `Confirm batch deletion of the selected ${deleteTarget.value.ids.length} records?`;
   }
   if (deleteTarget.value.kind === 'contractEvent') {
-    return `确认删除事件 编号=${deleteTarget.value.eventID} 吗？`;
+    return `Confirm deletion of event ID=${deleteTarget.value.eventID}?`;
   }
   if (deleteTarget.value.kind === 'locationArea') {
-    return `确认删除区域“${deleteTarget.value.areaName}”吗？`;
+    return `Confirm deletion of area “${deleteTarget.value.areaName}”?`;
   }
-  return `确认删除 编号=${deleteTarget.value.id} 的记录吗？`;
+  return `Confirm deletion of record ID=${deleteTarget.value.id}?`;
 });
 
 function canDeleteMainRow(row: GenericRow) {
@@ -664,7 +664,7 @@ function toOptionLabel(item: Record<string, unknown>) {
   if (item.name !== undefined && item.floor !== undefined) {
     const name = String(item.name ?? '').trim();
     const floor = String(item.floor ?? '').trim();
-    return decodeHtmlEntities(floor ? `${name}, 楼层:${floor}` : name);
+    return decodeHtmlEntities(floor ? `${name}, Floor:${floor}` : name);
   }
   if (item.statusdesc !== undefined) {
     return decodeHtmlEntities(String(item.statusdesc ?? '').trim() || String(item.id ?? ''));
@@ -700,7 +700,7 @@ function toOptionLabel(item: Record<string, unknown>) {
 }
 
 function formatRackOptionLabel(item: Record<string, unknown>) {
-  const label = String(item.label ?? '').trim() || `机架${String(item.id ?? '').trim()}`;
+  const label = String(item.label ?? '').trim() || `Rack ${String(item.id ?? '').trim()}`;
   const prefix = String(item.id ?? '').trim();
   const itemID = Number(item.id ?? 0);
   const fallbackRows = (bootstrap.lookups.racks ?? []) as Record<string, unknown>[];
@@ -711,7 +711,7 @@ function formatRackOptionLabel(item: Record<string, unknown>) {
     ).trim(),
     10
   );
-  const content = units > 0 ? `${label},${units}U 晟图` : `${label} 晟图`;
+  const content = units > 0 ? `${label},${units}U Shengtu` : `${label} Shengtu`;
   return decodeHtmlEntities(prefix ? `${prefix}: ${content}` : content);
 }
 
@@ -790,9 +790,9 @@ function firstRackIPv4(ipv4: string) {
 function getRackItemStatusClass(statusText: string) {
   const status = statusText.trim().toLowerCase();
   if (!status) return '';
-  if (status.includes('库存') || status.includes('stored')) return 'rack-view-status-stored';
-  if (status.includes('故障') || status.includes('defective')) return 'rack-view-status-defective';
-  if (status.includes('报废') || status.includes('obsolete')) return 'rack-view-status-obsolete';
+  if (status.includes('In stock') || status.includes('stored')) return 'rack-view-status-stored';
+  if (status.includes('Defective') || status.includes('defective')) return 'rack-view-status-defective';
+  if (status.includes('Obsolete') || status.includes('obsolete')) return 'rack-view-status-obsolete';
   return 'rack-view-status-active';
 }
 
@@ -809,7 +809,7 @@ function getRackItemTitle(row: ItemRelationRow) {
   return [
     `${row.manufacturer || '-'}`,
     `${row.model || '-'}`,
-    row.id > 0 ? `[ID:${row.id}]` : '[新建]',
+    row.id > 0 ? `[ID:${row.id}]` : '[New]',
   ]
     .join(' ')
     .trim();
@@ -824,11 +824,11 @@ function getRackItemSubtitle(row: ItemRelationRow) {
 }
 
 function getRackItemTip(row: ItemRelationRow) {
-  const statusText = row.statusText.trim() ? `状态：${row.statusText.trim()}` : '状态：使用中';
+  const statusText = row.statusText.trim() ? `Status: ${row.statusText.trim()}` : 'Status: In use';
   const sizeText = row.uSize > 0 ? `${row.uSize}U` : '-';
   const posText = row.rackPosition > 0 ? `${row.rackPosition}` : '-';
-  const idText = row.id > 0 ? `编号：${row.id}` : '新建硬件';
-  return `${idText} / ${statusText} / 位置：${posText}U / 高度：${sizeText}`;
+  const idText = row.id > 0 ? `ID: ${row.id}` : 'New Hardware';
+  return `${idText} / ${statusText} / Position: ${posText}U / Height: ${sizeText}`;
 }
 
 type BuildRackViewDataOptions = {
@@ -868,7 +868,7 @@ function buildRackViewData(options: BuildRackViewDataOptions): RackViewBuildResu
     const occupiedUnits = getRackUnitSpan(rackPosition, units, reverse);
     if (occupiedUnits.some(unit => unit < 1 || unit > totalUnits)) {
       warnings.push(
-        `硬件 ${item.id}（${item.manufacturer || '-'} ${item.model || '-'}）超出机架边界`
+        `Hardware ${item.id}（${item.manufacturer || '-'} ${item.model || '-'}）exceeds rack boundaries`
       );
       continue;
     }
@@ -878,13 +878,13 @@ function buildRackViewData(options: BuildRackViewDataOptions): RackViewBuildResu
       const isTop = pos === rackPosition ? 1 : 0;
 
       if ((depthMask & 4) === 4 && rowState.F && rowState.F !== item.id) {
-        warnings.push(`第 ${pos}U 前侧位置冲突：硬件 ${item.id} 与 ${rowState.F}`);
+        warnings.push(`No. ${pos}U Front position conflict: Hardware ${item.id}and ${rowState.F}`);
       }
       if ((depthMask & 2) === 2 && rowState.M && rowState.M !== item.id) {
-        warnings.push(`第 ${pos}U 中部位置冲突：硬件 ${item.id} 与 ${rowState.M}`);
+        warnings.push(`No. ${pos}U Middle position conflict: Hardware ${item.id}and ${rowState.M}`);
       }
       if ((depthMask & 1) === 1 && rowState.B && rowState.B !== item.id) {
-        warnings.push(`第 ${pos}U 后侧位置冲突：硬件 ${item.id} 与 ${rowState.B}`);
+        warnings.push(`No. ${pos}U Back position conflict: Hardware ${item.id}and ${rowState.B}`);
       }
 
       if ((depthMask & 4) === 4) {
@@ -1022,7 +1022,7 @@ function compareTagNamesByID(left: string, right: string) {
 
   if (leftKnown && rightKnown && leftID !== rightID) return Number(leftID) - Number(rightID);
   if (leftKnown !== rightKnown) return leftKnown ? -1 : 1;
-  return left.localeCompare(right, 'zh-CN', { numeric: true, sensitivity: 'base' });
+  return left.localeCompare(right, 'en-US', { numeric: true, sensitivity: 'base' });
 }
 
 function sortTagNamesByID(raw: unknown) {
@@ -1254,13 +1254,13 @@ async function saveContractEvent() {
   const contractID = Number(selectedId.value ?? 0);
   if (!contractID) return;
   if (!contractEventForm.startDate || !contractEventForm.endDate) {
-    const message = '请填写开始日期和结束日期';
+    const message = 'Please fill in the start date and end date.';
     error.value = message;
     noticeStore.error(message);
     return;
   }
   if (isDateRangeInvalid(contractEventForm.startDate, contractEventForm.endDate)) {
-    const message = '合同事件中，结束日期不能早于开始日期';
+    const message = 'In the contract event, the end date cannot be earlier than the start date.';
     error.value = message;
     noticeStore.error(message);
     return;
@@ -1284,7 +1284,7 @@ async function saveContractEvent() {
   } catch (err: unknown) {
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '合同事件保存失败';
+      'Contract event save failed';
   } finally {
     contractEventSaving.value = false;
   }
@@ -1385,7 +1385,7 @@ async function loadLocationAreas() {
   } catch (err: unknown) {
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '地点区域加载失败';
+      'Failed to load location areas';
   } finally {
     locationAreasLoading.value = false;
   }
@@ -1441,7 +1441,7 @@ function getLocationFloorplanFileValidationError(file: File | null) {
   const fileName = String(file.name ?? '').trim();
   const ext = fileName ? fileName.slice(Math.max(0, fileName.lastIndexOf('.'))).toLowerCase() : '';
   if (locationFloorplanImageExtensions.has(ext)) return '';
-  return '建筑平面图仅支持图片文件扩展名：.jpg、.jpeg、.png、.gif、.bmp、.webp、.svg、.avif';
+  return 'Architectural floor plans only support the following image file extensions:.jpg、.jpeg、.png、.gif、.bmp、.webp、.svg、.avif';
 }
 
 function getInvoiceUploadFileValidationError(file: File | null) {
@@ -1449,14 +1449,14 @@ function getInvoiceUploadFileValidationError(file: File | null) {
   const fileName = String(file.name ?? '').trim();
   const ext = fileName ? fileName.slice(Math.max(0, fileName.lastIndexOf('.'))).toLowerCase() : '';
   if (invoiceUploadAllowedExtensions.has(ext)) return '';
-  return '单据上传仅支持图片或 PDF 扩展名：.jpg、.jpeg、.png、.gif、.bmp、.webp、.svg、.avif、.pdf';
+  return 'Document uploads only support image or PDF file extensions:.jpg、.jpeg、.png、.gif、.bmp、.webp、.svg、.avif、.pdf';
 }
 
 function getFileUploadValidationError(file: File | null) {
   if (!isInvoiceTypeFile.value) return '';
   const message = getInvoiceUploadFileValidationError(file);
   if (!message) return '';
-  return message.replace('单据上传', '发票类型文件上传');
+  return message.replace('Document Upload', '发票类型文件上传');
 }
 
 function handleLocationFloorplanChange(event: Event) {
@@ -1545,14 +1545,14 @@ async function openLocationFloorplanInNewWindow() {
   try {
     const blob = await fetchLocationFloorplanBlob();
     if (!blob) {
-      error.value = '平面图文件不存在或无法读取';
+      error.value = 'Architectural floor plan file does not exist or cannot be read';
       return;
     }
     openBlobInNewWindow(blob);
   } catch (err: unknown) {
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '平面图打开失败';
+      'Failed to open floor plan';
   }
 }
 
@@ -1563,25 +1563,25 @@ async function openLocationFloorplanByRow(row: GenericRow) {
   try {
     const blob = await fetchLocationFloorplanBlobByID(locationID, fileName);
     if (!blob) {
-      error.value = '平面图文件不存在或无法读取';
+      error.value = 'Architectural floor plan file does not exist or cannot be read';
       return;
     }
     openBlobInNewWindow(blob);
   } catch (err: unknown) {
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '平面图打开失败';
+      'Failed to open floor plan';
   }
 }
 
 function getLocationFloorplanDisplayName(fileName: unknown) {
   const value = String(fileName ?? '').trim();
-  return value || '查看图片';
+  return value || 'View Image';
 }
 
 function getFileDisplayName(fileName: unknown) {
   const value = String(fileName ?? '').trim();
-  return value || '下载文件';
+  return value || 'Download File';
 }
 
 async function saveLocationArea() {
@@ -1589,7 +1589,7 @@ async function saveLocationArea() {
   const locationID = Number(selectedId.value ?? 0);
   const areaName = locationAreaName.value.trim();
   if (!areaName) {
-    const message = '请填写区域名称';
+    const message = 'Please fill in the area name';
     error.value = message;
     noticeStore.error(message);
     return;
@@ -1623,7 +1623,7 @@ async function saveLocationArea() {
   } catch (err: unknown) {
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '地点区域保存失败';
+      'Failed to save location area';
   } finally {
     locationAreaSaving.value = false;
   }
@@ -2105,11 +2105,11 @@ function getRelationLookupText(type: 'items' | 'software' | 'invoices' | 'contra
 }
 
 function getOverviewJumpTip(resourceKey: OverviewResourceKey, id: number) {
-  if (resourceKey === 'items') return `在新窗口编辑硬件 ${id}`;
-  if (resourceKey === 'software') return `在新窗口编辑软件 ${id}`;
-  if (resourceKey === 'invoices') return `在新窗口编辑单据 ${id}`;
-  if (resourceKey === 'contracts') return `在新窗口编辑合同 ${id}`;
-  return `在新窗口编辑机架 ${id}`;
+  if (resourceKey === 'items') return `Edit hardware in a new window ${id}`;
+  if (resourceKey === 'software') return `Edit software in a new window ${id}`;
+  if (resourceKey === 'invoices') return `Edit document in a new window ${id}`;
+  if (resourceKey === 'contracts') return `Edit contract in a new window ${id}`;
+  return `Edit rack in a new window ${id}`;
 }
 
 function toOverviewRows<T extends { id: number }>(
@@ -2244,7 +2244,7 @@ function isInvoiceLinkedFile(row: Pick<FileRelationRow, 'typeID' | 'typeDesc'> |
   if (!row) return false;
   return invoiceFileTypeID.value > 0
     ? Number(row.typeID ?? 0) === invoiceFileTypeID.value
-    : /invoice|发票/i.test(String(row.typeDesc ?? ''));
+    : /invoice|bill/i.test(String(row.typeDesc ?? ''));
 }
 
 const managedLinkedFileRows = computed<ManagedLinkedFileRow[]>(() => {
@@ -2550,7 +2550,7 @@ function naturalCompare(a: unknown, b: unknown) {
   }
   const sa = String(a ?? '');
   const sb = String(b ?? '');
-  return sa.localeCompare(sb, 'zh-CN', { numeric: true, sensitivity: 'base' });
+  return sa.localeCompare(sb, 'en-US', { numeric: true, sensitivity: 'base' });
 }
 
 function sortRelationRowsWithLinkedPriority<T>(
@@ -3391,14 +3391,14 @@ const itemRackPositionOptions = computed(() => {
 
 const itemLocAreaPlaceholderText = computed(() => {
   const locationID = Number(form.locationId ?? 0);
-  if (!Number.isFinite(locationID) || locationID <= 0) return '请选择';
-  return itemLocAreaOptions.value.length === 0 ? '未定义区域' : '请选择';
+  if (!Number.isFinite(locationID) || locationID <= 0) return 'Please select';
+  return itemLocAreaOptions.value.length === 0 ? 'Undefined Area' : 'Please select';
 });
 
 const itemRackPlaceholderText = computed(() => {
   const locationID = Number(form.locationId ?? 0);
-  if (!Number.isFinite(locationID) || locationID <= 0) return '请选择';
-  return itemRackOptions.value.length === 0 ? '在该地点无机架' : '请选择';
+  if (!Number.isFinite(locationID) || locationID <= 0) return 'Please select';
+  return itemRackOptions.value.length === 0 ? 'No racks available at this location' : 'Please select';
 });
 
 function resetItemEditorState() {
@@ -3443,22 +3443,22 @@ type RequiredValidationRule = {
 
 const requiredFieldLabelOverrides: Record<string, Record<string, string>> = {
   agents: {
-    types: '类型',
+    types: 'type',
   },
   items: {
-    uSize: '大小(U)',
+    uSize: 'size(U)',
   },
   contracts: {
-    number: '数量',
+    number: 'quantity',
   },
   files: {
-    date: '签署日期',
+    date: 'Date of signing',
   },
   locations: {
-    name: '建筑名称',
+    name: 'Building Name',
   },
   racks: {
-    uSize: '大小(U)*',
+    uSize: 'size(U)*',
   },
 };
 
@@ -3498,25 +3498,25 @@ function buildRequiredValidationRules() {
     }));
 
   if (resourceKey === 'software') {
-    appendRequiredRule(rules, 'purchaseDate', '采购日期', resourceFields, resourceKey);
+    appendRequiredRule(rules, 'purchaseDate', 'Purchase Date', resourceFields, resourceKey);
   }
   if (resourceKey === 'items') {
     const rackID = Number(form.rackId ?? 0);
     const rackPosition = Number(form.rackPosition ?? 0);
     if (Number.isFinite(rackID) && rackID > 0) {
-      appendRequiredRule(rules, 'rackPosition', '机架位置', resourceFields, resourceKey);
+      appendRequiredRule(rules, 'rackPosition', 'Rack Position', resourceFields, resourceKey);
     }
     if (Number.isFinite(rackPosition) && rackPosition > 0) {
-      appendRequiredRule(rules, 'uSize', '大小(U)', resourceFields, resourceKey);
+      appendRequiredRule(rules, 'uSize', 'Size(U)', resourceFields, resourceKey);
     }
   }
   if (resourceKey === 'agents' && !selectedId.value) {
-    appendRequiredRule(rules, 'types', '类型', resourceFields, resourceKey);
+    appendRequiredRule(rules, 'types', 'Type', resourceFields, resourceKey);
   }
   if (resourceKey === 'users') {
-    appendRequiredRule(rules, 'userType', '类型', resourceFields, resourceKey);
+    appendRequiredRule(rules, 'userType', 'Type', resourceFields, resourceKey);
     if (!selectedId.value) {
-      appendRequiredRule(rules, 'password', '密码', resourceFields, resourceKey);
+      appendRequiredRule(rules, 'password', 'Password', resourceFields, resourceKey);
     }
   }
   return rules;
@@ -3554,7 +3554,7 @@ function getRequiredFieldValidationError() {
     .map(rule => rule.label);
 
   if (missingLabels.length === 0) return '';
-  return `请完善必填项：${missingLabels.join('、')}`;
+  return `Please complete the required fields: ${missingLabels.join(', ')}`;
 }
 
 function isDateRangeInvalid(startRaw: unknown, endRaw: unknown) {
@@ -3567,19 +3567,19 @@ function isDateRangeInvalid(startRaw: unknown, endRaw: unknown) {
 
 function getContractDateValidationError() {
   if (isDateRangeInvalid(form.startDate, form.currentEndDate)) {
-    return '合同属性中，结束日期不能早于开始日期';
+    return 'In the contract attributes, the end date cannot be earlier than the start date';
   }
   const invalidRenewalIndex = contractRenewals.value.findIndex(row =>
     isDateRangeInvalid(row.endDateBefore, row.endDateAfter)
   );
   if (invalidRenewalIndex >= 0) {
-    return `备件第 ${invalidRenewalIndex + 1} 行: 到期后不能早于到期前`;
+    return `Spare Part No. ${invalidRenewalIndex + 1} Action: The date after maturity cannot be earlier than the date before maturity.`;
   }
   const invalidRenewalEffectiveIndex = contractRenewals.value.findIndex(row =>
     isDateRangeInvalid(row.effectiveDate, row.endDateAfter)
   );
   if (invalidRenewalEffectiveIndex >= 0) {
-    return `备件第 ${invalidRenewalEffectiveIndex + 1} 行: 到期后不能早于生效日期`;
+    return `Spare Part No. ${invalidRenewalEffectiveIndex + 1} Action: The date after maturity cannot be earlier than the date before maturity.`;
   }
   return '';
 }
@@ -3604,7 +3604,7 @@ function getItemRackPlacementValidationError() {
   const totalUnits = selectedItemRackTotalUnits.value;
   const occupiedUnits = getRackUnitSpan(rackPosition, units, selectedItemRackReverse.value);
   if (totalUnits > 0 && occupiedUnits.some(unit => unit < 1 || unit > totalUnits)) {
-    return '机架位置超出所选机架范围';
+    return 'Rack position is out of the selected rack range';
   }
 
   const currentID = Number(selectedId.value ?? 0);
@@ -3630,8 +3630,8 @@ function getItemRackPlacementValidationError() {
 
   const conflictText = Array.from(new Set(conflicts))
     .sort((a, b) => naturalCompare(a, b))
-    .join('、');
-  return `机架行 ${conflictText} 已被其他硬件占用`;
+    .join(', ');
+  return `Rack position ${conflictText} is already occupied by other hardware`;
 }
 
 function parseMultiSelectValue(field: ResourceField, raw: unknown) {
@@ -3860,7 +3860,7 @@ async function applyEditQueryAction() {
   } catch (err: unknown) {
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '编辑数据加载失败';
+      'Failed to load edit data.';
   } finally {
     clearEditQuery();
   }
@@ -3996,7 +3996,7 @@ async function loadRows() {
     if (seq !== loadRowsSeq) return;
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '数据加载失败';
+      'Failed to load data.';
   } finally {
     if (seq !== loadRowsSeq) return;
     loading.value = false;
@@ -4107,7 +4107,7 @@ async function save() {
     );
   } catch (err: unknown) {
     error.value =
-      (err as { response?: { data?: { error?: string } } })?.response?.data?.error ?? '保存失败';
+      (err as { response?: { data?: { error?: string } } })?.response?.data?.error ?? 'Save failed.';
     if (error.value) noticeStore.error(error.value);
   } finally {
     saving.value = false;
@@ -4151,7 +4151,7 @@ async function confirmDelete() {
           if (!firstError) {
             firstError =
               (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-              '删除失败';
+              'Failed to delete.';
           }
         }
       }
@@ -4163,10 +4163,10 @@ async function confirmDelete() {
           currentResourceKey,
           currentResourceKey === 'locations' ? { bootstrapKeys: ['locareas'] } : undefined
         );
-        noticeStore.success(`已删除 ${successCount} 条记录`);
+        noticeStore.success(`Successfully deleted ${successCount} records`);
       }
       if (failedCount > 0) {
-        noticeStore.error(firstError || `有 ${failedCount} 条记录删除失败`);
+        noticeStore.error(firstError || `Failed to delete ${failedCount} records`);
       }
     } else if (target.kind === 'contractEvent') {
       await api.delete(`/contracts/${target.contractID}/events/${target.eventID}`);
@@ -4197,10 +4197,10 @@ async function confirmDelete() {
   } catch (err: unknown) {
     const fallback =
       target.kind === 'contractEvent'
-        ? '合同事件删除失败'
+        ? 'Failed to delete contract event'
         : target.kind === 'locationArea'
-          ? '地点区域删除失败'
-          : '删除失败';
+          ? 'Failed to delete location area'
+          : 'Failed to delete';
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ?? fallback;
     confirmOpen.value = false;
@@ -4214,11 +4214,11 @@ function formatAgentType(value: unknown) {
   const mask = Number(value);
   if (!Number.isFinite(mask) || mask <= 0) return '-';
   const labels: string[] = [];
-  if ((mask & 4) === 4) labels.push('供应商');
-  if ((mask & 2) === 2) labels.push('软件厂商');
-  if ((mask & 8) === 8) labels.push('硬件厂商');
-  if ((mask & 1) === 1) labels.push('采购方');
-  if ((mask & 16) === 16) labels.push('承包方');
+  if ((mask & 4) === 4) labels.push('Vendor');
+  if ((mask & 2) === 2) labels.push('Software Manufacturer');
+  if ((mask & 8) === 8) labels.push('Hardware Manufacturer');
+  if ((mask & 1) === 1) labels.push('Purchaser');
+  if ((mask & 16) === 16) labels.push('Contractor');
   return labels.join(' / ') || '-';
 }
 
@@ -4227,21 +4227,21 @@ function parseAgentTypeBadges(value: unknown): AgentTypeBadge[] {
   if (!Number.isFinite(mask) || mask <= 0)
     return [{ key: 0, label: '-', className: 'agent-type-empty' }];
   const badges: AgentTypeBadge[] = [];
-  if ((mask & 4) === 4) badges.push({ key: 4, label: '供应商', className: 'agent-type-vendor' });
+  if ((mask & 4) === 4) badges.push({ key: 4, label: 'Vendor', className: 'agent-type-vendor' });
   if ((mask & 2) === 2)
-    badges.push({ key: 2, label: '软件厂商', className: 'agent-type-software' });
+    badges.push({ key: 2, label: 'Software Manufacturer', className: 'agent-type-software' });
   if ((mask & 8) === 8)
-    badges.push({ key: 8, label: '硬件厂商', className: 'agent-type-hardware' });
-  if ((mask & 1) === 1) badges.push({ key: 1, label: '采购方', className: 'agent-type-buyer' });
+    badges.push({ key: 8, label: 'Hardware Manufacturer', className: 'agent-type-hardware' });
+  if ((mask & 1) === 1) badges.push({ key: 1, label: 'Purchaser', className: 'agent-type-buyer' });
   if ((mask & 16) === 16)
-    badges.push({ key: 16, label: '承包方', className: 'agent-type-contractor' });
+    badges.push({ key: 16, label: 'Contractor', className: 'agent-type-contractor' });
   return badges;
 }
 
 function formatUserType(value: unknown) {
   const t = Number(value);
-  if (t === 0) return '完全访问';
-  if (t === 1 || t === 2) return '只读';
+  if (t === 0) return 'Full Access';
+  if (t === 1 || t === 2) return 'Read Only';
   return String(value ?? '-');
 }
 
@@ -4255,16 +4255,16 @@ function formatWarrantyRemain(row: GenericRow) {
   end.setMonth(end.getMonth() + warrantyMonths);
 
   const now = new Date();
-  if (end.getTime() < now.getTime()) return '已过保';
+  if (end.getTime() < now.getTime()) return 'Expired';
 
   const diff = diffYMD(now, end);
   const years = diff.years;
   const months = diff.months;
   const days = diff.days;
   if (years > 0) {
-    return `${years} 年 ${months} 月, ${days} 天`;
+    return `${years} years ${months} months, ${days} days`;
   }
-  return `${months} 月, ${days} 天`;
+  return `${months} months, ${days} days`;
 }
 
 function formatSoftwareQty(row: GenericRow) {
@@ -4287,8 +4287,8 @@ function getRackOccupationInfo(row: GenericRow) {
 
 function getRackOccupationTitle(row: GenericRow) {
   const { occupied, size } = getRackOccupationInfo(row);
-  if (size > 0) return `${occupied}U 在用 / 总计 ${size}U`;
-  return `${occupied}U 在用`;
+  if (size > 0) return `${occupied}U in use / Total ${size}U`;
+  return `${occupied}U in use`;
 }
 
 function getSoftwareQtyColorClass(row: GenericRow) {
@@ -4347,7 +4347,7 @@ function parseSoftwareInstalledEntries(row: GenericRow): SoftwareInstallEntry[] 
     return {
       index: idx + 1,
       id: Number.isFinite(id) && id > 0 ? id : null,
-      text: text || `编号=${id}`,
+      text: text || `ID=${id}`,
     };
   });
 }
@@ -4363,7 +4363,7 @@ function parseInvoiceFileEntriesValue(rawValue: unknown): InvoiceFileEntry[] {
         text: plainText,
         title: '',
         fileName: plainText,
-        previewTip: plainText ? `查看文件: ${plainText}` : '查看文件',
+        previewTip: plainText ? `View File: ${plainText}` : 'View File',
       };
     }
     const id = Number(match[1]);
@@ -4376,10 +4376,10 @@ function parseInvoiceFileEntriesValue(rawValue: unknown): InvoiceFileEntry[] {
     return {
       index: idx + 1,
       id: Number.isFinite(id) && id > 0 ? id : null,
-      text: text || `编号=${id}`,
+      text: text || `ID=${id}`,
       title: titleText,
       fileName: fileNameText || rawText,
-      previewTip: tipText ? `查看文件: ${tipText}` : `查看文件: ${text || `编号=${id}`}`,
+      previewTip: tipText ? `View File: ${tipText}` : `View File: ${text || `ID=${id}`}`,
     };
   });
 }
@@ -4412,21 +4412,21 @@ function getInstalledItemStatusText(id: number | null) {
 function getInstalledItemStatusClass(id: number | null) {
   const status = getInstalledItemStatusText(id).toLowerCase();
   if (!status) return '';
-  if (status.includes('库存') || status.includes('stored'))
+  if (status.includes('In stock') || status.includes('stored'))
     return 'software-installed-status-stored';
-  if (status.includes('故障') || status.includes('defective'))
+  if (status.includes('Defective') || status.includes('defective'))
     return 'software-installed-status-defective';
-  if (status.includes('报废') || status.includes('obsolete'))
+  if (status.includes('Obsolete') || status.includes('obsolete'))
     return 'software-installed-status-obsolete';
   return '';
 }
 
 function getInstalledItemStatusTip(id: number | null) {
   const status = getInstalledItemStatusText(id).toLowerCase();
-  if (status.includes('库存') || status.includes('stored')) return '状态：库存';
-  if (status.includes('故障') || status.includes('defective')) return '状态：有故障';
-  if (status.includes('报废') || status.includes('obsolete')) return '状态：报废';
-  return '状态：使用中';
+  if (status.includes('In stock') || status.includes('stored')) return 'Status: In Stock';
+  if (status.includes('Defective') || status.includes('defective')) return 'Status: Defective';
+  if (status.includes('Obsolete') || status.includes('obsolete')) return 'Status: Obsolete';
+  return 'Status: In Use';
 }
 
 function openInstalledItem(id: number | null) {
@@ -4495,14 +4495,14 @@ async function openFilePreviewInNewWindow(id: number | null) {
     const response = await api.get(`/files/${id}/download`, { responseType: 'blob' });
     const blob = response.data instanceof Blob ? response.data : new Blob([response.data]);
     if (!blob || blob.size <= 0) {
-      noticeStore.error('文件预览失败');
+      noticeStore.error('File preview failed');
       return;
     }
     openBlobInNewWindow(blob);
   } catch (err: unknown) {
     const message =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '文件预览失败';
+      'File preview failed';
     error.value = message;
     noticeStore.error(message);
   }
@@ -4572,18 +4572,18 @@ function openParentContractEditor() {
 
 function getSoftwareItemTypeTooltip(row: ItemRelationRow) {
   const status = String(row.statusText ?? '').trim();
-  return status ? `状态：${status}` : '状态：使用中';
+  return status ? `Status: ${status}` : 'Status: In Use';
 }
 
 function getSoftwareRelationIDTip(
   type: 'item' | 'software' | 'invoice' | 'contract' | 'file',
   id: number
 ) {
-  if (type === 'item') return `在新窗口编辑硬件 ${id}`;
-  if (type === 'software') return `在新窗口编辑软件 ${id}`;
-  if (type === 'invoice') return `在新窗口编辑单据 ${id}`;
-  if (type === 'contract') return `在新窗口编辑合同 ${id}`;
-  return `在新窗口编辑文件 ${id}`;
+  if (type === 'item') return `Edit Hardware ${id} in New Window`;
+  if (type === 'software') return `Edit Software ${id} in New Window`;
+  if (type === 'invoice') return `Edit Invoice ${id} in New Window`;
+  if (type === 'contract') return `Edit Contract ${id} in New Window`;
+  return `Edit File ${id} in New Window`;
 }
 
 async function refreshSoftwareTags() {
@@ -4599,7 +4599,7 @@ async function refreshSoftwareTags() {
 async function mutateSoftwareTag(name: string, action: 'add' | 'remove') {
   const id = Number(selectedId.value ?? 0);
   if (!id) {
-    softwareTagMessage.value = '请先保存软件，再编辑标记';
+    softwareTagMessage.value = 'Please save the software first, then edit the tags';
     return;
   }
   const tagName = name.trim();
@@ -4611,11 +4611,11 @@ async function mutateSoftwareTag(name: string, action: 'add' | 'remove') {
     await refreshBootstrapIfNeeded();
     await Promise.all([refreshSoftwareTags(), loadRows()]);
     broadcastEditorDataDirty({ bootstrapKeys: ['tags'] });
-    softwareTagMessage.value = action === 'add' ? '标记已添加' : '标记关联已移除';
+    softwareTagMessage.value = action === 'add' ? 'Tag added successfully' : 'Tag association removed';
   } catch (err: unknown) {
     softwareTagMessage.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '标记操作失败';
+      'Tag operation failed';
   } finally {
     softwareTagSaving.value = false;
   }
@@ -4625,7 +4625,7 @@ async function addSoftwareTag() {
   const name = softwareTagInput.value.trim();
   if (!name) return;
   await mutateSoftwareTag(name, 'add');
-  if (!softwareTagMessage.value.includes('失败')) {
+  if (!softwareTagMessage.value.includes('failed')) {
     softwareTagInput.value = '';
   }
 }
@@ -4655,7 +4655,7 @@ async function refreshItemTags() {
 async function mutateItemTag(name: string, action: 'add' | 'remove') {
   const id = Number(selectedId.value ?? 0);
   if (!id) {
-    itemTagMessage.value = '请先保存硬件，再编辑标记';
+    itemTagMessage.value = 'Please save the hardware first, then edit the tags';
     return;
   }
   const tagName = name.trim();
@@ -4667,11 +4667,11 @@ async function mutateItemTag(name: string, action: 'add' | 'remove') {
     await refreshBootstrapIfNeeded();
     await Promise.all([refreshItemTags(), loadRows()]);
     broadcastEditorDataDirty({ bootstrapKeys: ['tags'] });
-    itemTagMessage.value = action === 'add' ? '标记已添加' : '标记关联已移除';
+    itemTagMessage.value = action === 'add' ? 'Tag added successfully' : 'Tag association removed';
   } catch (err: unknown) {
     itemTagMessage.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '标记操作失败';
+      'Tag operation failed';
   } finally {
     itemTagSaving.value = false;
   }
@@ -4681,7 +4681,7 @@ async function addItemTag() {
   const name = itemTagInput.value.trim();
   if (!name) return;
   await mutateItemTag(name, 'add');
-  if (!itemTagMessage.value.includes('失败')) {
+  if (!itemTagMessage.value.includes('failed')) {
     itemTagInput.value = '';
   }
 }
@@ -4743,34 +4743,34 @@ function onContractUploadFileChange(event: Event) {
 function getLinkedUploadValidationError(scope: LinkedUploadScope) {
   const missing: string[] = [];
   if (scope === 'software') {
-    if (!softwareUploadForm.title.trim()) missing.push('标题');
-    if (!String(softwareUploadForm.typeId ?? '').trim()) missing.push('文件类型');
-    if (!softwareUploadForm.date) missing.push('签署日期');
-    if (!softwareUploadForm.file) missing.push('选择文件');
+    if (!softwareUploadForm.title.trim()) missing.push('Title');
+    if (!String(softwareUploadForm.typeId ?? '').trim()) missing.push('File Type');
+    if (!softwareUploadForm.date) missing.push('Signing Date');
+    if (!softwareUploadForm.file) missing.push('Select File');
   } else if (scope === 'items') {
-    if (!itemUploadForm.title.trim()) missing.push('标题');
-    if (!String(itemUploadForm.typeId ?? '').trim()) missing.push('文件类型');
-    if (!itemUploadForm.date) missing.push('签署日期');
-    if (!itemUploadForm.file) missing.push('选择文件');
+    if (!itemUploadForm.title.trim()) missing.push('Title');
+    if (!String(itemUploadForm.typeId ?? '').trim()) missing.push('File Type');
+    if (!itemUploadForm.date) missing.push('Signing Date');
+    if (!itemUploadForm.file) missing.push('Select File');
   } else if (scope === 'invoices') {
-    if (!invoiceUploadForm.title.trim()) missing.push('标题');
-    if (!invoiceUploadForm.date) missing.push('签署日期');
-    if (!invoiceUploadForm.file) missing.push('选择文件');
+    if (!invoiceUploadForm.title.trim()) missing.push('Title');
+    if (!invoiceUploadForm.date) missing.push('Signing Date');
+    if (!invoiceUploadForm.file) missing.push('Select File');
     const fileTypeError = getInvoiceUploadFileValidationError(invoiceUploadForm.file);
     if (fileTypeError) return fileTypeError;
   } else {
-    if (!contractUploadForm.title.trim()) missing.push('标题');
-    if (!String(contractUploadForm.typeId ?? '').trim()) missing.push('文件类型');
-    if (!contractUploadForm.date) missing.push('签署日期');
-    if (!contractUploadForm.file) missing.push('选择文件');
+    if (!contractUploadForm.title.trim()) missing.push('Title');
+    if (!String(contractUploadForm.typeId ?? '').trim()) missing.push('File Type');
+    if (!contractUploadForm.date) missing.push('Signing Date');
+    if (!contractUploadForm.file) missing.push('Select File');
   }
-  return missing.length > 0 ? `请完善必填项：${missing.join('、')}` : '';
+  return missing.length > 0 ? `Please complete the required fields: ${missing.join(', ')}` : '';
 }
 
 async function uploadLinkedFile(scope: LinkedUploadScope) {
   const resourceID = Number(selectedId.value ?? 0);
   if (!resourceID) {
-    const message = '请先保存当前记录，再上传文件';
+    const message = 'Please save the current record before uploading files';
     error.value = message;
     noticeStore.error(message);
     return;
@@ -4874,17 +4874,17 @@ async function uploadLinkedFile(scope: LinkedUploadScope) {
     broadcastEditorDataDirty({ relationKeys: ['files'], bootstrapKeys: ['files_ref'] });
     const successMessage =
       scope === 'software'
-        ? '文件已上传并关联到当前软件'
+        ? 'File uploaded and linked to current software'
         : scope === 'items'
-          ? '文件已上传并关联到当前硬件'
+          ? 'The file has been uploaded and linked to the current hardware.'
           : scope === 'invoices'
-            ? '文件已上传并关联到当前单据'
-            : '文件已上传并关联到当前合同';
+            ? 'The file has been uploaded and linked to the current invoice.'
+            : 'The file has been uploaded and linked to the current contract.';
     noticeStore.success(successMessage);
   } catch (err: unknown) {
     const message =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '上传文件失败';
+      'Failed to upload file';
     error.value = message;
     noticeStore.error(message);
   } finally {
@@ -4981,7 +4981,7 @@ function getCellClass(key: string, row: GenericRow) {
   if (key === 'warrantyRemain') {
     const text = formatWarrantyRemain(row);
     if (text !== '-' && text !== '') {
-      classes.push(text === '已过保' ? 'warranty-expired' : 'warranty-good');
+      classes.push(text === 'Warranty expired' ? 'warranty-expired' : 'warranty-good');
     }
   }
 
@@ -5054,15 +5054,15 @@ function getSortValue(row: GenericRow, key: string) {
 function getUploadFileUnlinkTip() {
   const resourceLabel =
     resource.value?.key === 'items'
-      ? '硬件'
+      ? 'hardware'
       : resource.value?.key === 'software'
-        ? '软件'
+        ? 'software'
         : resource.value?.key === 'invoices'
-          ? '单据'
+          ? 'invoice'
           : resource.value?.key === 'contracts'
-            ? '合同'
-            : '当前记录';
-  return `解除关联，保存${resourceLabel}后生效。若文件是孤立的(没有其他内容与之相关联)，也不会被删除`;
+            ? 'contract'
+            : 'current record';
+  return `Unlink and save${resourceLabel}...takes effect subsequently. If the file is isolated (with no other content associated with it), it will not be deleted.`;
 }
 
 const uploadTabTip = reactive({
@@ -5440,24 +5440,24 @@ onBeforeUnmount(() => {
       <h2>{{ resource.title }}</h2>
       <div class="header-actions">
         <div class="search-inline">
-          <span class="search-label">查询</span>
+          <span class="search-label">Inquiry</span>
           <input
             :value="search"
             class="search-input"
-            placeholder="输入关键字实时搜索"
+            placeholder="Enter keywords for real-time search"
             @input="onSearchInput"
             @compositionupdate="onSearchInput"
             @compositionend="onSearchInput"
           />
         </div>
-        <button class="ghost-btn" @click="loadRows">刷新</button>
+        <button class="ghost-btn" @click="loadRows">Refresh</button>
         <button
           v-if="canWrite"
           class="ghost-btn"
           :disabled="totalRows === 0 || allCurrentRowsSelected"
           @click="setAllCurrentRowsSelected(true)"
         >
-          全选当前结果
+          Select All Current Results
         </button>
         <button
           v-if="canWrite"
@@ -5465,7 +5465,7 @@ onBeforeUnmount(() => {
           :disabled="selectedRowCount === 0"
           @click="clearSelectedRows"
         >
-          清空选择
+          Clear Selection
         </button>
         <button
           v-if="canWrite"
@@ -5473,27 +5473,27 @@ onBeforeUnmount(() => {
           :disabled="selectedRowCount === 0"
           @click="requestRemoveSelectedRows"
         >
-          批量删除（{{ selectedRowCount }}）
+          Batch Delete ({{ selectedRowCount }})
         </button>
-        <button v-if="canWrite" @click="openCreate">新增</button>
+        <button v-if="canWrite" @click="openCreate">New</button>
       </div>
     </header>
 
-    <p v-if="loading">加载中...</p>
+    <p v-if="loading">Loading...</p>
 
     <div class="table-toolbar" v-if="!loading">
       <div class="length-control">
-        <span>每页</span>
+        <span>Per Page</span>
         <select v-model.number="pageSize" @change="onPageSizeChange">
           <option v-for="size in pageOptions" :key="size" :value="size">
-            {{ size === -1 ? '全部' : size }}
+            {{ size === -1 ? 'all' : size }}
           </option>
         </select>
-        <span>条</span>
+        <span>Item</span>
       </div>
       <div class="table-toolbar-meta">
-        <div v-if="canWrite" class="table-selection-meta">已选 {{ selectedRowCount }} 条</div>
-        <div class="table-meta">显示 {{ pageStart }} - {{ pageEnd }}，共 {{ totalRows }} 条</div>
+        <div v-if="canWrite" class="table-selection-meta">Selected {{ selectedRowCount }} items</div>
+        <div class="table-meta">Showing {{ pageStart }} - {{ pageEnd }} of {{ totalRows }} items</div>
       </div>
     </div>
 
@@ -5541,9 +5541,9 @@ onBeforeUnmount(() => {
             </td>
             <td v-if="canWrite" class="actions-cell">
               <div class="row-actions">
-                <button v-if="canWrite" class="small-btn" @click="openEdit(row)">编辑</button>
+                <button v-if="canWrite" class="small-btn" @click="openEdit(row)">Edit</button>
                 <button v-if="canWrite" class="small-btn danger" @click="remove(rowKey(row))">
-                  删除
+                  Delete
                 </button>
               </div>
             </td>
@@ -5574,7 +5574,7 @@ onBeforeUnmount(() => {
                     <button
                       type="button"
                       class="relation-jump-btn quick-tip"
-                      :data-quick-tip="`编辑单据 ${entry.id}`"
+                      :data-quick-tip="`Edit Document ${entry.id}`"
                       @click="openSoftwareRelatedInvoiceInCurrentWindow(entry.id)"
                     >
                       {{ entry.id }}
@@ -5625,7 +5625,7 @@ onBeforeUnmount(() => {
                       class="software-installed-link"
                       @click.prevent="openInstalledItem(entry.id)"
                     >
-                      <span>{{ entry.index }}：</span>
+                      <span>{{ entry.index }}:</span>
                       <span
                         :class="[
                           'software-installed-id',
@@ -5638,7 +5638,7 @@ onBeforeUnmount(() => {
                       </span>
                       <span>{{ entry.text }}</span>
                     </a>
-                    <span v-else>{{ entry.index }}：{{ entry.text }}</span>
+                    <span v-else>{{ entry.index }}: {{ entry.text }}</span>
                   </div>
                 </div>
                 <span v-else>-</span>
@@ -5657,11 +5657,11 @@ onBeforeUnmount(() => {
                       :data-quick-tip="entry.title || '-'"
                       @click.prevent="openFilePreviewInNewWindow(entry.id)"
                     >
-                      <span>{{ entry.index }}：</span>
+                      <span>{{ entry.index }}:</span>
                       <span class="software-installed-id">({{ entry.id }})</span>
                       <span>{{ entry.text }}</span>
                     </a>
-                    <span v-else>{{ entry.index }}：{{ entry.text }}</span>
+                    <span v-else>{{ entry.index }}: {{ entry.text }}</span>
                   </div>
                 </div>
                 <span v-else>-</span>
@@ -5711,8 +5711,8 @@ onBeforeUnmount(() => {
                   v-if="String(row.floorplanfn ?? '').trim()"
                   type="button"
                   class="location-floorplan-table-link quick-tip"
-                  data-quick-tip="在新窗口查看建筑平面图"
-                  :aria-label="`查看建筑平面图：${getLocationFloorplanDisplayName(row.floorplanfn)}`"
+                  data-quick-tip="View the architectural floor plan in a new window."
+                  :aria-label="`View architectural floor plan: ${getLocationFloorplanDisplayName(row.floorplanfn)}`"
                   @click="openLocationFloorplanByRow(row)"
                 >
                   <span class="location-floorplan-table-link-icon">↗</span>
@@ -5727,8 +5727,8 @@ onBeforeUnmount(() => {
                   v-if="String(row.fname ?? '').trim()"
                   type="button"
                   class="location-floorplan-table-link quick-tip"
-                  data-quick-tip="点击下载文件"
-                  :aria-label="`下载文件：${getFileDisplayName(row.fname)}`"
+                  data-quick-tip="Click to download file"
+                  :aria-label="`Download file: ${getFileDisplayName(row.fname)}`"
                   @click="downloadFile(row)"
                 >
                   <span class="location-floorplan-table-link-icon">↓</span>
@@ -5744,16 +5744,16 @@ onBeforeUnmount(() => {
             </td>
           </tr>
           <tr v-if="totalRows === 0">
-            <td :colspan="resource.columns.length + (canWrite ? 2 : 0)">暂无数据</td>
+            <td :colspan="resource.columns.length + (canWrite ? 2 : 0)">No data available</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div class="table-pagination" v-if="!loading && totalRows > 0 && pageSize !== -1">
-      <button class="ghost-btn small-btn" :disabled="page <= 1" @click="setPage(1)">首页</button>
+      <button class="ghost-btn small-btn" :disabled="page <= 1" @click="setPage(1)">First Page</button>
       <button class="ghost-btn small-btn" :disabled="page <= 1" @click="setPage(page - 1)">
-        上一页
+        Previous Page
       </button>
       <button
         v-for="p in visiblePages"
@@ -5765,14 +5765,14 @@ onBeforeUnmount(() => {
         {{ p }}
       </button>
       <button class="ghost-btn small-btn" :disabled="page >= totalPages" @click="setPage(page + 1)">
-        下一页
+        Next Page
       </button>
       <button
         class="ghost-btn small-btn"
         :disabled="page >= totalPages"
         @click="setPage(totalPages)"
       >
-        末页
+        Last Page
       </button>
     </div>
 
@@ -5796,14 +5796,14 @@ onBeforeUnmount(() => {
       >
         <div class="drawer-header">
           <h3>
-            {{ selectedId ? `编辑 编号=${selectedId}` : '新增记录'
-            }}{{ isItemResource ? ' - 硬件' : '' }}
+            {{ selectedId ? `Edit Record ID=${selectedId}` : 'Add New Record' }}
+            {{ isItemResource ? ' - Hardware' : '' }}
           </h3>
           <button
             class="drawer-close-btn quick-tip"
             type="button"
-            aria-label="关闭"
-            data-quick-tip="关闭"
+            aria-label="Close"
+            data-quick-tip="Close"
             @click="drawerOpen = false"
           >
             ×
@@ -5860,12 +5860,12 @@ onBeforeUnmount(() => {
             <section v-show="activeItemTab === 'itemData'" class="item-tab-pane">
               <div class="item-layout hardware-item-layout">
                 <section class="item-block">
-                  <h4>内在特性</h4>
+                  <h4>Intrinsic characteristics</h4>
                   <label>
-                    <span>硬件类型 <sup class="req">*</sup></span>
-                    <span class="quick-tip field-select-tip" data-quick-tip="根据硬件类型分组">
+                    <span>Hardware Type <sup class="req">*</sup></span>
+                    <span class="quick-tip field-select-tip" data-quick-tip="Group by hardware type">
                       <select v-model="form.itemTypeId">
-                        <option value="">请选择</option>
+                        <option value="">Please select</option>
                         <option
                           v-for="opt in getOptionsByFieldKey('itemTypeId')"
                           :key="`itemType-${opt.value}`"
@@ -5878,31 +5878,31 @@ onBeforeUnmount(() => {
                   </label>
 
                   <div class="item-radio-row">
-                    <span>从属部件 <sup class="req">*</sup></span>
-                    <label><input v-model.number="form.isPart" type="radio" :value="1" /> 是</label>
-                    <label><input v-model.number="form.isPart" type="radio" :value="0" /> 否</label>
+                    <span>From subordinate parts <sup class="req">*</sup></span>
+                    <label><input v-model.number="form.isPart" type="radio" :value="1" /> Yes</label>
+                    <label><input v-model.number="form.isPart" type="radio" :value="0" /> No</label>
                   </div>
 
                   <div class="item-radio-row">
-                    <span>机架式 <sup class="req">*</sup></span>
+                    <span>Rack Mountable <sup class="req">*</sup></span>
                     <label
                       ><input v-model.number="form.rackMountable" type="radio" :value="1" />
-                      是</label
+                      Yes</label
                     >
                     <label
                       ><input v-model.number="form.rackMountable" type="radio" :value="0" />
-                      否</label
+                      No</label
                     >
                   </div>
 
                   <label>
-                    <span>厂商 <sup class="req">*</sup></span>
+                    <span>Manufacturer <sup class="req">*</sup></span>
                     <span
                       class="quick-tip field-select-tip"
-                      data-quick-tip="根据代理菜单中定义的硬件厂商分组"
+                      data-quick-tip="Group by manufacturer"
                     >
                       <select v-model="form.manufacturerId">
-                        <option value="">请选择</option>
+                        <option value="">Please select</option>
                         <option
                           v-for="opt in getOptionsByFieldKey('manufacturerId')"
                           :key="`manufacturer-${opt.value}`"
@@ -5914,27 +5914,27 @@ onBeforeUnmount(() => {
                     </span>
                   </label>
                   <label
-                    ><span>型号 <sup class="req">*</sup></span
+                    ><span>Model <sup class="req">*</sup></span
                     ><input v-model="form.model" type="text"
                   /></label>
                   <label>
-                    <span>大小(U)</span>
+                    <span>Size (U)</span>
                     <select v-model="form.uSize">
-                      <option value="">请选择</option>
+                      <option value="">Please select</option>
                       <option v-for="i in 44" :key="`usize-${i}`" :value="String(i)">
                         {{ i }}
                       </option>
                     </select>
                   </label>
-                  <label><span>设备序列号</span><input v-model="form.sn" type="text" /></label>
-                  <label><span>序列号2</span><input v-model="form.sn2" type="text" /></label>
+                  <label><span>Device Serial Number</span><input v-model="form.sn" type="text" /></label>
+                  <label><span>Serial Number 2</span><input v-model="form.sn2" type="text" /></label>
                   <label><span>Service Tag</span><input v-model="form.sn3" type="text" /></label>
-                  <label><span>注释</span><textarea v-model="form.comments" /></label>
+                  <label><span>Comments</span><textarea v-model="form.comments" /></label>
                   <label>
-                    <span>标签</span>
+                    <span>Label</span>
                     <span
                       class="quick-tip field-select-tip"
-                      data-quick-tip="在可打印表格上也显示此文本"
+                      data-quick-tip="Display this text on printable forms"
                     >
                       <input v-model="form.label" type="text" />
                     </span>
@@ -5942,11 +5942,11 @@ onBeforeUnmount(() => {
                 </section>
 
                 <section class="item-block">
-                  <h4>使用</h4>
+                  <h4>Use</h4>
                   <label>
-                    <span>状态 <sup class="req">*</sup></span>
+                    <span>status <sup class="req">*</sup></span>
                     <select v-model="form.status">
-                      <option value="">请选择</option>
+                      <option value="">Please select</option>
                       <option
                         v-for="opt in getOptionsByFieldKey('status')"
                         :key="`status-${opt.value}`"
@@ -5958,9 +5958,9 @@ onBeforeUnmount(() => {
                   </label>
 
                   <label>
-                    <span>所属部门</span>
+                    <span>Department</span>
                     <select v-model="form.dptId">
-                      <option value="">请选择</option>
+                      <option value="">Please select</option>
                       <option
                         v-for="opt in getOptionsByFieldKey('dptId')"
                         :key="`dpt-${opt.value}`"
@@ -5971,13 +5971,13 @@ onBeforeUnmount(() => {
                     </select>
                   </label>
                   <label
-                    ><span>负责人 <sup class="req">*</sup></span
+                    ><span>Principal <sup class="req">*</sup></span
                     ><input v-model="form.principal" type="text"
                   /></label>
                   <label>
-                    <span>地点</span>
+                    <span>Location</span>
                     <select v-model="form.locationId">
-                      <option value="">请选择</option>
+                      <option value="">Please select</option>
                       <option
                         v-for="opt in getOptionsByFieldKey('locationId')"
                         :key="`location-${opt.value}`"
@@ -5988,7 +5988,7 @@ onBeforeUnmount(() => {
                     </select>
                   </label>
                   <label>
-                    <span>区域/房间</span>
+                    <span>Area/Room</span>
                     <select v-model="form.locAreaId">
                       <option value="">{{ itemLocAreaPlaceholderText }}</option>
                       <option
@@ -6006,7 +6006,7 @@ onBeforeUnmount(() => {
                         <button
                           class="field-link-icon quick-tip"
                           type="button"
-                          data-quick-tip="查看机架晟图"
+                          data-quick-tip="View Rack Diagram"
                           :disabled="!Number(form.rackId ?? 0)"
                           @click="openSelectedRackViewInNewWindow"
                         >
@@ -6027,14 +6027,14 @@ onBeforeUnmount(() => {
                         <button
                           class="field-link-icon quick-tip"
                           type="button"
-                          data-quick-tip="编辑机架"
+                          data-quick-tip="Edit Rack"
                           :disabled="!Number(form.rackId ?? 0)"
                           @click="openSelectedRackEditor"
                         >
                           ✎
                         </button>
                       </span>
-                      <span class="item-rack-text-label">机架</span>
+                      <span class="item-rack-text-label">Rack</span>
                     </div>
 
                     <select id="item-rack-id" v-model="form.rackId">
@@ -6051,10 +6051,10 @@ onBeforeUnmount(() => {
 
                   <div class="item-inline-2 item-rack-placement-row">
                     <label class="item-rack-position-field">
-                      <span>机架位置</span>
-                      <span class="quick-tip field-select-tip" data-quick-tip="机架行">
+                      <span>Rack Position</span>
+                      <span class="quick-tip field-select-tip" data-quick-tip="Rack Row">
                         <select v-model.number="form.rackPosition">
-                          <option value="">选择</option>
+                          <option value="">Select</option>
                           <option
                             v-for="position in itemRackPositionOptions"
                             :key="`rack-pos-${position}`"
@@ -6069,7 +6069,7 @@ onBeforeUnmount(() => {
                       <span aria-hidden="true"></span>
                       <span
                         class="quick-tip field-select-tip"
-                        data-quick-tip="占用机架深度。(F)前, (M)中, (B)后"
+                        data-quick-tip="Rack Depth (F) Front, (M) Middle, (B) Back"
                       >
                         <select v-model="form.rackPosDepth">
                           <option value="4">F--</option>
@@ -6083,11 +6083,11 @@ onBeforeUnmount(() => {
                     </label>
                   </div>
 
-                  <label><span>用途</span><input v-model="form.function" type="text" /></label>
+                  <label><span>Function</span><input v-model="form.function" type="text" /></label>
                   <label>
-                    <span>使用人</span>
+                    <span>User</span>
                     <select v-model="form.userId">
-                      <option value="">请选择</option>
+                      <option value="">Please select</option>
                       <option
                         v-for="opt in getOptionsByFieldKey('userId')"
                         :key="`user-${opt.value}`"
@@ -6097,54 +6097,54 @@ onBeforeUnmount(() => {
                       </option>
                     </select>
                   </label>
-                  <label><span>维护记录</span><textarea v-model="form.maintenanceInfo" /></label>
-                  <h4>账目</h4>
+                  <label><span>Maintenance Record</span><textarea v-model="form.maintenanceInfo" /></label>
+                  <h4>Accounts</h4>
                   <label>
-                    <span>供应商</span>
+                    <span>Supplier</span>
                     <span
                       class="quick-tip field-select-tip"
-                      data-quick-tip="诸如捐赠者、供应商之类信息最好在相关单据中录入"
+                      data-quick-tip="Information such as donor or supplier details is best entered into the relevant documents."
                     >
                       <input v-model="form.origin" type="text" />
                     </span>
                   </label>
                   <label
-                    ><span>采购价格(￥)</span><input v-model="form.purchPrice" type="text"
+                    ><span>Purchase Price (￥)</span><input v-model="form.purchPrice" type="text"
                   /></label>
                 </section>
 
                 <section class="item-block">
-                  <h4>维保</h4>
-                  <label><span>采购日期</span><DateInput v-model="form.purchaseDate" /></label>
+                  <h4>Maintenance</h4>
+                  <label><span>Purchase Date</span><DateInput v-model="form.purchaseDate" /></label>
                   <label
-                    ><span>维保月数</span><input v-model.number="form.warrantyMonths" type="number"
+                    ><span>Warranty Months</span><input v-model.number="form.warrantyMonths" type="number"
                   /></label>
-                  <label><span>维保信息</span><input v-model="form.warrInfo" type="text" /></label>
-                  <h4>硬件配置</h4>
-                  <label><span>硬盘</span><input v-model="form.hd" type="text" /></label>
-                  <label><span>内存</span><input v-model="form.ram" type="text" /></label>
-                  <label><span>CPU型号</span><input v-model="form.cpu" type="text" /></label>
-                  <label><span>Raid卡型号</span><input v-model="form.raid" type="text" /></label>
-                  <label><span>Raid配置</span><textarea v-model="form.raidConfig" /></label>
+                  <label><span>Warranty Information</span><input v-model="form.warrInfo" type="text" /></label>
+                  <h4>Hardware Configuration</h4>
+                  <label><span>Hard Drive</span><input v-model="form.hd" type="text" /></label>
+                  <label><span>Memory</span><input v-model="form.ram" type="text" /></label>
+                  <label><span>CPU Model</span><input v-model="form.cpu" type="text" /></label>
+                  <label><span>Raid Card Model</span><input v-model="form.raid" type="text" /></label>
+                  <label><span>Raid Configuration</span><textarea v-model="form.raidConfig" /></label>
                 </section>
 
                 <section class="item-block">
-                  <h4>网络</h4>
+                  <h4>Network</h4>
                   <label><span>MACs</span><input v-model="form.macs" type="text" /></label>
                   <label><span>IPv4</span><input v-model="form.ipv4" type="text" /></label>
                   <label><span>IPv6</span><input v-model="form.ipv6" type="text" /></label>
                   <label
-                    ><span>远程管理IP</span><input v-model="form.remAdmIp" type="text"
+                    ><span>Remote Management IP</span><input v-model="form.remAdmIp" type="text"
                   /></label>
-                  <label><span>管理跳线</span><input v-model="form.dnsName" type="text" /></label>
-                  <label><span>Bond名称</span><input v-model="form.panelPort" type="text" /></label>
+                  <label><span>Management Cable</span><input v-model="form.dnsName" type="text" /></label>
+                  <label><span>Bond Name</span><input v-model="form.panelPort" type="text" /></label>
                   <label
-                    ><span>业务跳线</span><input v-model="form.switchPort" type="text"
+                    ><span>Business Cable</span><input v-model="form.switchPort" type="text"
                   /></label>
                   <label>
-                    <span>交换机</span>
+                    <span>Switch</span>
                     <select v-model="form.switchId">
-                      <option value="">请选择</option>
+                      <option value="">Please Select</option>
                       <option
                         v-for="opt in getOptionsByFieldKey('switchId')"
                         :key="`switch-${opt.value}`"
@@ -6155,7 +6155,7 @@ onBeforeUnmount(() => {
                     </select>
                   </label>
                   <label>
-                    <span>网络端口</span>
+                    <span>Network Port</span>
                     <select v-model="form.ports">
                       <option value="0">0</option>
                       <option v-for="i in 60" :key="`port-${i}`" :value="String(i)">{{ i }}</option>
@@ -6166,35 +6166,35 @@ onBeforeUnmount(() => {
 
               <div class="item-bottom-grid hardware-item-bottom-grid">
                 <section class="item-bottom-block">
-                  <h4>关联概览</h4>
+                  <h4>Association Overview</h4>
                   <div class="item-overview-tabs">
                     <button
                       type="button"
                       :class="{ active: activeOverviewTab === 'items' }"
                       @click="activeOverviewTab = 'items'"
                     >
-                      硬件
+                      Hardware
                     </button>
                     <button
                       type="button"
                       :class="{ active: activeOverviewTab === 'software' }"
                       @click="activeOverviewTab = 'software'"
                     >
-                      软件
+                      Software
                     </button>
                     <button
                       type="button"
                       :class="{ active: activeOverviewTab === 'invoices' }"
                       @click="activeOverviewTab = 'invoices'"
                     >
-                      单据
+                      Invoices
                     </button>
                     <button
                       type="button"
                       :class="{ active: activeOverviewTab === 'contracts' }"
                       @click="activeOverviewTab = 'contracts'"
                     >
-                      合同
+                      Contracts
                     </button>
                   </div>
                   <div class="item-overview-list">
@@ -6213,7 +6213,7 @@ onBeforeUnmount(() => {
                         <span>{{ entry.text }}</span>
                       </button>
                     </div>
-                    <div v-if="itemOverviewRows.length === 0" class="muted-text">暂无关联记录</div>
+                    <div v-if="itemOverviewRows.length === 0" class="muted-text">No associated records found.</div>
                   </div>
                 </section>
 
@@ -6222,11 +6222,11 @@ onBeforeUnmount(() => {
                     Tags
                     <span
                       class="tag-editor-title-tip quick-tip"
-                      data-quick-tip="更改将立即保存。删除标记仅删除关联，不会删除标记本身，可在“标记”菜单中维护。"
+                      data-quick-tip="Changes will be saved immediately. Removing a tag only removes the association, not the tag itself, which can be managed in the 'Tags' menu."
                     >
                       （
                       <button class="text-link-btn" type="button" @click="toggleItemTagEditor">
-                        {{ itemTagEditorOpen ? '编辑完成' : '编辑标记' }}
+                        {{ itemTagEditorOpen ? 'Edit Complete' : 'Edit Tags' }}
                       </button>
                       ）
                     </span>
@@ -6247,7 +6247,7 @@ onBeforeUnmount(() => {
                         ×
                       </button>
                     </span>
-                    <span v-if="itemTags.length === 0" class="muted-text">暂无标记</span>
+                    <span v-if="itemTags.length === 0" class="muted-text">No tags found.</span>
                   </div>
                   <div
                     v-if="itemTagEditorOpen && selectedId && canWrite"
@@ -6257,7 +6257,7 @@ onBeforeUnmount(() => {
                       v-model="itemTagInput"
                       class="software-tag-input"
                       type="text"
-                      placeholder="输入标记后按回车或点击新增"
+                      placeholder="Enter tag and press Enter or click Add"
                       @keyup.enter.prevent="addItemTag"
                     />
                     <button
@@ -6266,17 +6266,17 @@ onBeforeUnmount(() => {
                       class="small-btn"
                       @click="addItemTag"
                     >
-                      {{ itemTagSaving ? '处理中...' : '新增' }}
+                      {{ itemTagSaving ? 'Processing...' : 'Add Tag' }}
                     </button>
                   </div>
                   <p v-else-if="itemTagEditorOpen && !selectedId" class="muted-text">
-                    请先保存硬件记录，再编辑标记。
+                    Please save the hardware record first, then edit the tags.
                   </p>
                   <p v-if="itemTagMessage" class="muted-text">{{ itemTagMessage }}</p>
                 </section>
 
                 <section class="item-bottom-block">
-                  <h4>关联文件</h4>
+                  <h4>Associated Files</h4>
                   <div class="software-managed-file-list">
                     <div
                       v-for="file in managedLinkedFileRows"
@@ -6292,7 +6292,7 @@ onBeforeUnmount(() => {
                             v-if="canRemoveManagedLinkedFile(file)"
                             type="button"
                             class="field-link-icon quick-tip quick-tip-bottom-left"
-                            :data-quick-tip="'解除关联，保存硬件后生效。\n若文件是孤立的(没有其他内容与之相关联)，则会将其删除'"
+                            :data-quick-tip="'Remove association, changes will take effect after saving the hardware record.\nIf the file is orphaned (not associated with any other content), it will be deleted.'"
                             @click="removeLinkedFileSelection(file.id)"
                           >
                             <span class="field-link-icon-image"
@@ -6314,7 +6314,7 @@ onBeforeUnmount(() => {
                           <button
                             type="button"
                             class="field-link-icon quick-tip quick-tip-bottom-left"
-                            :data-quick-tip="`在新窗口编辑文件 ${Number(file.id ?? 0) || '-'}`"
+                            :data-quick-tip="`Edit file ${Number(file.id ?? 0) || '-'}`"
                             @click="openResourceEditInNewWindow('files', Number(file.id ?? 0))"
                           >
                             <span class="field-link-icon-image"
@@ -6338,7 +6338,7 @@ onBeforeUnmount(() => {
                           <button
                             type="button"
                             class="field-link-icon quick-tip quick-tip-bottom-left"
-                            :data-quick-tip="`下载文件: ${file.fileName || '-'}`"
+                            :data-quick-tip="`Download file: ${file.fileName || '-'}`"
                             @click="downloadLinkedFileByID(file.id, file.fileName)"
                           >
                             <span class="field-link-icon-image"
@@ -6370,16 +6370,16 @@ onBeforeUnmount(() => {
                         <div
                           class="software-managed-file-card-field software-managed-file-card-title"
                         >
-                          <span>标题</span>
+                          <span>Title</span>
                           <strong>{{ file.title || '-' }}</strong>
                         </div>
                       </div>
                     </div>
                     <div v-if="managedLinkedFileRows.length === 0" class="muted-text">
-                      暂无关联文件
+                      No associated files found.
                     </div>
                   </div>
-                  <p class="muted-text">上传文件请在“上传文件”页签或“文件”菜单中维护。</p>
+                  <p class="muted-text">Please upload files in the "Upload Files" tab or the "Files" menu.</p>
                 </section>
               </div>
             </section>
@@ -6387,26 +6387,26 @@ onBeforeUnmount(() => {
             <section v-show="activeItemTab === 'itemLinks'" class="item-tab-pane">
               <div class="item-rel-panel">
                 <div class="item-rel-header">
-                  <h4>内部硬件关联</h4>
+                  <h4>Internal Hardware Associations</h4>
                   <input
                     v-model="itemLinkFilter"
                     class="item-rel-filter"
-                    placeholder="输入关键字筛选"
+                    placeholder="Enter keywords to filter"
                   />
-                  <span>共 {{ itemItemRelationRows.length }} 条</span>
+                  <span>Total: {{ itemItemRelationRows.length }} items</span>
                 </div>
                 <div class="table-wrap item-rel-table-wrap">
                   <table class="item-rel-table">
                     <thead>
                       <tr>
-                        <th>关联</th>
+                        <th>Association</th>
                         <th>
                           <button
                             type="button"
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemItems', 'id')"
                           >
-                            编号
+                            Serial Number
                             <span>{{ getNonSoftwareRelationSortIcon('itemItems', 'id') }}</span>
                           </button>
                         </th>
@@ -6416,7 +6416,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemItems', 'itemType')"
                           >
-                            类型
+                            Type
                             <span>{{
                               getNonSoftwareRelationSortIcon('itemItems', 'itemType')
                             }}</span>
@@ -6428,7 +6428,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemItems', 'manufacturer')"
                           >
-                            厂商
+                            Manufacturer
                             <span>{{
                               getNonSoftwareRelationSortIcon('itemItems', 'manufacturer')
                             }}</span>
@@ -6440,7 +6440,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemItems', 'model')"
                           >
-                            型号
+                            Model
                             <span>{{ getNonSoftwareRelationSortIcon('itemItems', 'model') }}</span>
                           </button>
                         </th>
@@ -6450,7 +6450,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemItems', 'label')"
                           >
-                            标签
+                            Label
                             <span>{{ getNonSoftwareRelationSortIcon('itemItems', 'label') }}</span>
                           </button>
                         </th>
@@ -6460,7 +6460,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemItems', 'dnsName')"
                           >
-                            管理跳线
+                            Management Cable
                             <span>{{
                               getNonSoftwareRelationSortIcon('itemItems', 'dnsName')
                             }}</span>
@@ -6472,7 +6472,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemItems', 'principal')"
                           >
-                            负责人
+                            Principal
                             <span>{{
                               getNonSoftwareRelationSortIcon('itemItems', 'principal')
                             }}</span>
@@ -6484,7 +6484,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemItems', 'sn')"
                           >
-                            设备序列号
+                            Serial Number
                             <span>{{ getNonSoftwareRelationSortIcon('itemItems', 'sn') }}</span>
                           </button>
                         </th>
@@ -6518,7 +6518,7 @@ onBeforeUnmount(() => {
                         <td>{{ row.sn || '-' }}</td>
                       </tr>
                       <tr v-if="itemItemRelationRows.length === 0">
-                        <td colspan="9" class="item-rel-empty-cell">暂无可关联硬件</td>
+                        <td colspan="9" class="item-rel-empty-cell">No associated hardware found.</td>
                       </tr>
                     </tbody>
                   </table>
@@ -6529,26 +6529,26 @@ onBeforeUnmount(() => {
             <section v-show="activeItemTab === 'invoiceLinks'" class="item-tab-pane">
               <div class="item-rel-panel">
                 <div class="item-rel-header">
-                  <h4>关联单据</h4>
+                  <h4>Associated Invoices</h4>
                   <input
                     v-model="invoiceLinkFilter"
                     class="item-rel-filter"
-                    placeholder="输入关键字筛选"
+                    placeholder="Enter keywords to filter"
                   />
-                  <span>共 {{ itemInvoiceRelationRows.length }} 条</span>
+                  <span>Total: {{ itemInvoiceRelationRows.length }} items</span>
                 </div>
                 <div class="table-wrap item-rel-table-wrap">
                   <table class="item-rel-table">
                     <thead>
                       <tr>
-                        <th>关联</th>
+                        <th>Association</th>
                         <th>
                           <button
                             type="button"
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemInvoices', 'id')"
                           >
-                            编号
+                            Serial Number
                             <span>{{ getNonSoftwareRelationSortIcon('itemInvoices', 'id') }}</span>
                           </button>
                         </th>
@@ -6558,7 +6558,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemInvoices', 'vendor')"
                           >
-                            供应商
+                            Vendor
                             <span>{{
                               getNonSoftwareRelationSortIcon('itemInvoices', 'vendor')
                             }}</span>
@@ -6570,7 +6570,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemInvoices', 'number')"
                           >
-                            订单编号
+                            Order Number
                             <span>{{
                               getNonSoftwareRelationSortIcon('itemInvoices', 'number')
                             }}</span>
@@ -6582,7 +6582,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemInvoices', 'description')"
                           >
-                            单据描述 / 文件
+                            Invoice Description / File
                             <span>{{
                               getNonSoftwareRelationSortIcon('itemInvoices', 'description')
                             }}</span>
@@ -6594,7 +6594,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemInvoices', 'date')"
                           >
-                            日期
+                            Date
                             <span>{{
                               getNonSoftwareRelationSortIcon('itemInvoices', 'date')
                             }}</span>
@@ -6647,7 +6647,7 @@ onBeforeUnmount(() => {
                                 type="button"
                                 class="location-floorplan-table-link quick-tip"
                                 :data-quick-tip="
-                                  entry.id ? `在新窗口预览文件 ${entry.id}` : entry.text
+                                  entry.id ? `Preview file ${entry.id} in new window` : entry.text
                                 "
                                 :disabled="!entry.id"
                                 @click="entry.id ? openFilePreviewInNewWindow(entry.id) : undefined"
@@ -6666,7 +6666,7 @@ onBeforeUnmount(() => {
                         <td>{{ row.date || '-' }}</td>
                       </tr>
                       <tr v-if="itemInvoiceRelationRows.length === 0">
-                        <td colspan="6" class="item-rel-empty-cell">暂无可关联单据</td>
+                        <td colspan="6" class="item-rel-empty-cell">No associated invoices found.</td>
                       </tr>
                     </tbody>
                   </table>
@@ -6675,16 +6675,16 @@ onBeforeUnmount(() => {
             </section>
 
             <section v-show="activeItemTab === 'logs'" class="item-tab-pane">
-              <p v-if="!selectedId" class="muted-text">新增记录后可查看维护日志。</p>
+              <p v-if="!selectedId" class="muted-text">You can view the maintenance log after adding a new record.</p>
               <div v-else class="table-wrap item-log-wrap">
                 <table class="item-log-table">
                   <thead>
                     <tr>
-                      <th>编号</th>
-                      <th>更新日期</th>
-                      <th>问题描述</th>
-                      <th>处理情况</th>
-                      <th>提交日期</th>
+                      <th>Serial Number</th>
+                      <th>Update Date</th>
+                      <th>Issue Description</th>
+                      <th>Handling Status</th>
+                      <th>Submission Date</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -6699,7 +6699,7 @@ onBeforeUnmount(() => {
                       <td>{{ toLocalDateText(row.entrydate) }}</td>
                     </tr>
                     <tr v-if="itemActions.length === 0">
-                      <td colspan="5">暂无维护日志</td>
+                      <td colspan="5">No maintenance logs available.</td>
                     </tr>
                   </tbody>
                 </table>
@@ -6709,26 +6709,26 @@ onBeforeUnmount(() => {
             <section v-show="activeItemTab === 'softwareLinks'" class="item-tab-pane">
               <div class="item-rel-panel">
                 <div class="item-rel-header">
-                  <h4>软件关联</h4>
+                  <h4>Software Links</h4>
                   <input
                     v-model="softwareLinkFilter"
                     class="item-rel-filter"
-                    placeholder="输入关键字筛选"
+                    placeholder="Enter keywords to filter"
                   />
-                  <span>共 {{ itemSoftwareRelationRows.length }} 条</span>
+                  <span>Total: {{ itemSoftwareRelationRows.length }} items</span>
                 </div>
                 <div class="table-wrap item-rel-table-wrap">
                   <table class="item-rel-table">
                     <thead>
                       <tr>
-                        <th>关联</th>
+                        <th>Association</th>
                         <th>
                           <button
                             type="button"
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemSoftware', 'id')"
                           >
-                            编号
+                            Serial Number
                             <span>{{ getNonSoftwareRelationSortIcon('itemSoftware', 'id') }}</span>
                           </button>
                         </th>
@@ -6738,7 +6738,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemSoftware', 'manufacturer')"
                           >
-                            厂商
+                            Manufacturer
                             <span>{{
                               getNonSoftwareRelationSortIcon('itemSoftware', 'manufacturer')
                             }}</span>
@@ -6750,7 +6750,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemSoftware', 'titleVersion')"
                           >
-                            标题/版本
+                            Title/Version
                             <span>{{
                               getNonSoftwareRelationSortIcon('itemSoftware', 'titleVersion')
                             }}</span>
@@ -6785,7 +6785,7 @@ onBeforeUnmount(() => {
                         <td>{{ `${row.title || '-'} ${row.version || ''}`.trim() }}</td>
                       </tr>
                       <tr v-if="itemSoftwareRelationRows.length === 0">
-                        <td colspan="4" class="item-rel-empty-cell">暂无可关联软件</td>
+                        <td colspan="4" class="item-rel-empty-cell">No associated software found.</td>
                       </tr>
                     </tbody>
                   </table>
@@ -6796,26 +6796,26 @@ onBeforeUnmount(() => {
             <section v-show="activeItemTab === 'contractLinks'" class="item-tab-pane">
               <div class="item-rel-panel">
                 <div class="item-rel-header">
-                  <h4>关联合同</h4>
+                  <h4>Contract Links</h4>
                   <input
                     v-model="contractLinkFilter"
                     class="item-rel-filter"
-                    placeholder="输入关键字筛选"
+                    placeholder="Enter keywords to filter"
                   />
-                  <span>共 {{ itemContractRelationRows.length }} 条</span>
+                  <span>Total: {{ itemContractRelationRows.length }} items</span>
                 </div>
                 <div class="table-wrap item-rel-table-wrap">
                   <table class="item-rel-table">
                     <thead>
                       <tr>
-                        <th>关联</th>
+                        <th>Association</th>
                         <th>
                           <button
                             type="button"
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemContracts', 'id')"
                           >
-                            编号
+                            Serial Number
                             <span>{{ getNonSoftwareRelationSortIcon('itemContracts', 'id') }}</span>
                           </button>
                         </th>
@@ -6825,7 +6825,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemContracts', 'contractor')"
                           >
-                            承包方
+                            Contractor
                             <span>{{
                               getNonSoftwareRelationSortIcon('itemContracts', 'contractor')
                             }}</span>
@@ -6837,7 +6837,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('itemContracts', 'title')"
                           >
-                            标题
+                            Title
                             <span>{{
                               getNonSoftwareRelationSortIcon('itemContracts', 'title')
                             }}</span>
@@ -6872,7 +6872,7 @@ onBeforeUnmount(() => {
                         <td>{{ row.title || '-' }}</td>
                       </tr>
                       <tr v-if="itemContractRelationRows.length === 0">
-                        <td colspan="4" class="item-rel-empty-cell">暂无可关联合同</td>
+                        <td colspan="4" class="item-rel-empty-cell">No associated contracts found.</td>
                       </tr>
                     </tbody>
                   </table>
@@ -6883,26 +6883,26 @@ onBeforeUnmount(() => {
             <section v-show="activeItemTab === 'files'" class="item-tab-pane">
               <div class="item-rel-panel linked-file-panel">
                 <div class="item-rel-header">
-                  <h4>关联文件</h4>
+                  <h4>Linked Files</h4>
                   <input
                     v-model="fileLinkFilter"
                     class="item-rel-filter"
-                    placeholder="输入关键字筛选"
+                    placeholder="Enter keywords to filter"
                   />
-                  <span>共 {{ softwareFileRelationRows.length }} 条</span>
+                  <span>Total: {{ softwareFileRelationRows.length }} items</span>
                 </div>
                 <div class="table-wrap item-rel-table-wrap">
                   <table class="item-rel-table">
                     <thead>
                       <tr>
-                        <th>关联</th>
+                        <th>Association</th>
                         <th>
                           <button
                             type="button"
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'id')"
                           >
-                            编号 <span>{{ getSoftwareRelationSortIcon('files', 'id') }}</span>
+                            Serial Number <span>{{ getSoftwareRelationSortIcon('files', 'id') }}</span>
                           </button>
                         </th>
                         <th>
@@ -6911,7 +6911,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'typeDesc')"
                           >
-                            类型 <span>{{ getSoftwareRelationSortIcon('files', 'typeDesc') }}</span>
+                            Type <span>{{ getSoftwareRelationSortIcon('files', 'typeDesc') }}</span>
                           </button>
                         </th>
                         <th>
@@ -6920,7 +6920,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'title')"
                           >
-                            标题 <span>{{ getSoftwareRelationSortIcon('files', 'title') }}</span>
+                            Title <span>{{ getSoftwareRelationSortIcon('files', 'title') }}</span>
                           </button>
                         </th>
                         <th>
@@ -6929,7 +6929,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'fileName')"
                           >
-                            文件名
+                            File Name
                             <span>{{ getSoftwareRelationSortIcon('files', 'fileName') }}</span>
                           </button>
                         </th>
@@ -6939,7 +6939,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'date')"
                           >
-                            签署日期 <span>{{ getSoftwareRelationSortIcon('files', 'date') }}</span>
+                            Signing Date <span>{{ getSoftwareRelationSortIcon('files', 'date') }}</span>
                           </button>
                         </th>
                       </tr>
@@ -6973,7 +6973,7 @@ onBeforeUnmount(() => {
                         <td>{{ row.date || '-' }}</td>
                       </tr>
                       <tr v-if="softwareFileRelationRows.length === 0">
-                        <td colspan="6" class="item-rel-empty-cell">暂无可关联文件</td>
+                        <td colspan="6" class="item-rel-empty-cell">No linked files found.</td>
                       </tr>
                     </tbody>
                   </table>
@@ -6981,16 +6981,16 @@ onBeforeUnmount(() => {
               </div>
 
               <section v-if="canWrite" class="software-upload-panel linked-upload-panel">
-                <h4>上传文件</h4>
+                <h4>Upload File</h4>
                 <div class="software-upload-grid">
                   <label>
-                    <span>标题 <sup class="req">*</sup></span>
+                    <span>Title <sup class="req">*</sup></span>
                     <input v-model="itemUploadForm.title" type="text" />
                   </label>
                   <label>
-                    <span>类型 <sup class="req">*</sup></span>
+                    <span>Type <sup class="req">*</sup></span>
                     <select v-model="itemUploadForm.typeId">
-                      <option value="">请选择</option>
+                      <option value="">Please select</option>
                       <option
                         v-for="opt in commonUploadTypeOptions"
                         :key="`item-upload-type-${opt.value}`"
@@ -7001,18 +7001,18 @@ onBeforeUnmount(() => {
                     </select>
                   </label>
                   <label>
-                    <span>签署日期 <sup class="req">*</sup></span>
+                    <span>Signing Date <sup class="req">*</sup></span>
                     <DateInput v-model="itemUploadForm.date" />
                   </label>
                   <div class="asset-field-row linked-upload-picker-row">
-                    <span>选择文件 <sup class="req">*</sup></span>
+                    <span>Select File <sup class="req">*</sup></span>
                     <div class="location-floorplan-picker linked-upload-picker">
                       <button
                         class="ghost-btn small-btn location-floorplan-picker-btn linked-upload-picker-btn"
                         type="button"
                         @click="openItemUploadPicker"
                       >
-                        选择文件
+                        Select File
                       </button>
                       <span
                         :class="
@@ -7021,7 +7021,7 @@ onBeforeUnmount(() => {
                             : 'location-floorplan-picker-name muted-text'
                         "
                       >
-                        {{ selectedItemUploadFileName || '未选择文件' }}
+                        {{ selectedItemUploadFileName || 'No file selected' }}
                       </span>
                       <input
                         ref="itemUploadInput"
@@ -7038,16 +7038,16 @@ onBeforeUnmount(() => {
                     :disabled="itemUploading"
                     @click="uploadLinkedFile('items')"
                   >
-                    {{ itemUploading ? '上传中...' : '上传文件' }}
+                    {{ itemUploading ? 'Uploading...' : 'Upload File' }}
                   </button>
-                  <span class="muted-text">上传后会自动写入“文件”菜单并关联到当前硬件。</span>
+                  <span class="muted-text">Uploaded files will be automatically added to the "Files" menu and linked to the current hardware.</span>
                 </div>
               </section>
             </section>
 
             <div class="item-form-actions">
               <button :disabled="saving" type="submit">
-                {{ saving ? '提交中...' : selectedId ? '保存修改' : '创建' }}
+                {{ saving ? 'Submitting...' : selectedId ? 'Save Changes' : 'Create' }}
               </button>
               <button class="ghost-btn" type="button" @click="drawerOpen = false">取消</button>
             </div>
@@ -7087,9 +7087,9 @@ onBeforeUnmount(() => {
                 <section v-show="activeSoftwareTab === 'softwareData'" class="item-tab-pane">
                   <div class="asset-grid-2 software-data-grid">
                     <section class="asset-block software-attr-block">
-                      <h4>软件属性</h4>
+                      <h4>Software Properties</h4>
                       <label
-                        ><span>编号</span><input :value="selectedId ?? '-'" type="text" disabled
+                        ><span>Serial Number</span><input :value="selectedId ?? '-'" type="text" disabled
                       /></label>
                       <div class="asset-field-row">
                         <span class="field-label-with-icon">
@@ -7097,21 +7097,21 @@ onBeforeUnmount(() => {
                             <button
                               type="button"
                               class="field-link-icon quick-tip quick-tip-top-right"
-                              data-quick-tip="在新窗口编辑厂商（代理）"
+                              data-quick-tip="Edit Manufacturer (Agent) in a New Window"
                               :disabled="!Number(form.manufacturerId ?? 0)"
                               @click="openSoftwareManufacturerByField"
                             >
                               ✎
                             </button>
                           </span>
-                          <span>厂商 <sup class="req">*</sup></span>
+                          <span>Manufacturer <sup class="req">*</sup></span>
                         </span>
                         <span
                           class="quick-tip field-select-tip"
-                          data-quick-tip="可在“代理”菜单中新增更多厂商"
+                          data-quick-tip="You can add more vendors in the Agent menu."
                         >
                           <select v-model="form.manufacturerId">
-                            <option value="">请选择</option>
+                            <option value="">Please select</option>
                             <option
                               v-for="opt in getOptionsByFieldKey('manufacturerId')"
                               :key="`soft-man-${opt.value}`"
@@ -7123,19 +7123,19 @@ onBeforeUnmount(() => {
                         </span>
                       </div>
                       <label
-                        ><span>标题 <sup class="req">*</sup></span
+                        ><span>Title <sup class="req">*</sup></span
                         ><input v-model="form.title" type="text"
                       /></label>
                       <label
-                        ><span>版本 <sup class="req">*</sup></span
+                        ><span>Version <sup class="req">*</sup></span
                         ><input v-model="form.version" type="text"
                       /></label>
                       <label
-                        ><span>采购日期 <sup class="req">*</sup></span
+                        ><span>Purchase Date <sup class="req">*</sup></span
                         ><DateInput v-model="form.purchaseDate"
                       /></label>
                       <label>
-                        <span>授权数量</span>
+                        <span>License Quantity</span>
                         <select v-model="form.licenseQty">
                           <option
                             v-for="qty in softwareLicenseQtyOptions"
@@ -7147,14 +7147,14 @@ onBeforeUnmount(() => {
                         </select>
                       </label>
                       <div class="asset-field-row">
-                        <span>授权类型</span>
+                        <span>License Type</span>
                         <div class="license-type-group">
                           <label
                             ><input
                               v-model="form.licenseType"
                               type="radio"
                               value="0"
-                            />按设备</label
+                            />Per Device</label
                           >
                           <label
                             ><input v-model="form.licenseType" type="radio" value="1" />按
@@ -7165,37 +7165,37 @@ onBeforeUnmount(() => {
                               v-model="form.licenseType"
                               type="radio"
                               value="2"
-                            />按核心</label
+                            />Per Core</label
                           >
                         </div>
                       </div>
-                      <label><span>许可信息</span><textarea v-model="form.slicenseInfo" /></label>
-                      <label><span>其它信息</span><textarea v-model="form.info" /></label>
+                      <label><span>License Information</span><textarea v-model="form.slicenseInfo" /></label>
+                      <label><span>Other Information</span><textarea v-model="form.info" /></label>
                     </section>
 
                     <section class="asset-block software-side-block">
-                      <h4>关联概览</h4>
+                      <h4>Associated Overview</h4>
                       <div class="item-overview-tabs">
                         <button
                           type="button"
                           :class="{ active: activeSoftwareOverviewTab === 'items' }"
                           @click="activeSoftwareOverviewTab = 'items'"
                         >
-                          硬件
+                          Hardware
                         </button>
                         <button
                           type="button"
                           :class="{ active: activeSoftwareOverviewTab === 'invoices' }"
                           @click="activeSoftwareOverviewTab = 'invoices'"
                         >
-                          单据
+                          Invoices
                         </button>
                         <button
                           type="button"
                           :class="{ active: activeSoftwareOverviewTab === 'contracts' }"
                           @click="activeSoftwareOverviewTab = 'contracts'"
                         >
-                          合同
+                          Contracts
                         </button>
                       </div>
                       <div class="item-overview-list">
@@ -7215,7 +7215,7 @@ onBeforeUnmount(() => {
                           </button>
                         </div>
                         <div v-if="softwareOverviewRows.length === 0" class="muted-text">
-                          暂无关联记录
+                          No associated records
                         </div>
                       </div>
 
@@ -7223,7 +7223,7 @@ onBeforeUnmount(() => {
                         Tags
                         <span
                           class="tag-editor-title-tip quick-tip"
-                          data-quick-tip="更改将立即保存。删除标记仅删除关联，不会删除标记本身，可在“标记”菜单中维护。"
+                          data-quick-tip="Changes will be saved immediately. Removing a tag only removes the association, it will not delete the tag itself, which can be managed in the Tags menu."
                         >
                           （
                           <button
@@ -7231,7 +7231,7 @@ onBeforeUnmount(() => {
                             type="button"
                             @click="toggleSoftwareTagEditor"
                           >
-                            {{ softwareTagEditorOpen ? '编辑完成' : '编辑标记' }}
+                            {{ softwareTagEditorOpen ? 'Edit Complete' : 'Edit Tags' }}
                           </button>
                           ）
                         </span>
@@ -7262,7 +7262,7 @@ onBeforeUnmount(() => {
                           v-model="softwareTagInput"
                           class="software-tag-input"
                           type="text"
-                          placeholder="输入标记后按回车或点击新增"
+                          placeholder="Enter tag and press Enter or click Add"
                           @keyup.enter.prevent="addSoftwareTag"
                         />
                         <button
@@ -7271,15 +7271,15 @@ onBeforeUnmount(() => {
                           class="small-btn"
                           @click="addSoftwareTag"
                         >
-                          {{ softwareTagSaving ? '处理中...' : '新增' }}
+                          {{ softwareTagSaving ? 'Processing...' : 'Add Tag' }}
                         </button>
                       </div>
                       <p v-else-if="softwareTagEditorOpen && !selectedId" class="muted-text">
-                        请先保存软件记录，再编辑标记。
+                        Please save the software record first, then edit the tags.
                       </p>
                       <p v-if="softwareTagMessage" class="muted-text">{{ softwareTagMessage }}</p>
 
-                      <h4>管理文件</h4>
+                      <h4>Manage Files</h4>
                       <div class="software-managed-file-list">
                         <div
                           v-for="file in managedLinkedFileRows"
@@ -7295,7 +7295,7 @@ onBeforeUnmount(() => {
                                 v-if="canRemoveManagedLinkedFile(file)"
                                 type="button"
                                 class="field-link-icon quick-tip quick-tip-bottom-left"
-                                :data-quick-tip="'解除关联，保存软件后生效。\n若文件是孤立的(没有其他内容与之相关联)，则会将其删除'"
+                                :data-quick-tip="'Remove association, changes will take effect after saving the software record.\nIf the file is orphaned (not associated with any other content), it will be deleted'"
                                 @click="removeLinkedFileSelection(file.id)"
                               >
                                 <span class="field-link-icon-image"
@@ -7317,7 +7317,7 @@ onBeforeUnmount(() => {
                               <button
                                 type="button"
                                 class="field-link-icon quick-tip quick-tip-bottom-left"
-                                :data-quick-tip="`在新窗口编辑文件 ${Number(file.id ?? 0) || '-'}`"
+                                :data-quick-tip="`Edit file ${Number(file.id ?? 0) || '-'}`"
                                 @click="openResourceEditInNewWindow('files', Number(file.id ?? 0))"
                               >
                                 <span class="field-link-icon-image"
@@ -7341,7 +7341,7 @@ onBeforeUnmount(() => {
                               <button
                                 type="button"
                                 class="field-link-icon quick-tip quick-tip-bottom-left"
-                                :data-quick-tip="`下载文件: ${file.fileName || '-'}`"
+                                :data-quick-tip="`Download file: ${file.fileName || '-'}`"
                                 @click="downloadLinkedFileByID(file.id, file.fileName)"
                               >
                                 <span class="field-link-icon-image"
@@ -7379,7 +7379,7 @@ onBeforeUnmount(() => {
                           </div>
                         </div>
                         <div v-if="managedLinkedFileRows.length === 0" class="muted-text">
-                          暂无关联文件
+                          No associated files
                         </div>
                       </div>
                     </section>
@@ -7389,26 +7389,26 @@ onBeforeUnmount(() => {
                 <section v-show="activeSoftwareTab === 'itemLinks'" class="item-tab-pane">
                   <div class="item-rel-panel">
                     <div class="item-rel-header">
-                      <h4>硬件关联</h4>
+                      <h4>Hardware Associations</h4>
                       <input
                         v-model="itemLinkFilter"
                         class="item-rel-filter"
-                        placeholder="输入关键字筛选"
+                        placeholder="Enter keywords to filter"
                       />
-                      <span>共 {{ softwareItemRelationRows.length }} 条</span>
+                      <span>Total {{ softwareItemRelationRows.length }} items</span>
                     </div>
                     <div class="table-wrap item-rel-table-wrap">
                       <table class="item-rel-table software-item-rel-table">
                         <thead>
                           <tr>
-                            <th class="software-item-col-contact">关联</th>
+                            <th class="software-item-col-contact">Association</th>
                             <th class="software-item-col-num">
                               <button
                                 type="button"
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('items', 'id')"
                               >
-                                编号 <span>{{ getSoftwareRelationSortIcon('items', 'id') }}</span>
+                                Number <span>{{ getSoftwareRelationSortIcon('items', 'id') }}</span>
                               </button>
                             </th>
                             <th class="software-item-col-type">
@@ -7417,7 +7417,7 @@ onBeforeUnmount(() => {
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('items', 'itemType')"
                               >
-                                类型
+                                Type
                                 <span>{{ getSoftwareRelationSortIcon('items', 'itemType') }}</span>
                               </button>
                             </th>
@@ -7427,7 +7427,7 @@ onBeforeUnmount(() => {
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('items', 'manufacturer')"
                               >
-                                厂商
+                                Manufacturer
                                 <span>{{
                                   getSoftwareRelationSortIcon('items', 'manufacturer')
                                 }}</span>
@@ -7439,7 +7439,7 @@ onBeforeUnmount(() => {
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('items', 'model')"
                               >
-                                型号
+                                Model
                                 <span>{{ getSoftwareRelationSortIcon('items', 'model') }}</span>
                               </button>
                             </th>
@@ -7449,7 +7449,7 @@ onBeforeUnmount(() => {
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('items', 'label')"
                               >
-                                标签
+                                Label
                                 <span>{{ getSoftwareRelationSortIcon('items', 'label') }}</span>
                               </button>
                             </th>
@@ -7459,7 +7459,7 @@ onBeforeUnmount(() => {
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('items', 'dnsName')"
                               >
-                                管理跳线
+                                Management Link
                                 <span>{{ getSoftwareRelationSortIcon('items', 'dnsName') }}</span>
                               </button>
                             </th>
@@ -7469,7 +7469,7 @@ onBeforeUnmount(() => {
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('items', 'principal')"
                               >
-                                负责人
+                                Principal
                                 <span>{{ getSoftwareRelationSortIcon('items', 'principal') }}</span>
                               </button>
                             </th>
@@ -7479,7 +7479,7 @@ onBeforeUnmount(() => {
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('items', 'sn')"
                               >
-                                设备序列号
+                                Device Serial Number
                                 <span>{{ getSoftwareRelationSortIcon('items', 'sn') }}</span>
                               </button>
                             </th>
@@ -7522,38 +7522,38 @@ onBeforeUnmount(() => {
                             <td class="software-item-col-sn">{{ row.sn || '-' }}</td>
                           </tr>
                           <tr v-if="softwareItemRelationRows.length === 0">
-                            <td colspan="9" class="item-rel-empty-cell">暂无可关联硬件</td>
+                            <td colspan="9" class="item-rel-empty-cell">No associated hardware available</td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
-                    <p class="muted-text">仅显示“硬件类型”中支持软件的硬件条目。</p>
+                    <p class="muted-text">Only displays hardware entries that support software in the "Hardware Type" category.</p>
                   </div>
                 </section>
 
                 <section v-show="activeSoftwareTab === 'invoiceLinks'" class="item-tab-pane">
                   <div class="item-rel-panel">
                     <div class="item-rel-header">
-                      <h4>单据关联</h4>
+                      <h4>Document Linking</h4>
                       <input
                         v-model="invoiceLinkFilter"
                         class="item-rel-filter"
-                        placeholder="输入关键字筛选"
+                        placeholder="Enter keywords to filter"
                       />
-                      <span>共 {{ softwareInvoiceRelationRows.length }} 条</span>
+                      <span>Total {{ softwareInvoiceRelationRows.length }} items</span>
                     </div>
                     <div class="table-wrap item-rel-table-wrap">
                       <table class="item-rel-table">
                         <thead>
                           <tr>
-                            <th>关联</th>
+                            <th>Association</th>
                             <th>
                               <button
                                 type="button"
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('invoices', 'id')"
                               >
-                                编号
+                                Number
                                 <span>{{ getSoftwareRelationSortIcon('invoices', 'id') }}</span>
                               </button>
                             </th>
@@ -7563,7 +7563,7 @@ onBeforeUnmount(() => {
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('invoices', 'vendor')"
                               >
-                                供应商
+                                Manufacturer
                                 <span>{{ getSoftwareRelationSortIcon('invoices', 'vendor') }}</span>
                               </button>
                             </th>
@@ -7573,7 +7573,7 @@ onBeforeUnmount(() => {
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('invoices', 'number')"
                               >
-                                订单编号
+                                Order Number
                                 <span>{{ getSoftwareRelationSortIcon('invoices', 'number') }}</span>
                               </button>
                             </th>
@@ -7583,7 +7583,7 @@ onBeforeUnmount(() => {
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('invoices', 'description')"
                               >
-                                描述
+                                Description
                                 <span>{{
                                   getSoftwareRelationSortIcon('invoices', 'description')
                                 }}</span>
@@ -7595,7 +7595,7 @@ onBeforeUnmount(() => {
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('invoices', 'date')"
                               >
-                                日期
+                                Date
                                 <span>{{ getSoftwareRelationSortIcon('invoices', 'date') }}</span>
                               </button>
                             </th>
@@ -7630,7 +7630,7 @@ onBeforeUnmount(() => {
                             <td>{{ row.date || '-' }}</td>
                           </tr>
                           <tr v-if="softwareInvoiceRelationRows.length === 0">
-                            <td colspan="6" class="item-rel-empty-cell">暂无可关联单据</td>
+                            <td colspan="6" class="item-rel-empty-cell">No associated documents available</td>
                           </tr>
                         </tbody>
                       </table>
@@ -7641,26 +7641,26 @@ onBeforeUnmount(() => {
                 <section v-show="activeSoftwareTab === 'contractLinks'" class="item-tab-pane">
                   <div class="item-rel-panel">
                     <div class="item-rel-header">
-                      <h4>合同关联</h4>
+                      <h4>Contract Linking</h4>
                       <input
                         v-model="contractLinkFilter"
                         class="item-rel-filter"
-                        placeholder="输入关键字筛选"
+                        placeholder="Enter keywords to filter"
                       />
-                      <span>共 {{ softwareContractRelationRows.length }} 条</span>
+                      <span>Total {{ softwareContractRelationRows.length }} items</span>
                     </div>
                     <div class="table-wrap item-rel-table-wrap">
                       <table class="item-rel-table">
                         <thead>
                           <tr>
-                            <th>关联</th>
+                            <th>Association</th>
                             <th>
                               <button
                                 type="button"
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('contracts', 'id')"
                               >
-                                编号
+                                Number
                                 <span>{{ getSoftwareRelationSortIcon('contracts', 'id') }}</span>
                               </button>
                             </th>
@@ -7670,7 +7670,7 @@ onBeforeUnmount(() => {
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('contracts', 'contractor')"
                               >
-                                承包方
+                                Contractor
                                 <span>{{
                                   getSoftwareRelationSortIcon('contracts', 'contractor')
                                 }}</span>
@@ -7682,7 +7682,7 @@ onBeforeUnmount(() => {
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('contracts', 'title')"
                               >
-                                标题
+                                Title
                                 <span>{{ getSoftwareRelationSortIcon('contracts', 'title') }}</span>
                               </button>
                             </th>
@@ -7715,7 +7715,7 @@ onBeforeUnmount(() => {
                             <td>{{ row.title || '-' }}</td>
                           </tr>
                           <tr v-if="softwareContractRelationRows.length === 0">
-                            <td colspan="4" class="item-rel-empty-cell">暂无可关联合同</td>
+                            <td colspan="4" class="item-rel-empty-cell">No associated contracts available</td>
                           </tr>
                         </tbody>
                       </table>
@@ -7726,26 +7726,26 @@ onBeforeUnmount(() => {
                 <section v-show="activeSoftwareTab === 'files'" class="item-tab-pane">
                   <div class="item-rel-panel">
                     <div class="item-rel-header">
-                      <h4>文件</h4>
+                      <h4>Files</h4>
                       <input
                         v-model="fileLinkFilter"
                         class="item-rel-filter"
-                        placeholder="输入关键字筛选"
+                        placeholder="Enter keywords to filter"
                       />
-                      <span>共 {{ softwareFileRelationRows.length }} 条</span>
+                      <span>Total {{ softwareFileRelationRows.length }} items</span>
                     </div>
                     <div class="table-wrap item-rel-table-wrap">
                       <table class="item-rel-table">
                         <thead>
                           <tr>
-                            <th>关联</th>
+                            <th>Association</th>
                             <th>
                               <button
                                 type="button"
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('files', 'id')"
                               >
-                                编号 <span>{{ getSoftwareRelationSortIcon('files', 'id') }}</span>
+                                Number <span>{{ getSoftwareRelationSortIcon('files', 'id') }}</span>
                               </button>
                             </th>
                             <th>
@@ -7754,7 +7754,7 @@ onBeforeUnmount(() => {
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('files', 'typeDesc')"
                               >
-                                类型
+                                Type
                                 <span>{{ getSoftwareRelationSortIcon('files', 'typeDesc') }}</span>
                               </button>
                             </th>
@@ -7764,7 +7764,7 @@ onBeforeUnmount(() => {
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('files', 'title')"
                               >
-                                标题
+                                Title
                                 <span>{{ getSoftwareRelationSortIcon('files', 'title') }}</span>
                               </button>
                             </th>
@@ -7774,7 +7774,7 @@ onBeforeUnmount(() => {
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('files', 'fileName')"
                               >
-                                文件名
+                                File Name
                                 <span>{{ getSoftwareRelationSortIcon('files', 'fileName') }}</span>
                               </button>
                             </th>
@@ -7784,7 +7784,7 @@ onBeforeUnmount(() => {
                                 class="relation-sort-btn"
                                 @click="toggleSoftwareRelationSort('files', 'date')"
                               >
-                                签署日期
+                                Date of signing
                                 <span>{{ getSoftwareRelationSortIcon('files', 'date') }}</span>
                               </button>
                             </th>
@@ -7819,23 +7819,23 @@ onBeforeUnmount(() => {
                             <td>{{ row.date || '-' }}</td>
                           </tr>
                           <tr v-if="softwareFileRelationRows.length === 0">
-                            <td colspan="6" class="item-rel-empty-cell">暂无可关联文件</td>
+                            <td colspan="6" class="item-rel-empty-cell">No associated files available</td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
 
                     <section v-if="canWrite" class="software-upload-panel linked-upload-panel">
-                      <h4>上传文件</h4>
+                      <h4>Upload Files</h4>
                       <div class="software-upload-grid">
                         <label>
-                          <span>标题 <sup class="req">*</sup></span>
+                          <span>Title <sup class="req">*</sup></span>
                           <input v-model="softwareUploadForm.title" type="text" />
                         </label>
                         <label>
-                          <span>文件类型 <sup class="req">*</sup></span>
+                          <span>File Type <sup class="req">*</sup></span>
                           <select v-model="softwareUploadForm.typeId">
-                            <option value="">请选择</option>
+                            <option value="">Please select</option>
                             <option
                               v-for="opt in softwareUploadTypeOptions"
                               :key="`soft-upload-type-${opt.value}`"
@@ -7846,18 +7846,18 @@ onBeforeUnmount(() => {
                           </select>
                         </label>
                         <label>
-                          <span>签署日期 <sup class="req">*</sup></span>
+                          <span>Date of signing <sup class="req">*</sup></span>
                           <DateInput v-model="softwareUploadForm.date" />
                         </label>
                         <div class="asset-field-row linked-upload-picker-row">
-                          <span>选择文件 <sup class="req">*</sup></span>
+                          <span>Choose File <sup class="req">*</sup></span>
                           <div class="location-floorplan-picker linked-upload-picker">
                             <button
                               class="ghost-btn small-btn location-floorplan-picker-btn linked-upload-picker-btn"
                               type="button"
                               @click="openSoftwareUploadPicker"
                             >
-                              选择文件
+                              Select file
                             </button>
                             <span
                               :class="
@@ -7866,7 +7866,7 @@ onBeforeUnmount(() => {
                                   : 'location-floorplan-picker-name muted-text'
                               "
                             >
-                              {{ selectedSoftwareUploadFileName || '未选择文件' }}
+                              {{ selectedSoftwareUploadFileName || 'No file selected' }}
                             </span>
                             <input
                               ref="softwareUploadInput"
@@ -7883,10 +7883,10 @@ onBeforeUnmount(() => {
                           :disabled="softwareUploading"
                           @click="uploadSoftwareFile"
                         >
-                          {{ softwareUploading ? '上传中...' : '上传文件' }}
+                          {{ softwareUploading ? 'Uploading...' : 'Upload File' }}
                         </button>
                         <span class="muted-text"
-                          >上传成功后会自动写入“文件”菜单并关联到当前软件。</span
+                          >Successfully uploaded files will be automatically added to the "Files" menu and linked to the current software.</span
                         >
                       </div>
                     </section>
@@ -7897,9 +7897,9 @@ onBeforeUnmount(() => {
 
             <div class="item-form-actions software-item-form-actions">
               <button :disabled="saving" type="submit">
-                {{ saving ? '提交中...' : selectedId ? '保存修改' : '创建' }}
+                {{ saving ? 'Submitting...' : selectedId ? 'Save Changes' : 'Create' }}
               </button>
-              <button class="ghost-btn" type="button" @click="drawerOpen = false">取消</button>
+              <button class="ghost-btn" type="button" @click="drawerOpen = false">Cancel</button>
             </div>
           </template>
 
@@ -7935,25 +7935,25 @@ onBeforeUnmount(() => {
             <section v-show="activeInvoiceTab === 'invoiceData'" class="item-tab-pane">
               <div class="asset-grid-2 software-data-grid">
                 <section class="asset-block software-attr-block">
-                  <h4>单据属性</h4>
+                  <h4>Document Properties</h4>
                   <label
-                    ><span>编号</span><input :value="selectedId ?? '-'" type="text" disabled
+                    ><span>Number</span><input :value="selectedId ?? '-'" type="text" disabled
                   /></label>
                   <div class="asset-field-row">
                     <span class="field-label-with-icon">
                       <button
                         class="field-link-icon quick-tip quick-tip-top-right"
                         type="button"
-                        data-quick-tip="在新窗口编辑供应商（代理）"
+                        data-quick-tip="In a new window, edit the supplier (agent)"
                         :disabled="Number(form.vendorId ?? 0) <= 0"
                         @click="openAgentByField('vendorId')"
                       >
                         ↗
                       </button>
-                      供应商 <sup class="req">*</sup>
+                      Supplier <sup class="req">*</sup>
                     </span>
                     <select v-model="form.vendorId">
-                      <option value="">请选择</option>
+                      <option value="">Please select</option>
                       <option
                         v-for="opt in getOptionsByFieldKey('vendorId')"
                         :key="`inv-vendor-${opt.value}`"
@@ -7968,16 +7968,16 @@ onBeforeUnmount(() => {
                       <button
                         class="field-link-icon quick-tip quick-tip-top-right"
                         type="button"
-                        data-quick-tip="在新窗口编辑采购方（代理）"
+                        data-quick-tip="In a new window, edit the buyer (agent)"
                         :disabled="Number(form.buyerId ?? 0) <= 0"
                         @click="openAgentByField('buyerId')"
                       >
                         ↗
                       </button>
-                      采购方 <sup class="req">*</sup>
+                      Buyer <sup class="req">*</sup>
                     </span>
                     <select v-model="form.buyerId">
-                      <option value="">请选择</option>
+                      <option value="">Please select</option>
                       <option
                         v-for="opt in getOptionsByFieldKey('buyerId')"
                         :key="`inv-buyer-${opt.value}`"
@@ -7988,39 +7988,39 @@ onBeforeUnmount(() => {
                     </select>
                   </div>
                   <label
-                    ><span>订单编号 <sup class="req">*</sup></span
+                    ><span>Order Number <sup class="req">*</sup></span
                     ><input v-model="form.number" type="text"
                   /></label>
                   <label
-                    ><span>日期 <sup class="req">*</sup></span
+                    ><span>Date <sup class="req">*</sup></span
                     ><DateInput v-model="form.date"
                   /></label>
-                  <label><span>描述</span><textarea v-model="form.description" /></label>
+                  <label><span>Description</span><textarea v-model="form.description" /></label>
                 </section>
 
                 <section class="asset-block software-side-block">
-                  <h4>关联概览</h4>
+                  <h4>Association Overview</h4>
                   <div class="item-overview-tabs">
                     <button
                       type="button"
                       :class="{ active: activeInvoiceOverviewTab === 'items' }"
                       @click="activeInvoiceOverviewTab = 'items'"
                     >
-                      硬件
+                      Hardware
                     </button>
                     <button
                       type="button"
                       :class="{ active: activeInvoiceOverviewTab === 'software' }"
                       @click="activeInvoiceOverviewTab = 'software'"
                     >
-                      软件
+                      Software
                     </button>
                     <button
                       type="button"
                       :class="{ active: activeInvoiceOverviewTab === 'contracts' }"
                       @click="activeInvoiceOverviewTab = 'contracts'"
                     >
-                      合同
+                      Contracts
                     </button>
                   </div>
                   <div class="item-overview-list">
@@ -8040,11 +8040,11 @@ onBeforeUnmount(() => {
                       </button>
                     </div>
                     <div v-if="invoiceOverviewRows.length === 0" class="muted-text">
-                      暂无关联记录
+                      No associated records
                     </div>
                   </div>
 
-                  <h4>管理文件</h4>
+                  <h4>Managed Files</h4>
                   <div class="software-managed-file-list">
                     <div
                       v-for="file in managedLinkedFileRows"
@@ -8060,7 +8060,7 @@ onBeforeUnmount(() => {
                             v-if="canRemoveManagedLinkedFile(file)"
                             type="button"
                             class="field-link-icon quick-tip quick-tip-bottom-left"
-                            :data-quick-tip="'解除关联，保存单据后生效。\n若文件是孤立的(没有其他内容与之相关联)，则会将其删除'"
+                            :data-quick-tip="'Remove association, takes effect after saving the document.\nIf the file is orphaned (not associated with any other content), it will be deleted'"
                             @click="removeLinkedFileSelection(file.id)"
                           >
                             <span class="field-link-icon-image"
@@ -8082,7 +8082,7 @@ onBeforeUnmount(() => {
                           <button
                             type="button"
                             class="field-link-icon quick-tip quick-tip-bottom-left"
-                            :data-quick-tip="`在新窗口编辑文件 ${Number(file.id ?? 0) || '-'}`"
+                            :data-quick-tip="`Edit file in new window: ${Number(file.id ?? 0) || '-'}`"
                             @click="openResourceEditInNewWindow('files', Number(file.id ?? 0))"
                           >
                             <span class="field-link-icon-image"
@@ -8106,7 +8106,7 @@ onBeforeUnmount(() => {
                           <button
                             type="button"
                             class="field-link-icon quick-tip quick-tip-bottom-left"
-                            :data-quick-tip="`下载文件: ${file.fileName || '-'}`"
+                            :data-quick-tip="`Download file: ${file.fileName || '-'}`"
                             @click="downloadLinkedFileByID(file.id, file.fileName)"
                           >
                             <span class="field-link-icon-image"
@@ -8128,23 +8128,23 @@ onBeforeUnmount(() => {
                       </div>
                       <div class="software-managed-file-card-meta">
                         <div class="software-managed-file-card-field">
-                          <span>类型</span>
+                          <span>Type</span>
                           <strong>{{ file.typeDesc || '-' }}</strong>
                         </div>
                         <div class="software-managed-file-card-field">
-                          <span>日期</span>
+                          <span>Date</span>
                           <strong>{{ file.date || '-' }}</strong>
                         </div>
                         <div
                           class="software-managed-file-card-field software-managed-file-card-title"
                         >
-                          <span>标题</span>
+                          <span>Title</span>
                           <strong>{{ file.title || '-' }}</strong>
                         </div>
                       </div>
                     </div>
                     <div v-if="managedLinkedFileRows.length === 0" class="muted-text">
-                      暂无关联文件
+                      No associated files
                     </div>
                   </div>
                 </section>
@@ -8154,26 +8154,26 @@ onBeforeUnmount(() => {
             <section v-show="activeInvoiceTab === 'itemLinks'" class="item-tab-pane">
               <div class="item-rel-panel">
                 <div class="item-rel-header">
-                  <h4>硬件关联</h4>
+                  <h4>Hardware Association</h4>
                   <input
                     v-model="itemLinkFilter"
                     class="item-rel-filter"
-                    placeholder="输入关键字筛选"
+                    placeholder="Enter keywords to filter"
                   />
-                  <span>共 {{ invoiceItemRelationRows.length }} 条</span>
+                  <span>Total {{ invoiceItemRelationRows.length }} records</span>
                 </div>
                 <div class="table-wrap item-rel-table-wrap">
                   <table class="item-rel-table">
                     <thead>
                       <tr>
-                        <th>关联</th>
+                        <th>Association</th>
                         <th>
                           <button
                             type="button"
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('invoiceItems', 'id')"
                           >
-                            编号
+                            ID
                             <span>{{ getNonSoftwareRelationSortIcon('invoiceItems', 'id') }}</span>
                           </button>
                         </th>
@@ -8183,7 +8183,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('invoiceItems', 'itemType')"
                           >
-                            类型
+                            Type
                             <span>{{
                               getNonSoftwareRelationSortIcon('invoiceItems', 'itemType')
                             }}</span>
@@ -8195,7 +8195,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('invoiceItems', 'manufacturer')"
                           >
-                            厂商
+                            Manufacturer
                             <span>{{
                               getNonSoftwareRelationSortIcon('invoiceItems', 'manufacturer')
                             }}</span>
@@ -8207,7 +8207,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('invoiceItems', 'model')"
                           >
-                            型号
+                            Model
                             <span>{{
                               getNonSoftwareRelationSortIcon('invoiceItems', 'model')
                             }}</span>
@@ -8219,7 +8219,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('invoiceItems', 'label')"
                           >
-                            标签
+                            Label
                             <span>{{
                               getNonSoftwareRelationSortIcon('invoiceItems', 'label')
                             }}</span>
@@ -8231,7 +8231,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('invoiceItems', 'dnsName')"
                           >
-                            管理跳线
+                            Management Cable
                             <span>{{
                               getNonSoftwareRelationSortIcon('invoiceItems', 'dnsName')
                             }}</span>
@@ -8243,7 +8243,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('invoiceItems', 'principal')"
                           >
-                            负责人
+                            Principal
                             <span>{{
                               getNonSoftwareRelationSortIcon('invoiceItems', 'principal')
                             }}</span>
@@ -8255,7 +8255,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('invoiceItems', 'sn')"
                           >
-                            设备序列号
+                            Device Serial Number
                             <span>{{ getNonSoftwareRelationSortIcon('invoiceItems', 'sn') }}</span>
                           </button>
                         </th>
@@ -8289,7 +8289,7 @@ onBeforeUnmount(() => {
                         <td>{{ row.sn || '-' }}</td>
                       </tr>
                       <tr v-if="invoiceItemRelationRows.length === 0">
-                        <td colspan="9" class="item-rel-empty-cell">暂无可关联硬件</td>
+                        <td colspan="9" class="item-rel-empty-cell">No associated hardware available</td>
                       </tr>
                     </tbody>
                   </table>
@@ -8304,22 +8304,22 @@ onBeforeUnmount(() => {
                   <input
                     v-model="softwareLinkFilter"
                     class="item-rel-filter"
-                    placeholder="输入关键字筛选"
+                    placeholder="Enter keywords to filter"
                   />
-                  <span>共 {{ invoiceSoftwareRelationRows.length }} 条</span>
+                  <span>Total {{ invoiceSoftwareRelationRows.length }} records</span>
                 </div>
                 <div class="table-wrap item-rel-table-wrap">
                   <table class="item-rel-table">
                     <thead>
                       <tr>
-                        <th>关联</th>
+                        <th>Association</th>
                         <th>
                           <button
                             type="button"
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('invoiceSoftware', 'id')"
                           >
-                            编号
+                            ID
                             <span>{{
                               getNonSoftwareRelationSortIcon('invoiceSoftware', 'id')
                             }}</span>
@@ -8333,7 +8333,7 @@ onBeforeUnmount(() => {
                               toggleNonSoftwareRelationSort('invoiceSoftware', 'manufacturer')
                             "
                           >
-                            厂商
+                            Manufacturer
                             <span>{{
                               getNonSoftwareRelationSortIcon('invoiceSoftware', 'manufacturer')
                             }}</span>
@@ -8347,7 +8347,7 @@ onBeforeUnmount(() => {
                               toggleNonSoftwareRelationSort('invoiceSoftware', 'titleVersion')
                             "
                           >
-                            标题/版本
+                            Title/Version
                             <span>{{
                               getNonSoftwareRelationSortIcon('invoiceSoftware', 'titleVersion')
                             }}</span>
@@ -8382,7 +8382,7 @@ onBeforeUnmount(() => {
                         <td>{{ `${row.title || '-'} ${row.version || ''}`.trim() }}</td>
                       </tr>
                       <tr v-if="invoiceSoftwareRelationRows.length === 0">
-                        <td colspan="4" class="item-rel-empty-cell">暂无可关联软件</td>
+                        <td colspan="4" class="item-rel-empty-cell">No associated software available</td>
                       </tr>
                     </tbody>
                   </table>
@@ -8393,26 +8393,26 @@ onBeforeUnmount(() => {
             <section v-show="activeInvoiceTab === 'contractLinks'" class="item-tab-pane">
               <div class="item-rel-panel">
                 <div class="item-rel-header">
-                  <h4>合同关联</h4>
+                  <h4>Contract Association</h4>
                   <input
                     v-model="contractLinkFilter"
                     class="item-rel-filter"
-                    placeholder="输入关键字筛选"
+                    placeholder="Enter keywords to filter"
                   />
-                  <span>共 {{ invoiceContractRelationRows.length }} 条</span>
+                  <span>Total {{ invoiceContractRelationRows.length }} records</span>
                 </div>
                 <div class="table-wrap item-rel-table-wrap">
                   <table class="item-rel-table">
                     <thead>
                       <tr>
-                        <th>关联</th>
+                        <th>Association</th>
                         <th>
                           <button
                             type="button"
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('invoiceContracts', 'id')"
                           >
-                            编号
+                            ID
                             <span>{{
                               getNonSoftwareRelationSortIcon('invoiceContracts', 'id')
                             }}</span>
@@ -8424,7 +8424,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('invoiceContracts', 'contractor')"
                           >
-                            承包方
+                            Contractor
                             <span>{{
                               getNonSoftwareRelationSortIcon('invoiceContracts', 'contractor')
                             }}</span>
@@ -8436,7 +8436,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('invoiceContracts', 'title')"
                           >
-                            标题
+                            Title
                             <span>{{
                               getNonSoftwareRelationSortIcon('invoiceContracts', 'title')
                             }}</span>
@@ -8471,7 +8471,7 @@ onBeforeUnmount(() => {
                         <td>{{ row.title || '-' }}</td>
                       </tr>
                       <tr v-if="invoiceContractRelationRows.length === 0">
-                        <td colspan="4" class="item-rel-empty-cell">暂无可关联合同</td>
+                        <td colspan="4" class="item-rel-empty-cell">No associated contracts available</td>
                       </tr>
                     </tbody>
                   </table>
@@ -8482,26 +8482,26 @@ onBeforeUnmount(() => {
             <section v-show="activeInvoiceTab === 'files'" class="item-tab-pane">
               <div class="item-rel-panel linked-file-panel">
                 <div class="item-rel-header">
-                  <h4>关联文件</h4>
+                  <h4>Linked Files</h4>
                   <input
                     v-model="fileLinkFilter"
                     class="item-rel-filter"
-                    placeholder="输入关键字筛选"
+                    placeholder="Enter keywords to filter"
                   />
-                  <span>共 {{ softwareFileRelationRows.length }} 条</span>
+                  <span>Total {{ softwareFileRelationRows.length }} records</span>
                 </div>
                 <div class="table-wrap item-rel-table-wrap">
                   <table class="item-rel-table">
                     <thead>
                       <tr>
-                        <th>关联</th>
+                        <th>Association</th>
                         <th>
                           <button
                             type="button"
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'id')"
                           >
-                            编号 <span>{{ getSoftwareRelationSortIcon('files', 'id') }}</span>
+                            ID <span>{{ getSoftwareRelationSortIcon('files', 'id') }}</span>
                           </button>
                         </th>
                         <th>
@@ -8510,7 +8510,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'typeDesc')"
                           >
-                            类型 <span>{{ getSoftwareRelationSortIcon('files', 'typeDesc') }}</span>
+                            Type <span>{{ getSoftwareRelationSortIcon('files', 'typeDesc') }}</span>
                           </button>
                         </th>
                         <th>
@@ -8519,7 +8519,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'title')"
                           >
-                            标题 <span>{{ getSoftwareRelationSortIcon('files', 'title') }}</span>
+                            Title <span>{{ getSoftwareRelationSortIcon('files', 'title') }}</span>
                           </button>
                         </th>
                         <th>
@@ -8528,7 +8528,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'fileName')"
                           >
-                            文件名
+                            File Name
                             <span>{{ getSoftwareRelationSortIcon('files', 'fileName') }}</span>
                           </button>
                         </th>
@@ -8538,7 +8538,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'date')"
                           >
-                            签署日期 <span>{{ getSoftwareRelationSortIcon('files', 'date') }}</span>
+                            Signature Date <span>{{ getSoftwareRelationSortIcon('files', 'date') }}</span>
                           </button>
                         </th>
                       </tr>
@@ -8572,7 +8572,7 @@ onBeforeUnmount(() => {
                         <td>{{ row.date || '-' }}</td>
                       </tr>
                       <tr v-if="invoiceFileRelationRows.length === 0">
-                        <td colspan="6" class="item-rel-empty-cell">暂无可关联发票文件</td>
+                        <td colspan="6" class="item-rel-empty-cell">No associated invoice files available</td>
                       </tr>
                     </tbody>
                   </table>
@@ -8580,29 +8580,29 @@ onBeforeUnmount(() => {
               </div>
 
               <section v-if="canWrite" class="software-upload-panel linked-upload-panel">
-                <h4>上传文件</h4>
+                <h4>Upload File</h4>
                 <div class="software-upload-grid">
                   <label>
-                    <span>标题 <sup class="req">*</sup></span>
+                    <span>Title <sup class="req">*</sup></span>
                     <input v-model="invoiceUploadForm.title" type="text" />
                   </label>
                   <label>
-                    <span>文件类型</span>
-                    <input :value="`固定：${invoiceFileTypeLabel}`" type="text" disabled />
+                    <span>File Type</span>
+                    <input :value="`Fixed: ${invoiceFileTypeLabel}`" type="text" disabled />
                   </label>
                   <label>
-                    <span>签署日期 <sup class="req">*</sup></span>
+                    <span>Signature Date <sup class="req">*</sup></span>
                     <DateInput v-model="invoiceUploadForm.date" />
                   </label>
                   <div class="asset-field-row linked-upload-picker-row">
-                    <span>选择文件 <sup class="req">*</sup></span>
+                    <span>Choose File <sup class="req">*</sup></span>
                     <div class="location-floorplan-picker linked-upload-picker">
                       <button
                         class="ghost-btn small-btn location-floorplan-picker-btn linked-upload-picker-btn"
                         type="button"
                         @click="openInvoiceUploadPicker"
                       >
-                        选择文件
+                        Choose File
                       </button>
                       <span
                         :class="
@@ -8611,7 +8611,7 @@ onBeforeUnmount(() => {
                             : 'location-floorplan-picker-name muted-text'
                         "
                       >
-                        {{ selectedInvoiceUploadFileName || '未选择文件' }}
+                        {{ selectedInvoiceUploadFileName || 'No file chosen' }}
                       </span>
                       <input
                         ref="invoiceUploadInput"
@@ -8629,18 +8629,18 @@ onBeforeUnmount(() => {
                     :disabled="invoiceUploading"
                     @click="uploadLinkedFile('invoices')"
                   >
-                    {{ invoiceUploading ? '上传中...' : '上传文件' }}
+                    {{ invoiceUploading ? 'Uploading...' : 'Upload File' }}
                   </button>
-                  <span class="muted-text">上传成功后会自动写入“文件”菜单并关联到当前单据。</span>
+                  <span class="muted-text">Uploaded files will be automatically added to the "Files" menu and linked to the current document.</span>
                 </div>
               </section>
             </section>
 
             <div class="item-form-actions">
               <button :disabled="saving" type="submit">
-                {{ saving ? '提交中...' : selectedId ? '保存修改' : '创建' }}
+                {{ saving ? 'Submitting...' : selectedId ? 'Save Changes' : 'Create' }}
               </button>
-              <button class="ghost-btn" type="button" @click="drawerOpen = false">取消</button>
+              <button class="ghost-btn" type="button" @click="drawerOpen = false">Cancel</button>
             </div>
           </template>
 
@@ -8676,22 +8676,22 @@ onBeforeUnmount(() => {
             <section v-show="activeContractTab === 'contractData'" class="item-tab-pane">
               <div class="asset-grid-2">
                 <section class="asset-block">
-                  <h4>合同属性</h4>
+                  <h4>Contract Properties</h4>
                   <label
-                    ><span>编号</span><input :value="selectedId ?? '-'" type="text" disabled
+                    ><span>Number</span><input :value="selectedId ?? '-'" type="text" disabled
                   /></label>
                   <label
-                    ><span>标题 <sup class="req">*</sup></span
+                    ><span>Title <sup class="req">*</sup></span
                     ><input v-model="form.title" type="text"
                   /></label>
                   <label
-                    ><span>数量 <sup class="req">*</sup></span
+                    ><span>Quantity <sup class="req">*</sup></span
                     ><input v-model="form.number" type="text"
                   /></label>
                   <label>
-                    <span>合同类型 <sup class="req">*</sup></span>
+                    <span>Contract Type <sup class="req">*</sup></span>
                     <select v-model="form.typeId">
-                      <option value="">请选择</option>
+                      <option value="">Please Select</option>
                       <option
                         v-for="opt in getOptionsByFieldKey('typeId')"
                         :key="`contr-type-${opt.value}`"
@@ -8702,9 +8702,9 @@ onBeforeUnmount(() => {
                     </select>
                   </label>
                   <label>
-                    <span>合同子类型</span>
+                    <span>Contract Sub-type</span>
                     <select v-model="form.subTypeId">
-                      <option value="">请选择</option>
+                      <option value="">Please Select</option>
                       <option
                         v-for="opt in getOptionsByFieldKey('subTypeId')"
                         :key="`contr-sub-${opt.value}`"
@@ -8719,17 +8719,17 @@ onBeforeUnmount(() => {
                       <button
                         class="field-link-icon quick-tip quick-tip-top-right"
                         type="button"
-                        data-quick-tip="在新窗口编辑承包方（代理）"
+                        data-quick-tip="Edit Contractor (Agent) in New Window"
                         :disabled="Number(form.contractorId ?? 0) <= 0"
                         @click="openAgentByField('contractorId')"
                       >
                         ↗
                       </button>
-                      承包方 <sup class="req">*</sup>
+                      Contractor <sup class="req">*</sup>
                     </span>
-                    <span class="field-tip-wrap quick-tip" data-quick-tip="承包方代理类型">
+                    <span class="field-tip-wrap quick-tip" data-quick-tip="Contractor Agent Type">
                       <select v-model="form.contractorId">
-                        <option value="">请选择</option>
+                        <option value="">Please Select</option>
                         <option
                           v-for="opt in getOptionsByFieldKey('contractorId')"
                           :key="`contr-agent-${opt.value}`"
@@ -8745,16 +8745,16 @@ onBeforeUnmount(() => {
                       <button
                         class="field-link-icon quick-tip quick-tip-top-right"
                         type="button"
-                        data-quick-tip="在新窗口编辑上级合同"
+                        data-quick-tip="Edit Parent Contract in New Window"
                         :disabled="Number(form.parentId ?? 0) <= 0"
                         @click="openParentContractEditor"
                       >
                         ↗
                       </button>
-                      上级合同
+                      Parent Contract
                     </span>
                     <select v-model="form.parentId">
-                      <option value="">请选择</option>
+                      <option value="">Please Select</option>
                       <option
                         v-for="opt in getOptionsByFieldKey('parentId')"
                         :key="`contr-parent-${opt.value}`"
@@ -8765,49 +8765,49 @@ onBeforeUnmount(() => {
                     </select>
                   </div>
                   <label
-                    ><span>总成本 (¥)</span><input v-model="form.totalCost" type="text"
+                    ><span>Total Cost (¥)</span><input v-model="form.totalCost" type="text"
                   /></label>
                   <label
-                    ><span>开始日期 <sup class="req">*</sup></span
+                    ><span>Start Date <sup class="req">*</sup></span
                     ><DateInput v-model="form.startDate"
                   /></label>
                   <label
-                    ><span>结束日期 <sup class="req">*</sup></span
+                    ><span>End Date <sup class="req">*</sup></span
                     ><DateInput v-model="form.currentEndDate"
                   /></label>
                   <div class="contract-textarea-grid">
                     <div class="contract-description-offset">
-                      <label><span>合同描述</span><textarea v-model="form.description" /></label>
+                      <label><span>Contract Description</span><textarea v-model="form.description" /></label>
                     </div>
                     <div class="contract-comments-offset">
-                      <label><span>注释</span><textarea v-model="form.comments" /></label>
+                      <label><span>Comments</span><textarea v-model="form.comments" /></label>
                     </div>
                   </div>
                 </section>
 
                 <section class="asset-block">
-                  <h4>关联概览</h4>
+                  <h4>Association Overview</h4>
                   <div class="item-overview-tabs">
                     <button
                       type="button"
                       :class="{ active: activeContractOverviewTab === 'items' }"
                       @click="activeContractOverviewTab = 'items'"
                     >
-                      硬件
+                      Hardware
                     </button>
                     <button
                       type="button"
                       :class="{ active: activeContractOverviewTab === 'software' }"
                       @click="activeContractOverviewTab = 'software'"
                     >
-                      软件
+                      Software
                     </button>
                     <button
                       type="button"
                       :class="{ active: activeContractOverviewTab === 'invoices' }"
                       @click="activeContractOverviewTab = 'invoices'"
                     >
-                      单据
+                      Invoices
                     </button>
                   </div>
                   <div class="item-overview-list">
@@ -8827,11 +8827,11 @@ onBeforeUnmount(() => {
                       </button>
                     </div>
                     <div v-if="contractOverviewRows.length === 0" class="muted-text">
-                      暂无关联记录
+                      No associated records
                     </div>
                   </div>
 
-                  <h4>备件</h4>
+                  <h4>Spares</h4>
                   <div class="asset-table-wrap">
                     <table
                       :class="[
@@ -8842,13 +8842,13 @@ onBeforeUnmount(() => {
                     >
                       <thead>
                         <tr>
-                          <th v-if="canWrite">操作</th>
-                          <th>到期前</th>
-                          <th>到期后</th>
-                          <th>生效日期</th>
-                          <th>备注</th>
-                          <th>录入日期</th>
-                          <th>录入人</th>
+                          <th v-if="canWrite">Action</th>
+                          <th>Expiry Before</th>
+                          <th>Expiry After</th>
+                          <th>Effective Date</th>
+                          <th>Notes</th>
+                          <th>Entered Date</th>
+                          <th>Entered By</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -8859,7 +8859,7 @@ onBeforeUnmount(() => {
                               type="button"
                               @click="removeContractRenewalRow(idx)"
                             >
-                              删除
+                              Delete
                             </button>
                           </td>
                           <td><DateInput v-model="row.endDateBefore" /></td>
@@ -8889,10 +8889,10 @@ onBeforeUnmount(() => {
                     type="button"
                     @click="addContractRenewalRow"
                   >
-                    新增备件
+                    Add Spares
                   </button>
 
-                  <h4>关联文件</h4>
+                  <h4>Associated Files</h4>
                   <div class="software-managed-file-list">
                     <div
                       v-for="file in managedLinkedFileRows"
@@ -8908,7 +8908,7 @@ onBeforeUnmount(() => {
                             v-if="canRemoveManagedLinkedFile(file)"
                             type="button"
                             class="field-link-icon quick-tip quick-tip-bottom-left"
-                            :data-quick-tip="'解除关联，保存合同后生效。\n若文件是孤立的(没有其他内容与之相关联)，则会将其删除'"
+                            :data-quick-tip="'Remove association, will take effect after saving the contract.\nIf the file is orphaned (not associated with any other content), it will be deleted'"
                             @click="removeLinkedFileSelection(file.id)"
                           >
                             <span class="field-link-icon-image"
@@ -8930,7 +8930,7 @@ onBeforeUnmount(() => {
                           <button
                             type="button"
                             class="field-link-icon quick-tip quick-tip-bottom-left"
-                            :data-quick-tip="`在新窗口编辑文件 ${Number(file.id ?? 0) || '-'}`"
+                            :data-quick-tip="`Edit file in new window: ${Number(file.id ?? 0) || '-'}`"
                             @click="openResourceEditInNewWindow('files', Number(file.id ?? 0))"
                           >
                             <span class="field-link-icon-image"
@@ -8954,7 +8954,7 @@ onBeforeUnmount(() => {
                           <button
                             type="button"
                             class="field-link-icon quick-tip quick-tip-bottom-left"
-                            :data-quick-tip="`下载文件: ${file.fileName || '-'}`"
+                            :data-quick-tip="`Download file: ${file.fileName || '-'}`"
                             @click="downloadLinkedFileByID(file.id, file.fileName)"
                           >
                             <span class="field-link-icon-image"
@@ -8976,23 +8976,23 @@ onBeforeUnmount(() => {
                       </div>
                       <div class="software-managed-file-card-meta">
                         <div class="software-managed-file-card-field">
-                          <span>类型</span>
+                          <span>Type</span>
                           <strong>{{ file.typeDesc || '-' }}</strong>
                         </div>
                         <div class="software-managed-file-card-field">
-                          <span>日期</span>
+                          <span>Date</span>
                           <strong>{{ file.date || '-' }}</strong>
                         </div>
                         <div
                           class="software-managed-file-card-field software-managed-file-card-title"
                         >
-                          <span>标题</span>
+                          <span>Title</span>
                           <strong>{{ file.title || '-' }}</strong>
                         </div>
                       </div>
                     </div>
                     <div v-if="managedLinkedFileRows.length === 0" class="muted-text">
-                      暂无关联文件
+                      No related documents available.
                     </div>
                   </div>
                 </section>
@@ -9000,18 +9000,18 @@ onBeforeUnmount(() => {
             </section>
 
             <section v-show="activeContractTab === 'events'" class="item-tab-pane">
-              <p v-if="!selectedId" class="muted-text">新增合同并保存后，可维护事件历史。</p>
+              <p v-if="!selectedId" class="muted-text">After adding and saving a contract, you can maintain the event history.</p>
               <template v-else>
                 <div class="table-wrap item-log-wrap">
                   <table class="item-log-table">
                     <thead>
                       <tr>
-                        <th>编号</th>
-                        <th>同组编号</th>
-                        <th>开始日期</th>
-                        <th>结束日期</th>
-                        <th>描述</th>
-                        <th v-if="canWrite">操作</th>
+                        <th>ID</th>
+                        <th>Sibling ID</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Description</th>
+                        <th v-if="canWrite">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -9026,22 +9026,22 @@ onBeforeUnmount(() => {
                         <td>{{ row.description || '-' }}</td>
                         <td v-if="canWrite" class="actions-cell">
                           <button class="small-btn" type="button" @click="editContractEvent(row)">
-                            编辑
+                            Edit
                           </button>
                           <button
                             class="small-btn danger"
                             type="button"
                             @click="removeContractEvent(row)"
                           >
-                            删除
+                            Delete
                           </button>
                         </td>
                       </tr>
                       <tr v-if="contractEventsLoading">
-                        <td :colspan="canWrite ? 6 : 5">加载中...</td>
+                        <td :colspan="canWrite ? 6 : 5">Loading...</td>
                       </tr>
                       <tr v-else-if="contractEvents.length === 0">
-                        <td :colspan="canWrite ? 6 : 5">暂无事件记录</td>
+                        <td :colspan="canWrite ? 6 : 5">No event records available.</td>
                       </tr>
                     </tbody>
                   </table>
@@ -9053,33 +9053,33 @@ onBeforeUnmount(() => {
                   @submit.prevent="saveContractEvent"
                 >
                   <label>
-                    <span>同组编号</span>
+                    <span>Sibling ID</span>
                     <input v-model="contractEventForm.siblingId" type="number" min="0" />
                   </label>
                   <label>
-                    <span>开始日期 <sup class="req">*</sup></span>
+                    <span>Start Date <sup class="req">*</sup></span>
                     <DateInput v-model="contractEventForm.startDate" />
                   </label>
                   <label>
-                    <span>结束日期 <sup class="req">*</sup></span>
+                    <span>End Date <sup class="req">*</sup></span>
                     <DateInput v-model="contractEventForm.endDate" />
                   </label>
                   <label class="full-span">
-                    <span>描述</span>
+                    <span>Description</span>
                     <textarea v-model="contractEventForm.description" />
                   </label>
                   <div class="inline-actions full-span">
                     <button :disabled="contractEventSaving" type="submit">
                       {{
                         contractEventSaving
-                          ? '保存中...'
+                          ? 'Saving...'
                           : editingContractEventId
-                            ? '保存事件修改'
-                            : '新增事件'
+                            ? 'Save event modifications'
+                            : 'Add Event'
                       }}
                     </button>
                     <button class="ghost-btn" type="button" @click="resetContractEventForm">
-                      重置
+                      Reset
                     </button>
                   </div>
                 </form>
@@ -9089,26 +9089,26 @@ onBeforeUnmount(() => {
             <section v-show="activeContractTab === 'itemLinks'" class="item-tab-pane">
               <div class="item-rel-panel">
                 <div class="item-rel-header">
-                  <h4>硬件关联</h4>
+                  <h4>Hardware Links</h4>
                   <input
                     v-model="itemLinkFilter"
                     class="item-rel-filter"
-                    placeholder="输入关键字筛选"
+                    placeholder="Enter keywords to filter"
                   />
-                  <span>共 {{ contractItemRelationRows.length }} 条</span>
+                  <span>Total: {{ contractItemRelationRows.length }} items</span>
                 </div>
                 <div class="table-wrap item-rel-table-wrap">
                   <table class="item-rel-table">
                     <thead>
                       <tr>
-                        <th>关联</th>
+                        <th>Link</th>
                         <th>
                           <button
                             type="button"
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('contractItems', 'id')"
                           >
-                            编号
+                            ID
                             <span>{{ getNonSoftwareRelationSortIcon('contractItems', 'id') }}</span>
                           </button>
                         </th>
@@ -9118,7 +9118,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('contractItems', 'itemType')"
                           >
-                            类型
+                            Type
                             <span>{{
                               getNonSoftwareRelationSortIcon('contractItems', 'itemType')
                             }}</span>
@@ -9130,7 +9130,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('contractItems', 'manufacturer')"
                           >
-                            厂商
+                            Manufacturer
                             <span>{{
                               getNonSoftwareRelationSortIcon('contractItems', 'manufacturer')
                             }}</span>
@@ -9142,7 +9142,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('contractItems', 'model')"
                           >
-                            型号
+                            Model
                             <span>{{
                               getNonSoftwareRelationSortIcon('contractItems', 'model')
                             }}</span>
@@ -9154,7 +9154,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('contractItems', 'label')"
                           >
-                            标签
+                            Label
                             <span>{{
                               getNonSoftwareRelationSortIcon('contractItems', 'label')
                             }}</span>
@@ -9166,7 +9166,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('contractItems', 'dnsName')"
                           >
-                            管理条线
+                            Management Line
                             <span>{{
                               getNonSoftwareRelationSortIcon('contractItems', 'dnsName')
                             }}</span>
@@ -9178,7 +9178,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('contractItems', 'principal')"
                           >
-                            负责人
+                            Principal
                             <span>{{
                               getNonSoftwareRelationSortIcon('contractItems', 'principal')
                             }}</span>
@@ -9190,7 +9190,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('contractItems', 'sn')"
                           >
-                            设备序列号
+                            Device Serial Number
                             <span>{{ getNonSoftwareRelationSortIcon('contractItems', 'sn') }}</span>
                           </button>
                         </th>
@@ -9224,7 +9224,7 @@ onBeforeUnmount(() => {
                         <td>{{ row.sn || '-' }}</td>
                       </tr>
                       <tr v-if="contractItemRelationRows.length === 0">
-                        <td colspan="9" class="item-rel-empty-cell">暂无可关联硬件</td>
+                        <td colspan="9" class="item-rel-empty-cell">No hardware available for linking</td>
                       </tr>
                     </tbody>
                   </table>
@@ -9235,26 +9235,26 @@ onBeforeUnmount(() => {
             <section v-show="activeContractTab === 'softwareLinks'" class="item-tab-pane">
               <div class="item-rel-panel">
                 <div class="item-rel-header">
-                  <h4>软件关联</h4>
+                  <h4>Software Links</h4>
                   <input
                     v-model="softwareLinkFilter"
                     class="item-rel-filter"
-                    placeholder="输入关键字筛选"
+                    placeholder="Enter keywords to filter"
                   />
-                  <span>共 {{ contractSoftwareRelationRows.length }} 条</span>
+                  <span>Total: {{ contractSoftwareRelationRows.length }} items</span>
                 </div>
                 <div class="table-wrap item-rel-table-wrap">
                   <table class="item-rel-table">
                     <thead>
                       <tr>
-                        <th>关联</th>
+                        <th>Link</th>
                         <th>
                           <button
                             type="button"
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('contractSoftware', 'id')"
                           >
-                            编号
+                            ID
                             <span>{{
                               getNonSoftwareRelationSortIcon('contractSoftware', 'id')
                             }}</span>
@@ -9268,7 +9268,7 @@ onBeforeUnmount(() => {
                               toggleNonSoftwareRelationSort('contractSoftware', 'manufacturer')
                             "
                           >
-                            厂商
+                            Manufacturer
                             <span>{{
                               getNonSoftwareRelationSortIcon('contractSoftware', 'manufacturer')
                             }}</span>
@@ -9282,7 +9282,7 @@ onBeforeUnmount(() => {
                               toggleNonSoftwareRelationSort('contractSoftware', 'titleVersion')
                             "
                           >
-                            标题/版本
+                            Title/Version
                             <span>{{
                               getNonSoftwareRelationSortIcon('contractSoftware', 'titleVersion')
                             }}</span>
@@ -9317,7 +9317,7 @@ onBeforeUnmount(() => {
                         <td>{{ `${row.title || '-'} ${row.version || ''}`.trim() }}</td>
                       </tr>
                       <tr v-if="contractSoftwareRelationRows.length === 0">
-                        <td colspan="4" class="item-rel-empty-cell">暂无可关联软件</td>
+                        <td colspan="4" class="item-rel-empty-cell">No software available for linking</td>
                       </tr>
                     </tbody>
                   </table>
@@ -9328,26 +9328,26 @@ onBeforeUnmount(() => {
             <section v-show="activeContractTab === 'invoiceLinks'" class="item-tab-pane">
               <div class="item-rel-panel">
                 <div class="item-rel-header">
-                  <h4>单据关联</h4>
+                  <h4>Invoice Links</h4>
                   <input
                     v-model="invoiceLinkFilter"
                     class="item-rel-filter"
-                    placeholder="输入关键字筛选"
+                    placeholder="Enter keywords to filter"
                   />
-                  <span>共 {{ contractInvoiceRelationRows.length }} 条</span>
+                  <span>Total: {{ contractInvoiceRelationRows.length }} items</span>
                 </div>
                 <div class="table-wrap item-rel-table-wrap">
                   <table class="item-rel-table">
                     <thead>
                       <tr>
-                        <th>关联</th>
+                        <th>Link</th>
                         <th>
                           <button
                             type="button"
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('contractInvoices', 'id')"
                           >
-                            编号
+                            ID
                             <span>{{
                               getNonSoftwareRelationSortIcon('contractInvoices', 'id')
                             }}</span>
@@ -9359,7 +9359,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('contractInvoices', 'vendor')"
                           >
-                            供应商
+                            Vendor
                             <span>{{
                               getNonSoftwareRelationSortIcon('contractInvoices', 'vendor')
                             }}</span>
@@ -9371,7 +9371,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('contractInvoices', 'number')"
                           >
-                            订单编号
+                            Order Number
                             <span>{{
                               getNonSoftwareRelationSortIcon('contractInvoices', 'number')
                             }}</span>
@@ -9383,7 +9383,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('contractInvoices', 'date')"
                           >
-                            日期
+                            Date
                             <span>{{
                               getNonSoftwareRelationSortIcon('contractInvoices', 'date')
                             }}</span>
@@ -9419,7 +9419,7 @@ onBeforeUnmount(() => {
                         <td>{{ row.date || '-' }}</td>
                       </tr>
                       <tr v-if="contractInvoiceRelationRows.length === 0">
-                        <td colspan="5" class="item-rel-empty-cell">暂无可关联单据</td>
+                        <td colspan="5" class="item-rel-empty-cell">No invoices available for linking</td>
                       </tr>
                     </tbody>
                   </table>
@@ -9430,26 +9430,26 @@ onBeforeUnmount(() => {
             <section v-show="activeContractTab === 'files'" class="item-tab-pane">
               <div class="item-rel-panel linked-file-panel">
                 <div class="item-rel-header">
-                  <h4>关联文件</h4>
+                  <h4>Linked Files</h4>
                   <input
                     v-model="fileLinkFilter"
                     class="item-rel-filter"
-                    placeholder="输入关键字筛选"
+                    placeholder="Enter keywords to filter"
                   />
-                  <span>共 {{ softwareFileRelationRows.length }} 条</span>
+                  <span>Total: {{ softwareFileRelationRows.length }} items</span>
                 </div>
                 <div class="table-wrap item-rel-table-wrap">
                   <table class="item-rel-table">
                     <thead>
                       <tr>
-                        <th>关联</th>
+                        <th>Link</th>
                         <th>
                           <button
                             type="button"
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'id')"
                           >
-                            编号 <span>{{ getSoftwareRelationSortIcon('files', 'id') }}</span>
+                            ID <span>{{ getSoftwareRelationSortIcon('files', 'id') }}</span>
                           </button>
                         </th>
                         <th>
@@ -9458,7 +9458,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'typeDesc')"
                           >
-                            类型 <span>{{ getSoftwareRelationSortIcon('files', 'typeDesc') }}</span>
+                            Type <span>{{ getSoftwareRelationSortIcon('files', 'typeDesc') }}</span>
                           </button>
                         </th>
                         <th>
@@ -9467,7 +9467,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'title')"
                           >
-                            标题 <span>{{ getSoftwareRelationSortIcon('files', 'title') }}</span>
+                            Title <span>{{ getSoftwareRelationSortIcon('files', 'title') }}</span>
                           </button>
                         </th>
                         <th>
@@ -9476,7 +9476,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'fileName')"
                           >
-                            文件名
+                            File Name
                             <span>{{ getSoftwareRelationSortIcon('files', 'fileName') }}</span>
                           </button>
                         </th>
@@ -9486,7 +9486,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'date')"
                           >
-                            签署日期 <span>{{ getSoftwareRelationSortIcon('files', 'date') }}</span>
+                            Date <span>{{ getSoftwareRelationSortIcon('files', 'date') }}</span>
                           </button>
                         </th>
                       </tr>
@@ -9520,7 +9520,7 @@ onBeforeUnmount(() => {
                         <td>{{ row.date || '-' }}</td>
                       </tr>
                       <tr v-if="softwareFileRelationRows.length === 0">
-                        <td colspan="6" class="item-rel-empty-cell">暂无可关联文件</td>
+                        <td colspan="6" class="item-rel-empty-cell">No files available for linking</td>
                       </tr>
                     </tbody>
                   </table>
@@ -9528,16 +9528,16 @@ onBeforeUnmount(() => {
               </div>
 
               <section v-if="canWrite" class="software-upload-panel linked-upload-panel">
-                <h4>上传文件</h4>
+                <h4>Upload File</h4>
                 <div class="software-upload-grid">
                   <label>
-                    <span>标题 <sup class="req">*</sup></span>
+                    <span>Title <sup class="req">*</sup></span>
                     <input v-model="contractUploadForm.title" type="text" />
                   </label>
                   <label>
-                    <span>类型 <sup class="req">*</sup></span>
+                    <span>Type <sup class="req">*</sup></span>
                     <select v-model="contractUploadForm.typeId">
-                      <option value="">请选择</option>
+                      <option value="">Please select</option>
                       <option
                         v-for="opt in commonUploadTypeOptions"
                         :key="`contract-upload-type-${opt.value}`"
@@ -9548,18 +9548,18 @@ onBeforeUnmount(() => {
                     </select>
                   </label>
                   <label>
-                    <span>签署日期 <sup class="req">*</sup></span>
+                    <span>Date <sup class="req">*</sup></span>
                     <DateInput v-model="contractUploadForm.date" />
                   </label>
                   <div class="asset-field-row linked-upload-picker-row">
-                    <span>选择文件 <sup class="req">*</sup></span>
+                    <span>Select File <sup class="req">*</sup></span>
                     <div class="location-floorplan-picker linked-upload-picker">
                       <button
                         class="ghost-btn small-btn location-floorplan-picker-btn linked-upload-picker-btn"
                         type="button"
                         @click="openContractUploadPicker"
                       >
-                        选择文件
+                        Select File
                       </button>
                       <span
                         :class="
@@ -9568,7 +9568,7 @@ onBeforeUnmount(() => {
                             : 'location-floorplan-picker-name muted-text'
                         "
                       >
-                        {{ selectedContractUploadFileName || '未选择文件' }}
+                        {{ selectedContractUploadFileName || 'No file selected' }}
                       </span>
                       <input
                         ref="contractUploadInput"
@@ -9585,18 +9585,18 @@ onBeforeUnmount(() => {
                     :disabled="contractUploading"
                     @click="uploadLinkedFile('contracts')"
                   >
-                    {{ contractUploading ? '上传中...' : '上传文件' }}
+                    {{ contractUploading ? 'Uploading...' : 'Upload File' }}
                   </button>
-                  <span class="muted-text">上传后会自动写入“文件”菜单并关联到当前合同。</span>
+                  <span class="muted-text">Uploaded files will be automatically added to the "Files" menu and linked to the current contract.</span>
                 </div>
               </section>
             </section>
 
             <div class="item-form-actions">
               <button :disabled="saving" type="submit">
-                {{ saving ? '提交中...' : selectedId ? '保存修改' : '创建' }}
+                {{ saving ? 'Submitting...' : selectedId ? 'Save Changes' : 'Create' }}
               </button>
-              <button class="ghost-btn" type="button" @click="drawerOpen = false">取消</button>
+              <button class="ghost-btn" type="button" @click="drawerOpen = false">Cancel</button>
             </div>
           </template>
 
@@ -9617,18 +9617,18 @@ onBeforeUnmount(() => {
             <section v-show="activeFileTab === 'fileData'" class="item-tab-pane">
               <div class="asset-grid-2">
                 <section class="asset-block">
-                  <h4>文件属性</h4>
+                  <h4>File Properties</h4>
                   <label
-                    ><span>编号</span><input :value="selectedId ?? '-'" type="text" disabled
+                    ><span>ID</span><input :value="selectedId ?? '-'" type="text" disabled
                   /></label>
                   <label
-                    ><span>标题 <sup class="req">*</sup></span
+                    ><span>Title <sup class="req">*</sup></span
                     ><input v-model="form.title" type="text"
                   /></label>
                   <label>
-                    <span>类型 <sup class="req">*</sup></span>
+                    <span>Type <sup class="req">*</sup></span>
                     <select v-model="form.typeId">
-                      <option v-if="showFileEditorTypePlaceholder" value="">请选择</option>
+                      <option v-if="showFileEditorTypePlaceholder" value="">Please Select</option>
                       <option
                         v-for="opt in fileEditorTypeOptions"
                         :key="`file-type-${opt.value}`"
@@ -9639,11 +9639,11 @@ onBeforeUnmount(() => {
                     </select>
                   </label>
                   <label
-                    ><span>签署日期 <sup class="req">*</sup></span
+                    ><span>Date <sup class="req">*</sup></span
                     ><DateInput v-model="form.date"
                   /></label>
                   <div class="asset-field-row">
-                    <span>文件名称</span>
+                    <span>File Name</span>
                     <div
                       v-if="selectedId && recordDetail?.fname"
                       class="location-floorplan-link-wrap"
@@ -9651,7 +9651,7 @@ onBeforeUnmount(() => {
                       <button
                         class="item-overview-link location-floorplan-link quick-tip"
                         type="button"
-                        data-quick-tip="下载当前文件"
+                        data-quick-tip="Download Current File"
                         @click="downloadSelectedFile"
                       >
                         {{ recordDetail?.fname }}
@@ -9661,23 +9661,23 @@ onBeforeUnmount(() => {
                   <label>
                     <span
                       class="quick-tip file-association-tip"
-                      data-quick-tip="引用此文件的硬件、软件、合同总数"
-                      >关联数</span
+                      data-quick-tip="Total number of hardware, software, and contracts referencing this document"
+                      >Association number</span
                     >
                     <input :value="fileAssociationCount" type="text" disabled />
                   </label>
                   <label
-                    ><span>上传人</span><input :value="fileUploadedByText" type="text" disabled
+                    ><span>Uploaded By</span><input :value="fileUploadedByText" type="text" disabled
                   /></label>
                   <div class="asset-field-row">
-                    <span>上传文件</span>
+                    <span>Upload File</span>
                     <div class="location-floorplan-picker">
                       <button
                         class="ghost-btn small-btn location-floorplan-picker-btn"
                         type="button"
                         @click="openFileUploadPicker"
                       >
-                        选择文件
+                        Choose File
                       </button>
                       <span
                         :class="
@@ -9686,7 +9686,7 @@ onBeforeUnmount(() => {
                             : 'location-floorplan-picker-name muted-text'
                         "
                       >
-                        {{ selectedFileUploadName || '未选择文件' }}
+                        {{ selectedFileUploadName || 'No file selected' }}
                       </span>
                       <input
                         ref="fileUploadInput"
@@ -9698,40 +9698,40 @@ onBeforeUnmount(() => {
                     </div>
                   </div>
                   <p v-if="isInvoiceTypeFile" class="muted-text">
-                    该文件类型为“{{ invoiceFileTypeLabel }}”，按原系统逻辑仅通过“单据”功能维护关联。
+                    The file type is “{{ invoiceFileTypeLabel }}”, and can only be associated through the “Document” function according to the original system logic.
                   </p>
                 </section>
 
                 <section class="asset-block">
-                  <h4>关联概览</h4>
+                  <h4>Association Overview</h4>
                   <div class="item-overview-tabs">
                     <button
                       type="button"
                       :class="{ active: activeFileOverviewTab === 'items' }"
                       @click="activeFileOverviewTab = 'items'"
                     >
-                      硬件
+                      Hardware
                     </button>
                     <button
                       type="button"
                       :class="{ active: activeFileOverviewTab === 'invoices' }"
                       @click="activeFileOverviewTab = 'invoices'"
                     >
-                      单据
+                      Documents
                     </button>
                     <button
                       type="button"
                       :class="{ active: activeFileOverviewTab === 'contracts' }"
                       @click="activeFileOverviewTab = 'contracts'"
                     >
-                      合同
+                      Contracts
                     </button>
                     <button
                       type="button"
                       :class="{ active: activeFileOverviewTab === 'software' }"
                       @click="activeFileOverviewTab = 'software'"
                     >
-                      软件
+                      Software
                     </button>
                   </div>
                   <div class="item-overview-list">
@@ -9750,7 +9750,7 @@ onBeforeUnmount(() => {
                         <span>{{ entry.text }}</span>
                       </button>
                     </div>
-                    <div v-if="fileOverviewRows.length === 0" class="muted-text">暂无关联记录</div>
+                    <div v-if="fileOverviewRows.length === 0" class="muted-text">No associated records</div>
                   </div>
                 </section>
               </div>
@@ -9759,26 +9759,26 @@ onBeforeUnmount(() => {
             <section v-show="activeFileTab === 'itemLinks'" class="item-tab-pane">
               <div v-if="canEditNonInvoiceFileAssociations" class="item-rel-panel">
                 <div class="item-rel-header">
-                  <h4>硬件关联</h4>
+                  <h4>Hardware Association</h4>
                   <input
                     v-model="itemLinkFilter"
                     class="item-rel-filter"
-                    placeholder="输入关键字筛选"
+                    placeholder="Enter keywords to filter"
                   />
-                  <span>共 {{ fileItemRelationRows.length }} 条</span>
+                  <span>Total {{ fileItemRelationRows.length }} records</span>
                 </div>
                 <div class="table-wrap item-rel-table-wrap">
                   <table class="item-rel-table">
                     <thead>
                       <tr>
-                        <th>关联</th>
+                        <th>Association</th>
                         <th>
                           <button
                             type="button"
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('fileItems', 'id')"
                           >
-                            编号
+                            ID
                             <span>{{ getNonSoftwareRelationSortIcon('fileItems', 'id') }}</span>
                           </button>
                         </th>
@@ -9788,7 +9788,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('fileItems', 'itemType')"
                           >
-                            类型
+                            Type
                             <span>{{
                               getNonSoftwareRelationSortIcon('fileItems', 'itemType')
                             }}</span>
@@ -9800,7 +9800,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('fileItems', 'manufacturer')"
                           >
-                            厂商
+                            Manufacturer
                             <span>{{
                               getNonSoftwareRelationSortIcon('fileItems', 'manufacturer')
                             }}</span>
@@ -9812,7 +9812,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('fileItems', 'model')"
                           >
-                            型号
+                            Model
                             <span>{{ getNonSoftwareRelationSortIcon('fileItems', 'model') }}</span>
                           </button>
                         </th>
@@ -9822,7 +9822,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('fileItems', 'label')"
                           >
-                            标签
+                            Label
                             <span>{{ getNonSoftwareRelationSortIcon('fileItems', 'label') }}</span>
                           </button>
                         </th>
@@ -9832,7 +9832,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('fileItems', 'dnsName')"
                           >
-                            管理跳线
+                            Management Cable
                             <span>{{
                               getNonSoftwareRelationSortIcon('fileItems', 'dnsName')
                             }}</span>
@@ -9844,7 +9844,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('fileItems', 'principal')"
                           >
-                            负责人
+                            Principal
                             <span>{{
                               getNonSoftwareRelationSortIcon('fileItems', 'principal')
                             }}</span>
@@ -9856,7 +9856,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('fileItems', 'sn')"
                           >
-                            设备序列号
+                            Device Serial Number
                             <span>{{ getNonSoftwareRelationSortIcon('fileItems', 'sn') }}</span>
                           </button>
                         </th>
@@ -9890,40 +9890,40 @@ onBeforeUnmount(() => {
                         <td>{{ row.sn || '-' }}</td>
                       </tr>
                       <tr v-if="fileItemRelationRows.length === 0" class="item-rel-empty-row">
-                        <td colspan="9" class="item-rel-empty-cell">暂无可关联硬件</td>
+                        <td colspan="9" class="item-rel-empty-cell">No associated hardware</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
               <p v-else class="muted-text">
-                该文件类型为“{{ invoiceFileTypeLabel }}”，不能在此关联硬件。
+                The file type is “{{ invoiceFileTypeLabel }}”, and hardware cannot be associated here.
               </p>
             </section>
 
             <section v-show="activeFileTab === 'softwareLinks'" class="item-tab-pane">
               <div v-if="canEditNonInvoiceFileAssociations" class="item-rel-panel">
                 <div class="item-rel-header">
-                  <h4>软件关联</h4>
+                  <h4>Software Association</h4>
                   <input
                     v-model="softwareLinkFilter"
                     class="item-rel-filter"
-                    placeholder="输入关键字筛选"
+                    placeholder="Enter keywords to filter"
                   />
-                  <span>共 {{ fileSoftwareRelationRows.length }} 条</span>
+                  <span>Total {{ fileSoftwareRelationRows.length }} records</span>
                 </div>
                 <div class="table-wrap item-rel-table-wrap">
                   <table class="item-rel-table">
                     <thead>
                       <tr>
-                        <th>关联</th>
+                        <th>Association</th>
                         <th>
                           <button
                             type="button"
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('fileSoftware', 'id')"
                           >
-                            编号
+                            ID
                             <span>{{ getNonSoftwareRelationSortIcon('fileSoftware', 'id') }}</span>
                           </button>
                         </th>
@@ -9933,7 +9933,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('fileSoftware', 'manufacturer')"
                           >
-                            厂商
+                            Manufacturer
                             <span>{{
                               getNonSoftwareRelationSortIcon('fileSoftware', 'manufacturer')
                             }}</span>
@@ -9945,7 +9945,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('fileSoftware', 'titleVersion')"
                           >
-                            标题/版本
+                            Title/Version
                             <span>{{
                               getNonSoftwareRelationSortIcon('fileSoftware', 'titleVersion')
                             }}</span>
@@ -9980,40 +9980,40 @@ onBeforeUnmount(() => {
                         <td>{{ `${row.title || '-'} ${row.version || ''}`.trim() }}</td>
                       </tr>
                       <tr v-if="fileSoftwareRelationRows.length === 0">
-                        <td colspan="4" class="item-rel-empty-cell">暂无可关联软件</td>
+                        <td colspan="4" class="item-rel-empty-cell">No associated software</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
               <p v-else class="muted-text">
-                该文件类型为“{{ invoiceFileTypeLabel }}”，不能在此关联软件。
+                The file type is “{{ invoiceFileTypeLabel }}”, and software cannot be associated here.
               </p>
             </section>
 
             <section v-show="activeFileTab === 'contractLinks'" class="item-tab-pane">
               <div v-if="canEditNonInvoiceFileAssociations" class="item-rel-panel">
                 <div class="item-rel-header">
-                  <h4>合同关联</h4>
+                  <h4>Contract Association</h4>
                   <input
                     v-model="contractLinkFilter"
                     class="item-rel-filter"
-                    placeholder="输入关键字筛选"
+                    placeholder="Enter keywords to filter"
                   />
-                  <span>共 {{ fileContractRelationRows.length }} 条</span>
+                  <span>Total {{ fileContractRelationRows.length }} records</span>
                 </div>
                 <div class="table-wrap item-rel-table-wrap">
                   <table class="item-rel-table">
                     <thead>
                       <tr>
-                        <th>关联</th>
+                        <th>Association</th>
                         <th>
                           <button
                             type="button"
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('fileContracts', 'id')"
                           >
-                            编号
+                            ID
                             <span>{{ getNonSoftwareRelationSortIcon('fileContracts', 'id') }}</span>
                           </button>
                         </th>
@@ -10023,7 +10023,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('fileContracts', 'contractor')"
                           >
-                            承包方
+                            Contractor
                             <span>{{
                               getNonSoftwareRelationSortIcon('fileContracts', 'contractor')
                             }}</span>
@@ -10035,7 +10035,7 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleNonSoftwareRelationSort('fileContracts', 'title')"
                           >
-                            标题
+                            Title
                             <span>{{
                               getNonSoftwareRelationSortIcon('fileContracts', 'title')
                             }}</span>
@@ -10070,41 +10070,41 @@ onBeforeUnmount(() => {
                         <td>{{ row.title || '-' }}</td>
                       </tr>
                       <tr v-if="fileContractRelationRows.length === 0">
-                        <td colspan="4" class="item-rel-empty-cell">暂无可关联合同</td>
+                        <td colspan="4" class="item-rel-empty-cell">No associated contracts</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
               <p v-else class="muted-text">
-                该文件类型为“{{ invoiceFileTypeLabel }}”，不能在此关联合同。
+                The file type is “{{ invoiceFileTypeLabel }}”, and contracts cannot be associated here.
               </p>
             </section>
 
             <div class="item-form-actions">
               <button :disabled="saving" type="submit">
-                {{ saving ? '提交中...' : selectedId ? '保存修改' : '创建' }}
+                {{ saving ? 'Submitting...' : selectedId ? 'Save Changes' : 'Create' }}
               </button>
-              <button class="ghost-btn" type="button" @click="drawerOpen = false">取消</button>
+              <button class="ghost-btn" type="button" @click="drawerOpen = false">Cancel</button>
             </div>
           </template>
 
           <template v-else-if="isAgentResource">
             <div class="asset-grid-2">
               <section class="asset-block">
-                <h4>代理属性</h4>
+                <h4>Agent Properties</h4>
                 <label
-                  ><span>编号</span><input :value="selectedId ?? '-'" type="text" disabled
+                  ><span>ID</span><input :value="selectedId ?? '-'" type="text" disabled
                 /></label>
                 <label
-                  ><span>名称 <sup class="req">*</sup></span
+                  ><span>Name <sup class="req">*</sup></span
                   ><input v-model="form.title" type="text"
                 /></label>
                 <label>
-                  <span>类型 <sup class="req">*</sup></span>
+                  <span>Type <sup class="req">*</sup></span>
                   <span
                     class="field-tip-wrap quick-tip"
-                    data-quick-tip="按住 Ctrl 可多选；供应商/采购方用于单据与合同，软件厂商用于软件，硬件厂商用于硬件，承包方用于合同。"
+                    data-quick-tip="Press Ctrl to select multiple; suppliers/buyers are used for documents and contracts, software vendors for software, hardware vendors for hardware, and contractors for contracts."
                   >
                     <select v-model="form.types" multiple>
                       <option
@@ -10118,43 +10118,43 @@ onBeforeUnmount(() => {
                   </span>
                 </label>
                 <label>
-                  <span>合同信息</span>
-                  <span class="field-tip-wrap quick-tip" data-quick-tip="地址, 电话号码, 其余信息">
+                  <span>Contract Information</span>
+                  <span class="field-tip-wrap quick-tip" data-quick-tip="Address, phone number, and other information">
                     <textarea v-model="form.contactInfo" />
                   </span>
                 </label>
               </section>
 
               <section class="asset-block">
-                <h4>关联概览</h4>
+                <h4>Association Overview</h4>
                 <div class="item-overview-tabs">
                   <button
                     type="button"
                     :class="{ active: activeAgentOverviewTab === 'items' }"
                     @click="activeAgentOverviewTab = 'items'"
                   >
-                    硬件
+                    Hardware
                   </button>
                   <button
                     type="button"
                     :class="{ active: activeAgentOverviewTab === 'software' }"
                     @click="activeAgentOverviewTab = 'software'"
                   >
-                    软件
+                    Software
                   </button>
                   <button
                     type="button"
                     :class="{ active: activeAgentOverviewTab === 'invoicesVendor' }"
                     @click="activeAgentOverviewTab = 'invoicesVendor'"
                   >
-                    单据(供应方)
+                    Documents (Vendor)
                   </button>
                   <button
                     type="button"
                     :class="{ active: activeAgentOverviewTab === 'invoicesBuyer' }"
                     @click="activeAgentOverviewTab = 'invoicesBuyer'"
                   >
-                    单据(采购方)
+                    Documents (Buyer)
                   </button>
                 </div>
                 <div class="item-overview-list">
@@ -10173,24 +10173,24 @@ onBeforeUnmount(() => {
                       <span>{{ entry.text }}</span>
                     </button>
                   </div>
-                  <div v-if="agentOverviewRows.length === 0" class="muted-text">暂无关联记录</div>
+                  <div v-if="agentOverviewRows.length === 0" class="muted-text">No associated records</div>
                 </div>
               </section>
             </div>
 
             <div class="asset-grid-2">
               <section class="asset-block">
-                <h4>合同</h4>
+                <h4>Contract</h4>
                 <div class="asset-table-wrap">
                   <table class="asset-inner-table">
                     <thead>
                       <tr>
-                        <th class="agent-contact-delete-col">操作</th>
-                        <th>姓名</th>
-                        <th>电话</th>
-                        <th>邮箱</th>
-                        <th>角色</th>
-                        <th>备注</th>
+                        <th class="agent-contact-delete-col">Operation</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Comments</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -10201,7 +10201,7 @@ onBeforeUnmount(() => {
                             type="button"
                             @click="removeAgentContactRow(idx)"
                           >
-                            删除
+                            Delete
                           </button>
                         </td>
                         <td><input v-model="row.name" type="text" /></td>
@@ -10214,7 +10214,7 @@ onBeforeUnmount(() => {
                   </table>
                 </div>
                 <button class="ghost-btn small-btn" type="button" @click="addAgentContactRow">
-                  新增联系人
+                  Add Contact
                 </button>
               </section>
 
@@ -10222,17 +10222,17 @@ onBeforeUnmount(() => {
                 <div class="agent-urls-head">
                   <h4>URLs</h4>
                   <span class="agent-urls-tip"
-                    >提示：当描述填写为“service”时，硬件修改页面会显示此链接。</span
+                    >Tip: When the description is filled with "service", the hardware modification page will display this link.</span
                   >
                 </div>
                 <div class="asset-table-wrap">
                   <table class="asset-inner-table">
                     <thead>
                       <tr>
-                        <th>操作</th>
-                        <th>描述</th>
+                        <th>Operation</th>
+                        <th>Description</th>
                         <th>URL</th>
-                        <th>跳转</th>
+                        <th>Jump</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -10243,7 +10243,7 @@ onBeforeUnmount(() => {
                             type="button"
                             @click="removeAgentURLRow(idx)"
                           >
-                            删除
+                            Delete
                           </button>
                         </td>
                         <td><input v-model="row.description" type="text" /></td>
@@ -10255,7 +10255,7 @@ onBeforeUnmount(() => {
                             :href="String(row.url)"
                             target="_blank"
                             rel="noopener"
-                            data-quick-tip="在新窗口打开该链接"
+                            data-quick-tip="Open link in new window"
                           >
                             GO
                           </a>
@@ -10266,36 +10266,36 @@ onBeforeUnmount(() => {
                   </table>
                 </div>
                 <button class="ghost-btn small-btn" type="button" @click="addAgentURLRow">
-                  新增URL
+                  Add URL
                 </button>
               </section>
             </div>
 
             <div class="item-form-actions">
               <button :disabled="saving" type="submit">
-                {{ saving ? '提交中...' : selectedId ? '保存修改' : '创建' }}
+                {{ saving ? 'Submitting...' : selectedId ? 'Save Changes' : 'Create' }}
               </button>
-              <button class="ghost-btn" type="button" @click="drawerOpen = false">取消</button>
+              <button class="ghost-btn" type="button" @click="drawerOpen = false">Cancel</button>
             </div>
           </template>
 
           <template v-else-if="isLocationResource">
             <div class="asset-grid-3 location-asset-grid">
               <section class="asset-block location-main-block">
-                <h4>地点属性</h4>
+                <h4>Location Properties</h4>
                 <label
-                  ><span>编号</span><input :value="selectedId ?? '-'" type="text" disabled
+                  ><span>ID</span><input :value="selectedId ?? '-'" type="text" disabled
                 /></label>
                 <label
-                  ><span>建筑名称 <sup class="req">*</sup></span
+                  ><span>Building Name <sup class="req">*</sup></span
                   ><input v-model="form.name" type="text"
                 /></label>
                 <label
-                  ><span>楼层 <sup class="req">*</sup></span
+                  ><span>Floor <sup class="req">*</sup></span
                   ><input v-model="form.floor" type="text"
                 /></label>
                 <div class="asset-field-row">
-                  <span>文件名称</span>
+                  <span>File Name</span>
                   <div
                     v-if="selectedId && locationFloorplanName"
                     class="location-floorplan-link-wrap"
@@ -10303,7 +10303,7 @@ onBeforeUnmount(() => {
                     <button
                       class="item-overview-link location-floorplan-link quick-tip"
                       type="button"
-                      data-quick-tip="在新窗口预览平面图"
+                      data-quick-tip="Preview floorplan in new window"
                       @click="openLocationFloorplanInNewWindow"
                     >
                       {{ locationFloorplanName }}
@@ -10311,18 +10311,18 @@ onBeforeUnmount(() => {
                   </div>
                 </div>
                 <label
-                  ><span>关联(硬件/机架)</span
+                  ><span>Association (Hardware/Rack)</span
                   ><input :value="locationAssociationSummary" type="text" disabled
                 /></label>
                 <div class="asset-field-row">
-                  <span>建筑平面图</span>
+                  <span>Building Floorplan</span>
                   <div class="location-floorplan-picker">
                     <button
                       class="ghost-btn small-btn location-floorplan-picker-btn"
                       type="button"
                       @click="openLocationFloorplanPicker"
                     >
-                      选择文件
+                      Select File
                     </button>
                     <span
                       :class="
@@ -10331,7 +10331,7 @@ onBeforeUnmount(() => {
                           : 'location-floorplan-picker-name muted-text'
                       "
                     >
-                      {{ selectedLocationFloorplanName || '未选择文件' }}
+                      {{ selectedLocationFloorplanName || 'No file selected' }}
                     </span>
                     <input
                       ref="locationFloorplanInput"
@@ -10343,19 +10343,19 @@ onBeforeUnmount(() => {
                   </div>
                 </div>
                 <p class="muted-text">
-                  如果你选择了新的文件，它将替换当前文件，同时保留它的关联关系。
+                  If you select a new file, it will replace the current file while preserving its associations.
                 </p>
               </section>
 
               <section class="asset-block location-areas-block">
-                <h4>区域：房间，办公室</h4>
+                <h4>Areas: Rooms, Offices</h4>
                 <div class="table-wrap item-log-wrap">
                   <table class="item-log-table">
                     <thead>
                       <tr>
-                        <th>编号</th>
-                        <th>区域名称</th>
-                        <th v-if="canWrite">操作</th>
+                        <th>ID</th>
+                        <th>Area Name</th>
+                        <th v-if="canWrite">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -10367,22 +10367,22 @@ onBeforeUnmount(() => {
                         <td>{{ row.areaname ?? '-' }}</td>
                         <td v-if="canWrite" class="actions-cell">
                           <button class="small-btn" type="button" @click="editLocationArea(row)">
-                            编辑
+                            Edit
                           </button>
                           <button
                             class="small-btn danger"
                             type="button"
                             @click="removeLocationArea(row)"
                           >
-                            删除
+                            Delete
                           </button>
                         </td>
                       </tr>
                       <tr v-if="locationAreasLoading">
-                        <td :colspan="canWrite ? 3 : 2">加载中...</td>
+                        <td :colspan="canWrite ? 3 : 2">Loading...</td>
                       </tr>
                       <tr v-else-if="sortedLocationAreas.length === 0">
-                        <td :colspan="canWrite ? 3 : 2">暂无区域数据</td>
+                        <td :colspan="canWrite ? 3 : 2">No area data available</td>
                       </tr>
                     </tbody>
                   </table>
@@ -10392,35 +10392,35 @@ onBeforeUnmount(() => {
                   class="inline-form section-gap"
                   @submit.prevent="saveLocationArea"
                 >
-                  <input v-model="locationAreaName" type="text" placeholder="请输入区域名称" />
+                  <input v-model="locationAreaName" type="text" placeholder="Please enter area name" />
                   <button :disabled="locationAreaSaving" type="submit">
                     {{
                       locationAreaSaving
-                        ? '保存中...'
+                        ? 'Saving...'
                         : editingLocationAreaId
-                          ? '保存区域修改'
-                          : '新增区域'
+                          ? 'Save Area Changes'
+                          : 'Add Area'
                     }}
                   </button>
                 </form>
               </section>
 
               <section class="asset-block location-overview-block">
-                <h4>关联概览</h4>
+                <h4>Association Overview</h4>
                 <div class="item-overview-tabs">
                   <button
                     type="button"
                     :class="{ active: activeLocationOverviewTab === 'items' }"
                     @click="activeLocationOverviewTab = 'items'"
                   >
-                    硬件
+                    Hardware
                   </button>
                   <button
                     type="button"
                     :class="{ active: activeLocationOverviewTab === 'racks' }"
                     @click="activeLocationOverviewTab = 'racks'"
                   >
-                    机架
+                    Racks
                   </button>
                 </div>
                 <div class="item-overview-list">
@@ -10440,21 +10440,21 @@ onBeforeUnmount(() => {
                     </button>
                   </div>
                   <div v-if="locationOverviewRows.length === 0" class="muted-text">
-                    暂无关联记录
+                    No associated records available
                   </div>
                 </div>
               </section>
 
               <section class="asset-block location-floorplan-block">
-                <h4>平面图预览</h4>
+                <h4>Floor Plan Preview</h4>
                 <div class="location-floorplan-view">
                   <img
                     v-if="selectedId && locationFloorplanPreviewURL"
                     :src="locationFloorplanPreviewURL"
-                    alt="地点平面图预览"
+                    alt="Floor Plan Preview"
                   />
                   <div v-else class="muted-text">
-                    {{ locationFloorplanLoading ? '平面图加载中...' : '暂无平面图' }}
+                    {{ locationFloorplanLoading ? 'Loading floor plan...' : 'No floor plan available' }}
                   </div>
                 </div>
               </section>
@@ -10462,25 +10462,25 @@ onBeforeUnmount(() => {
 
             <div class="item-form-actions">
               <button :disabled="saving" type="submit">
-                {{ saving ? '提交中...' : selectedId ? '保存修改' : '创建' }}
+                {{ saving ? 'Submitting...' : selectedId ? 'Save Changes' : 'Create' }}
               </button>
-              <button class="ghost-btn" type="button" @click="drawerOpen = false">取消</button>
+              <button class="ghost-btn" type="button" @click="drawerOpen = false">Cancel</button>
             </div>
           </template>
 
           <template v-else-if="isUserResource">
             <div class="asset-grid-2 user-asset-grid">
               <section class="asset-block">
-                <h4>用户属性</h4>
+                <h4>User Properties</h4>
                 <label
-                  ><span>编号</span><input :value="selectedId ?? '-'" type="text" disabled
+                  ><span>ID</span><input :value="selectedId ?? '-'" type="text" disabled
                 /></label>
                 <label
-                  ><span>用户名 <sup class="req">*</sup></span
+                  ><span>Username <sup class="req">*</sup></span
                   ><input v-model="form.username" type="text"
                 /></label>
                 <label>
-                  <span>类型 <sup class="req">*</sup></span>
+                  <span>Type <sup class="req">*</sup></span>
                   <select v-model="form.userType">
                     <option
                       v-for="opt in getOptionsByFieldKey('userType')"
@@ -10491,23 +10491,23 @@ onBeforeUnmount(() => {
                     </option>
                   </select>
                 </label>
-                <label><span>用户描述</span><input v-model="form.userDesc" type="text" /></label>
+                <label><span>User Description</span><input v-model="form.userDesc" type="text" /></label>
                 <label>
-                  <span>密码 <sup v-if="!selectedId" class="req">*</sup></span>
+                  <span>Password <sup v-if="!selectedId" class="req">*</sup></span>
                   <input v-model="form.password" type="password" autocomplete="new-password" />
                 </label>
                 <label
-                  ><span>硬件数</span><input :value="userItemCount" type="text" disabled
+                  ><span>Hardware Count</span><input :value="userItemCount" type="text" disabled
                 /></label>
                 <ul class="asset-tip-list">
-                  <li><strong>能够网页登录、负责硬件的用户</strong></li>
-                  <li><sup>1</sup> 编辑用户时，密码留空表示不修改密码</li>
-                  <li><sup>2</sup> 添加用户时，密码不能为空</li>
+                  <li><strong>Users who can log in to the website and are responsible for hardware</strong></li>
+                  <li><sup>1</sup> When editing a user, leaving the password blank means not modifying the password</li>
+                  <li><sup>2</sup> When adding a user, the password cannot be empty</li>
                 </ul>
               </section>
 
               <section class="asset-block">
-                <h4>关联硬件</h4>
+                <h4>Associated Hardware</h4>
                 <div class="item-overview-list">
                   <div
                     v-for="entry in userOverviewRows"
@@ -10524,50 +10524,50 @@ onBeforeUnmount(() => {
                       <span>{{ entry.text }}</span>
                     </button>
                   </div>
-                  <div v-if="userOverviewRows.length === 0" class="muted-text">暂无关联硬件</div>
+                  <div v-if="userOverviewRows.length === 0" class="muted-text">No associated hardware</div>
                 </div>
               </section>
             </div>
 
             <div class="item-form-actions">
               <button :disabled="saving" type="submit">
-                {{ saving ? '提交中...' : selectedId ? '保存修改' : '创建' }}
+                {{ saving ? 'Submitting...' : selectedId ? 'Save Changes' : 'Create' }}
               </button>
-              <button class="ghost-btn" type="button" @click="drawerOpen = false">取消</button>
+              <button class="ghost-btn" type="button" @click="drawerOpen = false">Cancel</button>
             </div>
           </template>
 
           <template v-else-if="isRackResource">
             <div class="asset-grid-2 rack-asset-grid">
               <section class="asset-block">
-                <h4>机架属性</h4>
+                <h4>Rack Properties</h4>
                 <label
-                  ><span>编号</span><input :value="selectedId ?? '-'" type="text" disabled
+                  ><span>serial number</span><input :value="selectedId ?? '-'" type="text" disabled
                 /></label>
                 <label
-                  ><span>高度(U)* <sup class="req">*</sup></span
+                  ><span>height(U)* <sup class="req">*</sup></span
                   ><input v-model.number="form.uSize" type="number" min="1"
                 /></label>
                 <label>
-                  <span>编号方向</span>
+                  <span>Numbering Direction</span>
                   <select v-model="form.revNums">
                     <option value="0">1=Bottom</option>
                     <option value="1">1=Top</option>
                   </select>
                 </label>
                 <label
-                  ><span>标签 <sup class="req">*</sup></span
+                  ><span>Label <sup class="req">*</sup></span
                   ><input v-model="form.label" type="text"
                 /></label>
                 <label
-                  ><span>深度(mm) <sup class="req">*</sup></span
+                  ><span>Depth(mm) <sup class="req">*</sup></span
                   ><input v-model.number="form.depth" type="number" min="1"
                 /></label>
-                <label><span>型号</span><input v-model="form.model" type="text" /></label>
+                <label><span>Model</span><input v-model="form.model" type="text" /></label>
                 <label>
-                  <span>地点 <sup class="req">*</sup></span>
+                  <span>Location <sup class="req">*</sup></span>
                   <select v-model="form.locationId">
-                    <option value="">请选择</option>
+                    <option value="">Please select</option>
                     <option
                       v-for="opt in getOptionsByFieldKey('locationId')"
                       :key="`rack-loc-${opt.value}`"
@@ -10578,9 +10578,9 @@ onBeforeUnmount(() => {
                   </select>
                 </label>
                 <label>
-                  <span>区域</span>
+                  <span>Area</span>
                   <select v-model="form.locAreaId">
-                    <option value="">请选择</option>
+                    <option value="">Please select</option>
                     <option
                       v-for="opt in getOptionsByFieldKey('locAreaId')"
                       :key="`rack-area-${opt.value}`"
@@ -10591,10 +10591,10 @@ onBeforeUnmount(() => {
                   </select>
                 </label>
                 <label
-                  ><span>硬件</span><input :value="rackPopulation" type="text" disabled
+                  ><span>Hardware</span><input :value="rackPopulation" type="text" disabled
                 /></label>
                 <div class="rack-occupation-row">
-                  <span>在用</span>
+                  <span>In Use</span>
                   <div class="rack-occupation-value">
                     <div
                       class="rack-occupation-tip quick-tip"
@@ -10609,11 +10609,11 @@ onBeforeUnmount(() => {
                     </div>
                   </div>
                 </div>
-                <label><span>注释</span><textarea v-model="form.comments" /></label>
+                <label><span>Comments</span><textarea v-model="form.comments" /></label>
               </section>
 
               <section class="asset-block rack-view-block">
-                <h4>机架晟图</h4>
+                <h4>Rack View</h4>
                 <div v-if="rackViewData.rows.length > 0" class="rack-view-wrap">
                   <div class="rack-view-scroller">
                     <table class="rack-view-table">
@@ -10625,10 +10625,10 @@ onBeforeUnmount(() => {
                       </colgroup>
                       <thead>
                         <tr>
-                          <th title="机架单元">RU</th>
-                          <th>前侧</th>
-                          <th>中部</th>
-                          <th>后侧</th>
+                          <th title="Rack Unit">RU</th>
+                          <th>Front</th>
+                          <th>Middle</th>
+                          <th>Back</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -10711,7 +10711,7 @@ onBeforeUnmount(() => {
                   </div>
 
                   <div v-if="rackViewData.moreItems.length > 0" class="rack-view-side-note">
-                    <h5>已分配到该机架但未设置机架位置、深度位或高度的硬件</h5>
+                    <h5>Hardware allocated to this rack but not set with rack position, depth position or height</h5>
                     <ul>
                       <li v-for="row in rackViewData.moreItems" :key="`rack-more-${row.id}`">
                         <button
@@ -10719,7 +10719,7 @@ onBeforeUnmount(() => {
                           type="button"
                           @click="openResourceEditInNewWindow('items', row.id)"
                         >
-                          硬件 {{ row.id }}：{{ row.manufacturer || '-' }} {{ row.model || '-' }}
+                          Hardware {{ row.id }}:{{ row.manufacturer || '-' }} {{ row.model || '-' }}
                           {{ row.label || '' }}
                         </button>
                       </li>
@@ -10732,8 +10732,8 @@ onBeforeUnmount(() => {
                 <div v-else class="muted-text">
                   {{
                     rackTotalUnits > 0
-                      ? '当前机架暂无可显示的晟图内容'
-                      : '请先填写机架高度后查看晟图'
+                      ? 'Current rack has no displayable rack view content'
+                      : 'Please fill in the rack height before viewing the rack view'
                   }}
                 </div>
               </section>
@@ -10741,9 +10741,9 @@ onBeforeUnmount(() => {
 
             <div class="item-form-actions">
               <button :disabled="saving" type="submit">
-                {{ saving ? '提交中...' : selectedId ? '保存修改' : '创建' }}
+                {{ saving ? 'Submitting...' : selectedId ? 'Save Changes' : 'Create' }}
               </button>
-              <button class="ghost-btn" type="button" @click="drawerOpen = false">取消</button>
+              <button class="ghost-btn" type="button" @click="drawerOpen = false">Cancel</button>
             </div>
           </template>
 
@@ -10788,7 +10788,7 @@ onBeforeUnmount(() => {
             </label>
 
             <button :disabled="saving" type="submit">
-              {{ saving ? '提交中...' : selectedId ? '保存修改' : '创建' }}
+              {{ saving ? 'Submitting...' : selectedId ? 'Save Changes' : 'Create' }}
             </button>
           </template>
         </form>
@@ -10798,12 +10798,12 @@ onBeforeUnmount(() => {
     <div v-if="confirmOpen" class="dialog-mask">
       <section class="drawer modal-narrow" role="dialog" aria-modal="true">
         <div class="drawer-header">
-          <h3>删除确认</h3>
+          <h3>Delete Confirmation</h3>
           <button
             class="dialog-close-btn quick-tip"
             type="button"
-            aria-label="关闭"
-            data-quick-tip="关闭"
+            aria-label="Close"
+            data-quick-tip="Close"
             @click="closeDeleteConfirm"
           >
             ×
@@ -10813,7 +10813,7 @@ onBeforeUnmount(() => {
           <p class="delete-confirm-text">{{ deleteConfirmMessage }}</p>
           <div class="inline-actions">
             <button class="danger" type="button" :disabled="deleting" @click="confirmDelete">
-              {{ deleting ? '删除中...' : '确认删除' }}
+              {{ deleting ? 'Deleting...' : 'Confirm Delete' }}
             </button>
             <button
               class="ghost-btn"
@@ -10821,7 +10821,7 @@ onBeforeUnmount(() => {
               :disabled="deleting"
               @click="closeDeleteConfirm"
             >
-              取消
+              Cancel
             </button>
           </div>
         </div>
@@ -10841,7 +10841,7 @@ onBeforeUnmount(() => {
   </section>
 
   <section class="page-shell" v-else>
-    <p class="error-text">资源不存在</p>
+    <p class="error-text">Resource not found</p>
   </section>
 </template>
 

@@ -40,12 +40,12 @@ function getRequiredFieldsError() {
   if (Number(form.useLdap ?? 0) !== 1) return '';
 
   const missing: string[] = [];
-  if (!String(form.ldapServer ?? '').trim()) missing.push('服务器地址');
-  if (!String(form.ldapDn ?? '').trim()) missing.push('基准 DN');
-  if (!String(form.ldapBindDn ?? '').trim()) missing.push('绑定 DN');
-  if (!String(form.ldapBindPassword ?? '').trim()) missing.push('绑定密码');
+  if (!String(form.ldapServer ?? '').trim()) missing.push('Server address');
+  if (!String(form.ldapDn ?? '').trim()) missing.push('Base DN');
+  if (!String(form.ldapBindDn ?? '').trim()) missing.push('Bind DN');
+  if (!String(form.ldapBindPassword ?? '').trim()) missing.push('Bind password');
 
-  return missing.length > 0 ? `请完善必填项：${missing.join('、')}` : '';
+  return missing.length > 0 ? `Please complete the required fields: ${missing.join(', ')}` : '';
 }
 
 async function load() {
@@ -64,7 +64,7 @@ async function load() {
   } catch (err: unknown) {
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '系统配置加载失败';
+      'Failed to load system configuration';
   } finally {
     loading.value = false;
   }
@@ -91,7 +91,7 @@ async function save() {
     form.ldapGetUsers = data.ldap_getusers ?? form.ldapGetUsers;
     form.ldapGetUsersFilter = data.ldap_getusers_filter ?? form.ldapGetUsersFilter;
     savedSignature.value = buildSettingsSignature();
-    noticeStore.success('设置已保存');
+    noticeStore.success('Settings saved');
   } catch {
   } finally {
     saving.value = false;
@@ -101,7 +101,7 @@ async function save() {
 async function testConnection() {
   if (auth.isReadOnly) return;
   if (savedSignature.value === '' || savedSignature.value !== buildSettingsSignature()) {
-    noticeStore.error('请先保存当前 LDAP 配置，再进行连接测试');
+    noticeStore.error('Please save the current LDAP configuration before testing the connection');
     return;
   }
 
@@ -109,7 +109,7 @@ async function testConnection() {
   error.value = '';
   try {
     const { data } = await api.post('/settings/test-ldap', { ...form });
-    noticeStore.success(data?.message ?? 'LDAP 连接成功');
+    noticeStore.success(data?.message ?? 'LDAP connection successful');
   } catch {
   } finally {
     testing.value = false;
@@ -122,95 +122,94 @@ onMounted(load);
 <template>
   <section class="page-shell">
     <header class="page-header">
-      <h2>设置</h2>
-      <button class="ghost-btn" @click="load">重载</button>
+      <h2>Settings</h2>
+      <button class="ghost-btn" @click="load">Reload</button>
     </header>
 
-    <p v-if="loading">加载中...</p>
+    <p v-if="loading">Loading...</p>
     <p v-else-if="error" class="error-text section-gap">{{ error }}</p>
 
     <form v-else class="settings-grid settings-form" @submit.prevent="save">
       <div class="settings-ldap-intro">
-        <h3>LDAP 配置</h3>
+        <h3>LDAP Configuration</h3>
         <p class="muted-text">
-          连接测试必须基于已保存配置执行。测试仅验证 LDAP
-          服务器连通和绑定认证是否成功，不会实际执行用户搜索。
+          Connection testing must be performed based on the saved configuration. The test only verifies the LDAP
+          server connectivity and bind authentication, and does not actually execute user searches.
         </p>
         <p class="muted-text settings-ldap-note">
-          %{attr} 表示登录时参与匹配的 LDAP 属性名，%{user}
-          表示当前输入的用户名；这两个占位符仅作为搜索过滤模板保留使用。
+          %{attr} represents the LDAP attribute name participating in matching during login, and %{user}
+          represents the currently entered username; these placeholders are retained for use as search filter templates.
         </p>
       </div>
       <label class="settings-field">
-        <span class="settings-field-label">启用 LDAP</span>
+        <span class="settings-field-label">Enable LDAP</span>
         <select v-model.number="form.useLdap">
-          <option :value="0">禁用</option>
-          <option :value="1">启用</option>
+          <option :value="0">Disable</option>
+          <option :value="1">Enable</option>
         </select>
       </label>
       <label class="settings-field">
-        <span class="settings-field-label">服务器地址</span>
+        <span class="settings-field-label">Server Address</span>
         <input
           v-model="form.ldapServer"
           :disabled="!ldapEnabled"
           type="text"
-          placeholder="例如：ldap://ad.example.com:389 或 ldaps://ad.example.com:636"
+          placeholder="For example: ldap://ad.example.com:389 or ldaps://ad.example.com:636"
         />
       </label>
       <label class="settings-field">
-        <span class="settings-field-label">基准 DN</span>
+        <span class="settings-field-label">Base DN</span>
         <input
           v-model="form.ldapDn"
           :disabled="!ldapEnabled"
           type="text"
-          placeholder="例如：OU=Users,DC=example,DC=com"
+          placeholder="For example: OU=Users,DC=example,DC=com"
         />
       </label>
       <label class="settings-field">
-        <span class="settings-field-label">绑定 DN</span>
+        <span class="settings-field-label">Binding DN</span>
         <input
           v-model="form.ldapBindDn"
           :disabled="!ldapEnabled"
           type="text"
-          placeholder="例如：CN=ldap-reader,OU=Service Accounts,DC=example,DC=com"
+          placeholder="For example: CN=ldap-reader,OU=Service Accounts,DC=example,DC=com"
         />
       </label>
       <label class="settings-field">
-        <span class="settings-field-label">绑定密码</span>
+        <span class="settings-field-label">Binding Password</span>
         <input
           v-model="form.ldapBindPassword"
           :disabled="!ldapEnabled"
           type="password"
           autocomplete="new-password"
-          placeholder="请输入绑定 DN 对应的密码"
+          placeholder="Please enter the password for the binding DN"
         />
       </label>
       <label class="settings-field">
-        <span class="settings-field-label">用户查询过滤模板</span>
+        <span class="settings-field-label">User Query Filter Template</span>
         <textarea
           v-model="form.ldapGetUsers"
           :disabled="!ldapEnabled"
           rows="3"
-          placeholder="例如：(&(objectClass=user)(|(cn=%s)(sAMAccountName=%s)(userPrincipalName=%s)))"
+          placeholder="For example: (&(objectClass=user)(|(cn=%s)(sAMAccountName=%s)(userPrincipalName=%s)))"
         />
       </label>
       <label class="settings-field">
-        <span class="settings-field-label">附加搜索过滤器</span>
+        <span class="settings-field-label">Additional Search Filter</span>
         <textarea
           v-model="form.ldapGetUsersFilter"
           :disabled="!ldapEnabled"
           rows="3"
-          placeholder="例如：(%{attr}=%{user}) 或 (memberOf=CN=IT,OU=Groups,DC=example,DC=com)"
+          placeholder="For example: (%{attr}=%{user}) or (memberOf=CN=IT,OU=Groups,DC=example,DC=com)"
         />
         <small class="settings-field-help"
-          >可直接填写 (%{attr}=%{user}) 这类模板；其中 %{attr} 是属性名占位，%{user}
-          是用户名占位。</small
+          >You can directly fill in templates like (%{attr}=%{user}); where %{attr} is the attribute name placeholder and %{user} is the username placeholder.</small
         >
       </label>
 
       <div class="settings-actions">
         <button :disabled="testing || saving || auth.isReadOnly" type="submit">
-          {{ saving ? '保存中...' : auth.isReadOnly ? '只读模式' : '保存设置' }}
+          {{ saving ? 'Saving...' : auth.isReadOnly ? 'Read-only Mode' : 'Save Settings' }}
         </button>
         <button
           :disabled="!ldapEnabled || testing || saving || auth.isReadOnly"
@@ -218,7 +217,7 @@ onMounted(load);
           type="button"
           @click="testConnection"
         >
-          {{ testing ? '测试中...' : auth.isReadOnly ? '只读模式' : '连接测试' }}
+          {{ testing ? 'Testing...' : auth.isReadOnly ? 'Read-only Mode' : 'Test Connection' }}
         </button>
       </div>
     </form>

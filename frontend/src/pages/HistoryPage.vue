@@ -10,24 +10,24 @@ type HistoryResponse = {
 };
 
 const text = {
-  title: '操作日志',
-  search: '查询',
-  placeholder: '按用户/IP/SQL 实时检索',
-  refresh: '刷新',
-  exportExcel: '导出Excel',
-  exporting: '导出中...',
-  loading: '加载中...',
-  empty: '暂无历史记录',
-  historyLoadFailed: '历史记录加载失败',
-  exportFailed: '导出 Excel 失败',
-  display: '显示',
-  total: '共',
-  rowsUnit: '条',
-  current: '当前',
-  first: '首页',
-  prev: '上一页',
-  next: '下一页',
-  last: '末页',
+  title: 'Operation Log',
+  search: 'Search',
+  placeholder: 'Search by user/IP/SQL in real-time',
+  refresh: 'Refresh',
+  exportExcel: 'Export Excel',
+  exporting: 'Exporting...',
+  loading: 'Loading...',
+  empty: 'No history records',
+  historyLoadFailed: 'Failed to load history records',
+  exportFailed: 'Failed to export Excel',
+  display: 'Display',
+  total: 'Total',
+  rowsUnit: 'rows',
+  current: 'Current',
+  first: 'First',
+  prev: 'Previous',
+  next: 'Next',
+  last: 'Last',
 } as const;
 
 const rows = ref<Array<Record<string, unknown>>>([]);
@@ -230,7 +230,7 @@ load(0);
         {{ text.rowsUnit }}
       </label>
       <span class="table-meta"
-        >{{ text.total }} {{ total }} {{ text.rowsUnit }}，{{ text.current }} {{ rangeStart }} -
+        >{{ text.total }} {{ total }} {{ text.rowsUnit }},{{ text.current }} {{ rangeStart }} -
         {{ rangeEnd }} {{ text.rowsUnit }}</span
       >
     </div>
@@ -239,9 +239,9 @@ load(0);
       <table class="history-table">
         <thead>
           <tr>
-            <th>编号</th>
-            <th class="history-time-col">时间</th>
-            <th>用户</th>
+            <th>ID</th>
+            <th class="history-time-col">Time</th>
+            <th>User</th>
             <th>IP</th>
             <th>SQL</th>
           </tr>

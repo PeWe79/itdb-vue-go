@@ -498,7 +498,7 @@ const form = reactive({
   wantbarcode: true,
   wantheadertext: true,
   wantheaderimage: false,
-  headertext: 'IT资产标签',
+  headertext: 'IT Asset Tags',
   image: 'images/itdb.png',
   imagewidth: '5',
   imageheight: '5',
@@ -517,19 +517,19 @@ const allChecked = computed(() => {
 });
 const canWrite = computed(() => !auth.isReadOnly);
 const confirmMessage = computed(() =>
-  pendingDeletePresetId.value ? `确认删除预设 编号=${pendingDeletePresetId.value} 吗？` : ''
+  pendingDeletePresetId.value ? `Confirm deletion of preset ID=${pendingDeletePresetId.value}?` : ''
 );
 const orderLinks = computed(() => [
-  { key: 'type' as const, text: '[类型]', tip: '订单: 状态, 硬件类型, 厂商, 编号' },
-  { key: 'id' as const, text: '[编号]', tip: '订单: 状态, 编号, 硬件类型, 厂商' },
-  { key: 'id_desc' as const, text: '[编号降序]', tip: '订单: 状态, 编号(逆序), 硬件类型, 厂商' },
-  { key: 'model' as const, text: '[型号]', tip: '订单: 状态, 型号, 硬件类型, 厂商' },
+  { key: 'type' as const, text: '[Type]', tip: 'Order: Status, Hardware Type, Manufacturer, ID' },
+  { key: 'id' as const, text: '[ID]', tip: 'Order: Status, ID, Hardware Type, Manufacturer' },
+  { key: 'id_desc' as const, text: '[ID Desc]', tip: 'Order: Status, ID (Descending), Hardware Type, Manufacturer' },
+  { key: 'model' as const, text: '[Model]', tip: 'Order: Status, Model, Hardware Type, Manufacturer' },
 ]);
 const defaultStatusColorMap: Record<string, string> = {
-  使用中: '#2f7fba',
-  库存: '#16a34a',
-  有故障: '#dc2626',
-  报废: '#9ca3af',
+  'In Use': '#2f7fba',
+  'In Stock': '#16a34a',
+  'Defective': '#dc2626',
+  'Scrapped': '#9ca3af',
 };
 
 const groupedItems = computed(() => {
@@ -980,7 +980,7 @@ async function loadItems() {
     if (seq !== loadItemsSeq) return;
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '标签硬件加载失败';
+      'Failed to load tag hardware.';
   } finally {
     if (seq !== loadItemsSeq) return;
     loadingItems.value = false;
@@ -999,7 +999,7 @@ async function loadPresets() {
   } catch (err: unknown) {
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '标签预设加载失败';
+      'Failed to load label presets';
   } finally {
     loadingPresets.value = false;
   }
@@ -1009,7 +1009,7 @@ async function savePreset() {
   if (!canWrite.value) return;
   const payload = buildPresetPayload();
   if (!payload.name) {
-    error.value = '请先输入预设名称';
+    error.value = 'Please enter a preset name';
     return;
   }
 
@@ -1018,12 +1018,12 @@ async function savePreset() {
   success.value = '';
   try {
     await api.post('/labels/presets', payload);
-    success.value = '预设保存成功';
+    success.value = 'Preset saved successfully';
     await loadPresets();
   } catch (err: unknown) {
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '预设保存失败';
+      'Failed to save preset';
   } finally {
     savingPreset.value = false;
   }
@@ -1051,12 +1051,12 @@ async function confirmDeletePreset() {
     await api.delete(`/labels/presets/${id}`);
     confirmOpen.value = false;
     pendingDeletePresetId.value = null;
-    success.value = '预设已删除';
+    success.value = 'Preset deleted successfully';
     await loadPresets();
   } catch (err: unknown) {
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '预设删除失败';
+      'Failed to delete preset';
   } finally {
     deletingPreset.value = false;
   }
@@ -1079,14 +1079,14 @@ async function loadPreview() {
     previewRows.value = await attachPreviewQrImages(data ?? []);
     success.value =
       previewRows.value.length > 0
-        ? `已生成 ${previewRows.value.length} 条标签预览`
-        : '当前选择没有可预览的标签数据';
+        ? `Generated ${previewRows.value.length} label previews`
+        : 'No label data available for preview';
     await nextTick();
     previewSectionRef.value?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch (err: unknown) {
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '标签预览加载失败';
+      'Failed to load label preview';
   } finally {
     loadingPreview.value = false;
   }
@@ -1099,7 +1099,7 @@ function buildPrintLabelHtml(row: LabelPreview) {
       <div class="label-header">
         ${
           previewImageSrc.value
-            ? `<img src="${escapeHtml(previewImageSrc.value)}" alt="标签页头图片">`
+            ? `<img src="${escapeHtml(previewImageSrc.value)}" alt="Label header image">`
             : ''
         }
         ${
@@ -1118,7 +1118,7 @@ function buildPrintLabelHtml(row: LabelPreview) {
         <div class="label-barcode-code">
           ${
             row.qrImage
-              ? `<img src="${escapeHtml(row.qrImage)}" alt="${escapeHtml(row.qrText || '二维码')}">`
+              ? `<img src="${escapeHtml(row.qrImage)}" alt="${escapeHtml(row.qrText || 'QR Code')}">`
               : '<strong>QR</strong>'
           }
         </div>
@@ -1158,7 +1158,7 @@ function buildPrintDocumentHtml() {
           <div class="grid">
             ${page
               .map(cell => {
-                if (cell.kind === 'skip') return '<div class="skip-cell">跳过</div>';
+                if (cell.kind === 'skip') return '<div class="skip-cell">Skip</div>';
                 if (cell.kind === 'blank')
                   return '<div class="blank-cell" aria-hidden="true"></div>';
                 if (cell.kind === 'label' && cell.row) return buildPrintLabelHtml(cell.row);
@@ -1172,11 +1172,11 @@ function buildPrintDocumentHtml() {
     .join('');
 
   return `<!doctype html>
-<html lang="zh-CN">
+<html lang="en-US">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${escapeHtml(form.name.trim() || '打印标签')}</title>
+  <title>${escapeHtml(form.name.trim() || 'Print Label')}</title>
   <style>
     @page {
       size: ${paper.widthMm}mm ${paper.heightMm}mm;
@@ -1392,13 +1392,13 @@ async function printPreview() {
   if (previewPages.value.length === 0 || printingPreview.value) return;
   const popup = window.open('', '_blank');
   if (!popup) {
-    error.value = '浏览器拦截了打印窗口，请允许弹出窗口后重试';
+    error.value = 'The browser blocked the print window; please allow pop-ups and try again.';
     return;
   }
 
   popup.document.open();
   popup.document.write(
-    `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>生成中</title></head><body style="font-family:'Noto Sans SC',sans-serif;padding:24px;color:#1f2937;">正在生成打印页，请稍候...</body></html>`
+    `<!doctype html><html lang="en-US"><head><meta charset="utf-8"><title>Generating</title></head><body style="font-family:'Noto Sans SC',sans-serif;padding:24px;color:#1f2937;">Generating print page, please wait...</body></html>`
   );
   popup.document.close();
 
@@ -1414,7 +1414,7 @@ async function printPreview() {
     popup.document.close();
   } catch {
     popup.close();
-    error.value = '打印页生成失败';
+    error.value = 'Failed to generate print page';
   } finally {
     printingPreview.value = false;
   }
@@ -1427,10 +1427,10 @@ loadPresets();
 <template>
   <section class="page-shell labels-page">
     <header class="page-header">
-      <h2>打印标签</h2>
+      <h2>Print Labels</h2>
       <div class="header-actions">
-        <button class="ghost-btn" @click="loadItems">刷新硬件</button>
-        <button class="ghost-btn" @click="loadPresets">刷新预设</button>
+        <button class="ghost-btn" @click="loadItems">Refresh Hardware</button>
+        <button class="ghost-btn" @click="loadPresets">Refresh Presets</button>
       </div>
     </header>
     <p v-if="success" class="success-text section-gap">{{ success }}</p>
@@ -1439,7 +1439,7 @@ loadPresets();
       <section class="labels-main-panel">
         <div class="labels-main-top">
           <div class="labels-order-row">
-            <b>订购人：</b>
+            <b>Order By:</b>
             <a
               v-for="link in orderLinks"
               :key="link.key"
@@ -1453,11 +1453,11 @@ loadPresets();
           </div>
 
           <div class="labels-filter-row">
-            <b>过滤：</b>
+            <b>Filter:</b>
             <input
               :value="search"
               class="search-input labels-filter-input"
-              placeholder="输入关键字过滤硬件"
+              placeholder="Enter keywords to filter hardware"
               @input="onSearchInput"
               @compositionupdate="onSearchInput"
               @compositionend="onSearchInput"
@@ -1465,7 +1465,7 @@ loadPresets();
           </div>
         </div>
 
-        <p v-if="loadingItems" class="muted-text">硬件加载中...</p>
+        <p v-if="loadingItems" class="muted-text">Loading hardware...</p>
 
         <div v-else class="table-wrap labels-list-wrap">
           <table class="labels-items-table">
@@ -1474,8 +1474,8 @@ loadPresets();
                 <th style="width: 56px">
                   <input type="checkbox" :checked="allChecked" @change="toggleAll" />
                 </th>
-                <th>编号-类型</th>
-                <th>标签文本</th>
+                <th>Item ID-Type</th>
+                <th>Label Text</th>
               </tr>
             </thead>
             <tbody>
@@ -1497,7 +1497,7 @@ loadPresets();
                 </tr>
               </template>
               <tr v-if="items.length === 0">
-                <td colspan="3">暂无可选硬件</td>
+                <td colspan="3">No hardware available</td>
               </tr>
             </tbody>
           </table>
@@ -1510,7 +1510,7 @@ loadPresets();
             :disabled="selectedCount === 0 || loadingPreview"
             @click="loadPreview"
           >
-            {{ loadingPreview ? '生成中...' : '生成标签预览' }}
+            {{ loadingPreview ? 'Generating...' : 'Generate Label Preview' }}
           </button>
           <button
             type="button"
@@ -1518,15 +1518,15 @@ loadPresets();
             :disabled="previewPages.length === 0 || loadingPreview || printingPreview"
             @click="printPreview"
           >
-            {{ printingPreview ? '生成打印页...' : '打印 / 导出 PDF' }}
+            {{ printingPreview ? 'Generating print page...' : 'Print / Export PDF' }}
           </button>
         </div>
 
         <ol class="labels-help-list">
-          <li>从上面选择需要打印标签的硬件</li>
-          <li>在右侧设置标签属性（手工或套用预设）</li>
-          <li>点击“生成标签预览”确认数据</li>
-          <li>后续导出 PDF 时，打印设置建议关闭自动缩放</li>
+          <li>Select hardware that needs label printing from above</li>
+          <li>Set label properties (manual or apply preset)</li>
+          <li>Click "Generate Label Preview" to confirm data</li>
+          <li>When exporting PDF later, it is recommended to turn off automatic zooming in print settings</li>
         </ol>
       </section>
 
@@ -1538,13 +1538,13 @@ loadPresets();
             <col class="label-props-col-presets" />
           </colgroup>
           <caption>
-            标签属性：
+            Label Properties:
           </caption>
           <thead>
             <tr>
-              <th>属性</th>
-              <th>值</th>
-              <th>预设</th>
+              <th>Property</th>
+              <th>Value</th>
+              <th>Preset</th>
             </tr>
           </thead>
           <tbody>
@@ -1553,11 +1553,11 @@ loadPresets();
                 <table class="props-inner-table">
                   <tbody>
                     <tr>
-                      <td class="prop-key">预设名称：</td>
+                      <td class="prop-key">Preset Name:</td>
                       <td><input v-model="form.name" type="text" /></td>
                     </tr>
                     <tr>
-                      <td class="prop-key">纸张大小：</td>
+                      <td class="prop-key">Paper Size:</td>
                       <td>
                         <select v-model="form.papersize">
                           <option v-for="paper in paperOptions" :key="paper" :value="paper">
@@ -1567,7 +1567,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">行：</td>
+                      <td class="prop-key">Rows:</td>
                       <td>
                         <select v-model.number="form.rows">
                           <option v-for="value in rowOptions" :key="`row-${value}`" :value="value">
@@ -1577,7 +1577,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">列：</td>
+                      <td class="prop-key">Columns:</td>
                       <td>
                         <select v-model.number="form.cols">
                           <option v-for="value in colOptions" :key="`col-${value}`" :value="value">
@@ -1587,7 +1587,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">宽度：</td>
+                      <td class="prop-key">Width:</td>
                       <td>
                         <div class="prop-input-unit-row">
                           <input v-model="form.lwidth" type="text" />
@@ -1596,7 +1596,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">高度：</td>
+                      <td class="prop-key">Height:</td>
                       <td>
                         <div class="prop-input-unit-row">
                           <input v-model="form.lheight" type="text" />
@@ -1605,7 +1605,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">垂直间距：</td>
+                      <td class="prop-key">Vertical Spacing:</td>
                       <td>
                         <div class="prop-input-unit-row">
                           <input v-model="form.vpitch" type="text" />
@@ -1614,7 +1614,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">水平间距：</td>
+                      <td class="prop-key">Horizontal Spacing:</td>
                       <td>
                         <div class="prop-input-unit-row">
                           <input v-model="form.hpitch" type="text" />
@@ -1623,7 +1623,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">上边距：</td>
+                      <td class="prop-key">Top Margin:</td>
                       <td>
                         <div class="prop-input-unit-row">
                           <input v-model="form.tmargin" type="text" />
@@ -1632,7 +1632,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">下边距：</td>
+                      <td class="prop-key">Bottom Margin:</td>
                       <td>
                         <div class="prop-input-unit-row">
                           <input v-model="form.bmargin" type="text" />
@@ -1641,7 +1641,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">左边距：</td>
+                      <td class="prop-key">Left Margin:</td>
                       <td>
                         <div class="prop-input-unit-row">
                           <input v-model="form.lmargin" type="text" />
@@ -1650,7 +1650,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">右边距：</td>
+                      <td class="prop-key">Right Margin:</td>
                       <td>
                         <div class="prop-input-unit-row">
                           <input v-model="form.rmargin" type="text" />
@@ -1659,15 +1659,15 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">边框颜色(0-255)：</td>
-                      <td title="0=黑色，255=白色">
+                      <td class="prop-key">Border Color (0-255):</td>
+                      <td title="0=black, 255=white">
                         <div class="prop-input-unit-row">
                           <input v-model="form.border" type="text" />
                         </div>
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">文本填充：</td>
+                      <td class="prop-key">Text Padding:</td>
                       <td>
                         <div class="prop-input-unit-row">
                           <input v-model="form.padding" type="text" />
@@ -1676,7 +1676,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">字体大小：</td>
+                      <td class="prop-key">Font Size:</td>
                       <td>
                         <div class="prop-input-unit-row">
                           <input v-model="form.fontsize" type="text" />
@@ -1686,7 +1686,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">编号字体大小：</td>
+                      <td class="prop-key">ID Font Size:</td>
                       <td>
                         <div class="prop-input-unit-row">
                           <input v-model="form.idfontsize" type="text" />
@@ -1695,7 +1695,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">标题字体大小：</td>
+                      <td class="prop-key">Header Font Size:</td>
                       <td>
                         <div class="prop-input-unit-row">
                           <input v-model="form.headerfontsize" type="text" />
@@ -1704,7 +1704,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">条码大小：</td>
+                      <td class="prop-key">Barcode Size:</td>
                       <td>
                         <div class="prop-input-unit-row">
                           <input v-model="form.barcodesize" type="text" />
@@ -1713,16 +1713,16 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">页头图片：</td>
+                      <td class="prop-key">Header Image:</td>
                       <td>
                         <div class="prop-image-row">
                           <input v-model="form.image" type="text" class="prop-image-input" />
-                          <img class="prop-image-preview" :src="form.image" alt="预览" />
+                          <img class="prop-image-preview" :src="form.image" alt="Preview" />
                         </div>
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">图片大小(WxH)：</td>
+                      <td class="prop-key">Image Size (WxH):</td>
                       <td>
                         <div class="prop-size-row">
                           <input v-model="form.imagewidth" type="text" class="prop-size-input" />
@@ -1733,7 +1733,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">页头(_NL_换行)：</td>
+                      <td class="prop-key">Header Text (_NL_ newline):</td>
                       <td>
                         <div class="prop-textarea-row">
                           <textarea v-model="form.headertext" rows="2" />
@@ -1741,13 +1741,13 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">QR 条码：</td>
+                      <td class="prop-key">QR Code:</td>
                       <td class="prop-qr-cell">
                         <div class="prop-inline-check-row">
                           <input v-model="form.wantbarcode" type="checkbox" />
                           <span
                             class="quick-tip quick-tip-below prop-qr-tip"
-                            data-quick-tip="在二维码编号前追加文本，例如：http://服务器地址/itdb/?action=edititem&id="
+                            data-quick-tip="Prepend text to the QR code number, for example: http://server-address/itdb/?action=edititem&id="
                           >
                             <input v-model="form.qrtext" type="text" class="prop-qr-input" />
                           </span>
@@ -1755,7 +1755,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">页头文字：</td>
+                      <td class="prop-key">Header Text:</td>
                       <td class="prop-check-td">
                         <div class="prop-check-cell">
                           <input v-model="form.wantheadertext" type="checkbox" />
@@ -1763,7 +1763,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">页头图片开关：</td>
+                      <td class="prop-key">Header image toggle:</td>
                       <td class="prop-check-td">
                         <div class="prop-check-cell">
                           <input v-model="form.wantheaderimage" type="checkbox" />
@@ -1771,12 +1771,12 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">无文本：</td>
+                      <td class="prop-key">No Text:</td>
                       <td class="prop-check-td">
                         <div class="prop-check-cell">
                           <span
                             class="quick-tip quick-tip-below prop-check-tip"
-                            data-quick-tip="仅打印条码，不显示文字"
+                            data-quick-tip="Print barcode only; do not display text."
                           >
                             <input v-model="form.wantnotext" type="checkbox" />
                           </span>
@@ -1784,7 +1784,7 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">条码右侧文字：</td>
+                      <td class="prop-key">Barcode Right Text:</td>
                       <td class="prop-check-td">
                         <div class="prop-check-cell">
                           <input v-model="form.wantraligntext" type="checkbox" />
@@ -1792,16 +1792,16 @@ loadPresets();
                       </td>
                     </tr>
                     <tr>
-                      <td class="prop-key">忽略：</td>
+                      <td class="prop-key">Neglect:</td>
                       <td>
                         <div class="prop-input-unit-row">
                           <span
                             class="quick-tip prop-ignore-tip"
-                            data-quick-tip="当顶部标签已经被打印过时使用"
+                            data-quick-tip="When the top label has already been printed"
                           >
                             <input v-model="form.labelskip" type="text" />
                           </span>
-                          <span class="prop-unit">标签</span>
+                          <span class="prop-unit">labels</span>
                         </div>
                       </td>
                     </tr>
@@ -1812,7 +1812,7 @@ loadPresets();
               <td class="presets-cell">
                 <div class="presets-wrap">
                   <div class="presets-list-wrap">
-                    <p v-if="loadingPresets" class="muted-text">预设加载中...</p>
+                    <p v-if="loadingPresets" class="muted-text">Loading presets...</p>
                     <template v-else>
                       <div v-for="preset in presets" :key="preset.id" class="preset-row">
                         <a
@@ -1825,7 +1825,7 @@ loadPresets();
                           v-if="canWrite"
                           class="preset-delete-btn"
                           type="button"
-                          title="删除预设"
+                          title="Delete Preset"
                           @click="requestDeletePreset(preset.id)"
                         >
                           <span
@@ -1854,7 +1854,7 @@ loadPresets();
                           ></span>
                         </button>
                       </div>
-                      <p v-if="presets.length === 0" class="muted-text">暂无预设</p>
+                      <p v-if="presets.length === 0" class="muted-text">No presets available</p>
                     </template>
                   </div>
 
@@ -1866,13 +1866,13 @@ loadPresets();
                       :disabled="savingPreset"
                       @click="savePreset"
                     >
-                      {{ savingPreset ? '保存中...' : '保存为新预设' }}
+                      {{ savingPreset ? 'Saving...' : 'Save as New Preset' }}
                     </button>
 
                     <img
                       class="label-guide-image"
                       src="/images/labelinfo.jpg"
-                      alt="标签参数示意图"
+                      alt="Label Parameters Diagram"
                     />
                   </div>
                 </div>
@@ -1884,7 +1884,7 @@ loadPresets();
 
       <section ref="previewSectionRef" class="labels-card labels-preview-panel">
         <div class="labels-preview-head">
-          <h3>预览结果（{{ previewRows.length }}）</h3>
+          <h3>Preview Results ({{ previewRows.length }})</h3>
           <div class="labels-preview-meta">
             <span
               >{{ previewPaperInfo.key }} {{ previewPaperInfo.widthMm }}×{{
@@ -1892,18 +1892,18 @@ loadPresets();
               }}
               mm</span
             >
-            <span>{{ previewColumns }} 列 × {{ previewRowsPerPage }} 行</span>
-            <span>跳过 {{ previewSkipCount }} 个</span>
+            <span>{{ previewColumns }} columns × {{ previewRowsPerPage }} rows</span>
+            <span>Skip {{ previewSkipCount }} labels</span>
             <span
-              >水平间距 {{ previewGapX.toFixed(0) }} px / 垂直间距
+              >Horizontal Spacing {{ previewGapX.toFixed(0) }} px / Vertical Spacing
               {{ previewGapY.toFixed(0) }} px</span
             >
-            <span>{{ form.name.trim() || '未命名预设' }}</span>
+            <span>{{ form.name.trim() || 'Unnamed Preset' }}</span>
           </div>
         </div>
 
         <div v-if="previewPages.length === 0" class="labels-preview-empty muted-text">
-          请选择硬件后生成预览
+          Please select hardware to generate preview
         </div>
         <div v-else class="labels-preview-pages">
           <section
@@ -1911,7 +1911,7 @@ loadPresets();
             :key="`preview-page-${pageIndex}`"
             class="labels-preview-sheet"
           >
-            <header>第 {{ pageIndex + 1 }} 页</header>
+            <header>No. {{ pageIndex + 1 }} Page</header>
             <div class="labels-preview-sheet-scroller">
               <div class="labels-preview-sheet-canvas" :style="previewSheetCanvasStyle">
                 <div class="labels-preview-grid" :style="previewGridStyle">
@@ -1921,7 +1921,7 @@ loadPresets();
                       class="labels-preview-skip"
                       :style="previewCardVars"
                     >
-                      跳过
+                      Jump over
                     </div>
                     <div
                       v-else-if="cell.kind === 'blank'"
@@ -1942,7 +1942,7 @@ loadPresets();
                         v-if="previewImageSrc || previewHeaderLines.length > 0"
                         class="labels-preview-header"
                       >
-                        <img v-if="previewImageSrc" :src="previewImageSrc" alt="标签页头图片" />
+                        <img v-if="previewImageSrc" :src="previewImageSrc" alt="Label Header Image" />
                         <div
                           v-if="previewHeaderLines.length > 0"
                           class="labels-preview-header-text"
@@ -1961,7 +1961,7 @@ loadPresets();
                             <img
                               v-if="cell.row.qrImage"
                               :src="cell.row.qrImage"
-                              :alt="cell.row.qrText || '二维码'"
+                              :alt="cell.row.qrText || 'QR Code'"
                             />
                             <strong v-else>QR</strong>
                           </div>
@@ -1991,12 +1991,12 @@ loadPresets();
     <div v-if="canWrite && confirmOpen" class="dialog-mask">
       <section class="drawer modal-narrow" role="dialog" aria-modal="true">
         <div class="drawer-header">
-          <h3>删除确认</h3>
+          <h3>Confirm Deletion</h3>
           <button
             class="dialog-close-btn quick-tip"
             type="button"
-            aria-label="关闭"
-            data-quick-tip="关闭"
+            aria-label="Close"
+            data-quick-tip="Close"
             @click="closeConfirm"
           >
             ×
@@ -2011,7 +2011,7 @@ loadPresets();
               :disabled="deletingPreset"
               @click="confirmDeletePreset"
             >
-              {{ deletingPreset ? '删除中...' : '确认删除' }}
+              {{ deletingPreset ? 'Deleting...' : 'Confirm Delete' }}
             </button>
             <button
               class="ghost-btn"
@@ -2019,7 +2019,7 @@ loadPresets();
               :disabled="deletingPreset"
               @click="closeConfirm"
             >
-              取消
+              Cancel
             </button>
           </div>
         </div>

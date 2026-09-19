@@ -149,10 +149,10 @@ onMounted(() => {
 <template>
   <section class="page-shell">
     <header class="page-header">
-      <h2>浏览数据</h2>
-      <button class="ghost-btn" @click="resetTree">重置</button>
+      <h2>Browse data</h2>
+      <button class="ghost-btn" @click="resetTree">Reset</button>
     </header>
-    <p v-if="isLoading(ROOT_ID)">加载中...</p>
+    <p v-if="isLoading(ROOT_ID)">Loading...</p>
 
     <div class="tree-wrap">
       <ul class="tree-list">
@@ -171,12 +171,12 @@ onMounted(() => {
               class="tree-count"
               :class="{ empty: getDirectChildCount(row.node.id) === 0 }"
             >
-              共 {{ getDirectChildCount(row.node.id) }} 条
+              Total {{ getDirectChildCount(row.node.id) }} items
             </span>
-            <span v-if="row.loading" class="tree-loading">加载中...</span>
+            <span v-if="row.loading" class="tree-loading">Loading...</span>
           </button>
         </li>
-        <li v-if="!isLoading(ROOT_ID) && treeRows.length === 0" class="muted-text">空</li>
+        <li v-if="!isLoading(ROOT_ID) && treeRows.length === 0" class="muted-text">Empty</li>
       </ul>
     </div>
   </section>

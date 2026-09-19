@@ -45,31 +45,31 @@ const dictionaryConfig: Record<
   { title: string; fields: DictionaryField[] }
 > = {
   itemtypes: {
-    title: '硬件类型',
+    title: 'Hardware Type',
     fields: [
-      { key: 'typedesc', label: '描述', type: 'text' },
-      { key: 'hassoftware', label: '支持软件', type: 'boolean' },
+      { key: 'typedesc', label: 'Description', type: 'text' },
+      { key: 'hassoftware', label: 'Supports Software', type: 'boolean' },
     ],
   },
   contracttypes: {
-    title: '合同类型',
-    fields: [{ key: 'name', label: '类型名称', type: 'text' }],
+    title: 'Contract Type',
+    fields: [{ key: 'name', label: 'Type Name', type: 'text' }],
   },
   statustypes: {
-    title: '状态类型',
-    fields: [{ key: 'statusdesc', label: '描述', type: 'text' }],
+    title: 'Status Type',
+    fields: [{ key: 'statusdesc', label: 'Description', type: 'text' }],
   },
   filetypes: {
-    title: '文件类型',
-    fields: [{ key: 'typedesc', label: '描述', type: 'text' }],
+    title: 'File Type',
+    fields: [{ key: 'typedesc', label: 'Description', type: 'text' }],
   },
   dpttypes: {
-    title: '所属部门',
-    fields: [{ key: 'dptname', label: '部门名称', type: 'text' }],
+    title: 'Department',
+    fields: [{ key: 'dptname', label: 'Department Name', type: 'text' }],
   },
   tags: {
-    title: '标记',
-    fields: [{ key: 'name', label: '名称', type: 'text' }],
+    title: 'Tags',
+    fields: [{ key: 'name', label: 'Name', type: 'text' }],
   },
 };
 const dictionaryHeaderTitleMap: Record<VisibleDictionaryName, string> = {
@@ -82,10 +82,10 @@ const dictionaryHeaderTitleMap: Record<VisibleDictionaryName, string> = {
 };
 
 const fixedStatusTypeColorMap: Record<string, string> = {
-  使用中: '#2f7fba',
-  库存: '#16a34a',
-  有故障: '#dc2626',
-  报废: '#9ca3af',
+  Inuse: '#2f7fba',
+  instock: '#16a34a',
+  Malfunctioning: '#dc2626',
+  scrapped: '#9ca3af',
 };
 
 const dictionaries = ref<Record<string, DictionaryRow[]>>({});
@@ -109,7 +109,7 @@ const selectedContractSubtypeIds = ref<number[]>([]);
 
 const canWrite = computed(() => !auth.isReadOnly);
 const pageTitle = computed(() => dictionaryHeaderTitleMap[active.value]);
-const createDictionaryButtonText = computed(() => `新增${dictionaryConfig[active.value].title}`);
+const createDictionaryButtonText = computed(() => `New ${dictionaryConfig[active.value].title}`);
 
 const visibleDictionaryNames = computed<VisibleDictionaryName[]>(() =>
   dictionaryOrder.filter(name => dictionaries.value[name] !== undefined)
@@ -151,32 +151,32 @@ const tagRelatedPanelTitle = computed(() => {
 
 const editorFields = computed<DictionaryField[]>(() => {
   if (editorMode.value === 'contractSubtype') {
-    return [{ key: 'name', label: '子类型名称', type: 'text' }];
+    return [{ key: 'name', label: 'Subtype Name', type: 'text' }];
   }
   return dictionaryConfig[active.value].fields;
 });
 
 const editorTitle = computed(() => {
   if (editorMode.value === 'contractSubtype') {
-    return editingId.value ? '编辑合同子类型' : '新增合同子类型';
+    return editingId.value ? 'Edit Contract Subtype' : 'Create Contract Subtype';
   }
   return editingId.value
-    ? `编辑${dictionaryConfig[active.value].title}`
-    : `新增${dictionaryConfig[active.value].title}`;
+    ? `Edit ${dictionaryConfig[active.value].title}`
+    : `Create ${dictionaryConfig[active.value].title}`;
 });
 
 const confirmMessage = computed(() => {
   if (!deleteTarget.value) return '';
   if (deleteTarget.value.kind === 'dictionaryBatch') {
-    return `确认批量删除已选择的 ${deleteTarget.value.ids.length} 条记录吗？`;
+    return `Confirm batch deletion of selected ${deleteTarget.value.ids.length} records?`;
   }
   if (deleteTarget.value.kind === 'contractSubtypeBatch') {
-    return `确认批量删除已选择的 ${deleteTarget.value.ids.length} 条合同子类型吗？`;
+    return `Confirm batch deletion of selected ${deleteTarget.value.ids.length} contract subtypes?`;
   }
   if (deleteTarget.value.kind === 'contractSubtype') {
-    return `确认删除合同子类型 编号=${deleteTarget.value.id} 吗？`;
+    return `Confirm deletion of contract subtype ID=${deleteTarget.value.id}?`;
   }
-  return `确认删除 编号=${deleteTarget.value.id} 吗？`;
+  return `Confirm deletion of ID=${deleteTarget.value.id}?`;
 });
 
 const selectedDictionaryIdSet = computed(() => new Set(selectedDictionaryIds.value));
@@ -320,7 +320,7 @@ async function showTagRelated(row: DictionaryRow, target: TagRelatedTarget) {
     }
     tagRelatedError.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '关联信息加载失败';
+      'Failed to load related information.';
   } finally {
     if (seq !== tagRelatedSeq) return;
     tagRelatedLoading.value = false;
@@ -400,7 +400,7 @@ async function recordRecentViewHistory(id: number, mode: EditorMode) {
       ? { subtypeEdit: String(rowID), vh: String(Date.now()) }
       : { edit: String(rowID), vh: String(Date.now()) };
   const resolved = router.resolve({ name: 'dictionaries', params: { tab }, query });
-  const title = mode === 'contractSubtype' ? '合同子类型' : dictionaryConfig[active.value].title;
+  const title = mode === 'contractSubtype' ? 'Contract Subtype' : dictionaryConfig[active.value].title;
 
   try {
     await api.post('/view-history', {
@@ -476,7 +476,7 @@ function openEditDictionaryRow(row: DictionaryRow) {
 function openCreateSubtypeRow() {
   if (!canWrite.value) return;
   if (!selectedContractTypeId.value) {
-    error.value = '请先选择一个合同类型';
+    error.value = 'Please select a contract type first';
     noticeStore.error(error.value);
     return;
   }
@@ -681,7 +681,7 @@ function getDictionaryConflictMessage() {
         Number(row.id ?? 0) !== Number(editingId.value ?? 0) &&
         normalizeDictionaryConflictText(row.name) === normalized
     );
-    return duplicated ? `子类型名称“${text}”已存在` : '';
+    return duplicated ? `Subtype name "${text}" already exists` : '';
   }
 
   const textField = editorFields.value.find(field => field.type === 'text');
@@ -694,7 +694,7 @@ function getDictionaryConflictMessage() {
       Number(row.id ?? 0) !== Number(editingId.value ?? 0) &&
       normalizeDictionaryConflictText(row[textField.key]) === normalized
   );
-  return duplicated ? `${textField.label}“${text}”已存在` : '';
+  return duplicated ? `${textField.label} "${text}" already exists` : '';
 }
 
 function showEditorError(message: string) {
@@ -721,13 +721,13 @@ async function saveEditor() {
 
     if (editorMode.value === 'contractSubtype') {
       const typeID = Number(selectedContractTypeId.value ?? 0);
-      if (!typeID) throw new Error('请先选择一个合同类型后再操作子类型');
+      if (!typeID) throw new Error('Please select a contract type first');
       const payload = {
         contypeid: typeID,
         name: String(editorValues.name ?? '').trim(),
       };
       if (!hasRequiredText(payload)) {
-        showEditorError('请填写名称');
+        showEditorError('Please fill in the name');
         return;
       }
       const conflictMessage = getDictionaryConflictMessage();
@@ -744,7 +744,7 @@ async function saveEditor() {
     } else {
       const payload = buildDictionaryPayload();
       if (!hasRequiredText(payload)) {
-        showEditorError('请填写必填文本字段');
+        showEditorError('Please fill in the required text fields');
         return;
       }
       const conflictMessage = getDictionaryConflictMessage();
@@ -770,7 +770,7 @@ async function saveEditor() {
   } catch (err: unknown) {
     const msg = (err as { response?: { data?: { error?: string } }; message?: string })?.response
       ?.data?.error;
-    error.value = msg ?? (err as { message?: string })?.message ?? '保存失败';
+    error.value = msg ?? (err as { message?: string })?.message ?? 'Save failed.';
     noticeStore.error(error.value);
   } finally {
     saving.value = false;
@@ -796,14 +796,14 @@ async function confirmDelete() {
           if (!firstError) {
             firstError =
               (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-              '删除失败';
+              'Delete failed';
           }
         }
       }
       selectedContractSubtypeIds.value = [];
-      if (successCount > 0) noticeStore.success(`已删除 ${successCount} 条合同子类型`);
+      if (successCount > 0) noticeStore.success(`Deleted ${successCount} contract subtypes`);
       if (failedCount > 0)
-        noticeStore.error(firstError || `有 ${failedCount} 条合同子类型删除失败`);
+        noticeStore.error(firstError || `Failed to delete ${failedCount} contract subtypes`);
     } else if (target.kind === 'dictionaryBatch') {
       let successCount = 0;
       let failedCount = 0;
@@ -817,7 +817,7 @@ async function confirmDelete() {
           if (!firstError) {
             firstError =
               (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-              '删除失败';
+              'Delete failed';
           }
         }
       }
@@ -826,8 +826,8 @@ async function confirmDelete() {
       } else {
         selectedDictionaryIds.value = [];
       }
-      if (successCount > 0) noticeStore.success(`已删除 ${successCount} 条记录`);
-      if (failedCount > 0) noticeStore.error(firstError || `有 ${failedCount} 条记录删除失败`);
+      if (successCount > 0) noticeStore.success(`Deleted ${successCount} records`);
+      if (failedCount > 0) noticeStore.error(firstError || `Failed to delete ${failedCount} records`);
     } else if (target.kind === 'contractSubtype') {
       await api.delete(`/dictionaries/contractsubtypes/${target.id}`);
       selectedContractSubtypeIds.value = selectedContractSubtypeIds.value.filter(
@@ -849,7 +849,7 @@ async function confirmDelete() {
     await refreshBootstrapLookups();
   } catch (err: unknown) {
     error.value =
-      (err as { response?: { data?: { error?: string } } })?.response?.data?.error ?? '删除失败';
+      (err as { response?: { data?: { error?: string } } })?.response?.data?.error ?? 'Delete failed';
   } finally {
     deleting.value = false;
   }
@@ -857,7 +857,7 @@ async function confirmDelete() {
 
 function displayValue(row: DictionaryRow, field: DictionaryField) {
   const raw = row[field.key];
-  if (field.type === 'boolean') return Number(raw ?? 0) === 1 ? '是' : '否';
+  if (field.type === 'boolean') return Number(raw ?? 0) === 1 ? 'Yes' : 'No';
   return displayText(raw);
 }
 
@@ -881,7 +881,7 @@ async function load() {
   } catch (err: unknown) {
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '字典数据加载失败';
+      'Failed to load dictionary data';
   } finally {
     loading.value = false;
   }
@@ -932,7 +932,7 @@ void load();
     <header class="page-header">
       <h2>{{ pageTitle }}</h2>
       <div class="header-actions">
-        <button class="ghost-btn" @click="load">刷新</button>
+        <button class="ghost-btn" @click="load">Refresh</button>
         <button
           v-if="canWrite && active !== 'contracttypes'"
           class="dict-add-btn"
@@ -943,7 +943,7 @@ void load();
       </div>
     </header>
 
-    <p v-if="loading">加载中...</p>
+    <p v-if="loading">Loading...</p>
 
     <div v-else class="dict-layout">
       <aside class="dict-nav-old">
@@ -966,24 +966,24 @@ void load();
           >
             <section class="dict-panel contract-type-main-panel">
               <div class="dict-panel-head">
-                <h3>合同类型</h3>
+                <h3>Contract Types</h3>
                 <div v-if="canWrite" class="dict-panel-actions">
                   <button
                     class="small-btn ghost-btn"
                     :disabled="selectedContractTypeIds.length === 0"
                     @click="clearSelectedContractTypeRows"
                   >
-                    清空选择
+                    Clear Selection
                   </button>
                   <button
                     class="small-btn danger"
                     :disabled="selectedContractTypeIds.length === 0"
                     @click="requestRemoveSelectedContractTypeRows"
                   >
-                    批量删除（{{ selectedContractTypeIds.length }}）
+                    Batch Delete ({{ selectedContractTypeIds.length }})
                   </button>
                   <button class="small-btn dict-add-btn" @click="openCreateDictionaryRow">
-                    新增合同类型
+                    Add Contract Type
                   </button>
                 </div>
               </div>
@@ -999,9 +999,9 @@ void load();
                           @change="toggleAllContractTypeRowSelection"
                         />
                       </th>
-                      <th>编号</th>
-                      <th>类型名称</th>
-                      <th>操作</th>
+                      <th>ID</th>
+                      <th>Type Name</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1025,26 +1025,26 @@ void load();
                           class="small-btn ghost-btn"
                           @click="selectContractType(Number(row.id ?? 0))"
                         >
-                          查看/编辑 子类型
+                          View/Edit Subtype
                         </button>
                         <button
                           v-if="canWrite"
                           class="small-btn"
                           @click="openEditDictionaryRow(row)"
                         >
-                          编辑
+                          Edit
                         </button>
                         <button
                           v-if="canWrite"
                           class="small-btn danger"
                           @click="requestRemoveDictionaryRow(row)"
                         >
-                          删除
+                          Delete
                         </button>
                       </td>
                     </tr>
                     <tr v-if="contractTypeRows.length === 0">
-                      <td :colspan="canWrite ? 4 : 3">暂无合同类型数据</td>
+                      <td :colspan="canWrite ? 4 : 3">No contract type data available</td>
                     </tr>
                   </tbody>
                 </table>
@@ -1053,24 +1053,24 @@ void load();
 
             <section v-if="selectedContractTypeId" class="dict-panel contract-subtype-panel">
               <div class="dict-panel-head">
-                <h3>合同子类型（类型编号: {{ selectedContractTypeId }}）</h3>
+                <h3>Contract subtype (type number: {{ selectedContractTypeId }})</h3>
                 <div v-if="canWrite" class="dict-panel-actions">
                   <button
                     class="small-btn ghost-btn"
                     :disabled="selectedContractSubtypeIds.length === 0"
                     @click="clearSelectedContractSubtypeRows"
                   >
-                    清空选择
+                    Clear Selection
                   </button>
                   <button
                     class="small-btn danger"
                     :disabled="selectedContractSubtypeIds.length === 0"
                     @click="requestRemoveSelectedContractSubtypeRows"
                   >
-                    批量删除（{{ selectedContractSubtypeIds.length }}）
+                    Batch Delete ({{ selectedContractSubtypeIds.length }})
                   </button>
                   <button class="small-btn dict-add-btn" @click="openCreateSubtypeRow">
-                    新增子类型
+                    Add Subtype
                   </button>
                 </div>
               </div>
@@ -1086,9 +1086,9 @@ void load();
                           @change="toggleAllContractSubtypeRowSelection"
                         />
                       </th>
-                      <th>编号</th>
-                      <th>子类型名称</th>
-                      <th>操作</th>
+                      <th>ID</th>
+                      <th>Subtype Name</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1105,19 +1105,19 @@ void load();
                       <td>{{ displayText(row.name) }}</td>
                       <td class="actions-cell">
                         <button v-if="canWrite" class="small-btn" @click="openEditSubtypeRow(row)">
-                          编辑
+                          Edit
                         </button>
                         <button
                           v-if="canWrite"
                           class="small-btn danger"
                           @click="requestRemoveSubtypeRow(Number(row.id ?? 0))"
                         >
-                          删除
+                          Delete
                         </button>
                       </td>
                     </tr>
                     <tr v-if="contractSubtypeRows.length === 0">
-                      <td :colspan="canWrite ? 4 : 3">暂无合同子类型数据</td>
+                      <td :colspan="canWrite ? 4 : 3">No contract subtype data available</td>
                     </tr>
                   </tbody>
                 </table>
@@ -1130,21 +1130,21 @@ void load();
           <div v-if="active === 'tags'" class="tags-dict-layout">
             <section class="dict-panel">
               <div class="dict-panel-head">
-                <h3>标记</h3>
+                <h3>Tags</h3>
                 <div v-if="canWrite" class="dict-panel-actions">
                   <button
                     class="small-btn ghost-btn"
                     :disabled="selectedDictionaryIds.length === 0"
                     @click="clearSelectedDictionaryRows"
                   >
-                    清空选择
+                    Clear Selection
                   </button>
                   <button
                     class="small-btn danger"
                     :disabled="selectedDictionaryIds.length === 0"
                     @click="requestRemoveSelectedDictionaryRows"
                   >
-                    批量删除（{{ selectedDictionaryIds.length }}）
+                    Batch Delete ({{ selectedDictionaryIds.length }})
                   </button>
                 </div>
               </div>
@@ -1160,11 +1160,11 @@ void load();
                           @change="toggleAllDictionaryRowSelection"
                         />
                       </th>
-                      <th>编号</th>
-                      <th>名称</th>
-                      <th>关联硬件</th>
-                      <th>关联软件</th>
-                      <th v-if="canWrite">操作</th>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Related Hardware</th>
+                      <th>Related Software</th>
+                      <th v-if="canWrite">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1203,19 +1203,19 @@ void load();
                           class="small-btn"
                           @click="openEditDictionaryRow(row)"
                         >
-                          编辑
+                          Edit
                         </button>
                         <button
                           v-if="canMutateDictionaryRow(row)"
                           class="small-btn danger"
                           @click="requestRemoveDictionaryRow(row)"
                         >
-                          删除
+                          Delete
                         </button>
                       </td>
                     </tr>
                     <tr v-if="activeRows.length === 0">
-                      <td :colspan="canWrite ? 6 : 4">暂无数据</td>
+                      <td :colspan="canWrite ? 6 : 4">No data available</td>
                     </tr>
                   </tbody>
                 </table>
@@ -1223,14 +1223,14 @@ void load();
             </section>
 
             <section class="dict-panel tags-related-panel">
-              <h3>关联信息</h3>
-              <p v-if="!selectedTagRow" class="muted-text">点击“关联硬件/关联软件”数量查看详情</p>
+              <h3>Related Information</h3>
+              <p v-if="!selectedTagRow" class="muted-text">Click on "Related Hardware" or "Related Software" counts to view details</p>
               <template v-else>
                 <p class="tag-selected-title">
-                  <span class="tag-selected-label">当前标记</span>
+                  <span class="tag-selected-label">Current Tag</span>
                   <span class="tag-selected-value">{{ displayText(selectedTagRow.name) }}</span>
                 </p>
-                <p v-if="tagRelatedLoading">加载中...</p>
+                <p v-if="tagRelatedLoading">Loading...</p>
                 <div v-else class="tag-columns">
                   <div v-if="tagRelatedTarget">
                     <h4 class="tag-related-section-title">{{ tagRelatedPanelTitle }}</h4>
@@ -1247,10 +1247,10 @@ void load();
                         <span class="tag-related-index">{{ index + 1 }}:</span>
                         <span class="tag-related-text">{{ displayText(entry.txt) }}</span>
                       </a>
-                      <p v-if="activeTagRelatedRows.length === 0" class="muted-text">无</p>
+                      <p v-if="activeTagRelatedRows.length === 0" class="muted-text">No data available</p>
                     </div>
                   </div>
-                  <p v-else class="muted-text">点击“关联硬件/关联软件”数量查看详情</p>
+                  <p v-else class="muted-text">Click on "Related Hardware" or "Related Software" counts to view details</p>
                 </div>
               </template>
             </section>
@@ -1265,14 +1265,14 @@ void load();
                   :disabled="selectedDictionaryIds.length === 0"
                   @click="clearSelectedDictionaryRows"
                 >
-                  清空选择
+                  Clear Selection
                 </button>
                 <button
                   class="small-btn danger"
                   :disabled="selectedDictionaryIds.length === 0"
                   @click="requestRemoveSelectedDictionaryRows"
                 >
-                  批量删除（{{ selectedDictionaryIds.length }}）
+                  Batch Delete ({{ selectedDictionaryIds.length }})
                 </button>
               </div>
             </div>
@@ -1288,11 +1288,11 @@ void load();
                         @change="toggleAllDictionaryRowSelection"
                       />
                     </th>
-                    <th>编号</th>
+                    <th>ID</th>
                     <th v-for="field in dictionaryConfig[active].fields" :key="`head-${field.key}`">
                       {{ field.label }}
                     </th>
-                    <th class="dict-main-actions-col">操作</th>
+                    <th class="dict-main-actions-col">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1330,20 +1330,20 @@ void load();
                         class="small-btn"
                         @click="openEditDictionaryRow(row)"
                       >
-                        编辑
+                        Edit
                       </button>
                       <button
                         v-if="canWrite && canMutateDictionaryRow(row)"
                         class="small-btn danger"
                         @click="requestRemoveDictionaryRow(row)"
                       >
-                        删除
+                        Delete
                       </button>
                     </td>
                   </tr>
                   <tr v-if="activeRows.length === 0">
                     <td :colspan="dictionaryConfig[active].fields.length + (canWrite ? 3 : 2)">
-                      暂无数据
+                      No data available
                     </td>
                   </tr>
                 </tbody>
@@ -1361,8 +1361,8 @@ void load();
           <button
             class="dialog-close-btn quick-tip"
             type="button"
-            aria-label="关闭"
-            data-quick-tip="关闭"
+            aria-label="Close"
+            data-quick-tip="Close"
             @click="closeEditor"
           >
             ×
@@ -1372,8 +1372,8 @@ void load();
           <label v-for="field in editorFields" :key="`editor-${field.key}`">
             <span>{{ field.label }}</span>
             <select v-if="field.type === 'boolean'" v-model.number="editorValues[field.key]">
-              <option :value="0">否</option>
-              <option :value="1">是</option>
+              <option :value="0">No</option>
+              <option :value="1">Yes</option>
             </select>
             <input
               v-else
@@ -1385,19 +1385,19 @@ void load();
             v-if="editorMode === 'dictionary' && active === 'statustypes'"
             class="status-color-field"
           >
-            <span>颜色</span>
+            <span>Color</span>
             <input v-model="editorValues.color" type="color" class="status-color-picker" />
           </div>
 
           <p v-if="editorMode === 'contractSubtype'" class="muted-text">
-            当前合同类型编号：{{ selectedContractTypeId }}
+            Current Contract Type ID: {{ selectedContractTypeId }}
           </p>
 
           <div class="inline-actions">
             <button :disabled="saving" type="submit">
-              {{ saving ? '保存中...' : editingId ? '保存修改' : '新增' }}
+              {{ saving ? 'Saving...' : editingId ? 'Save Changes' : 'Add New' }}
             </button>
-            <button class="ghost-btn" type="button" @click="closeEditor">取消</button>
+            <button class="ghost-btn" type="button" @click="closeEditor">Cancel</button>
           </div>
         </form>
       </section>
@@ -1406,12 +1406,12 @@ void load();
     <div v-if="canWrite && confirmOpen" class="dialog-mask">
       <section class="drawer modal-narrow" role="dialog" aria-modal="true">
         <div class="drawer-header">
-          <h3>删除确认</h3>
+          <h3>Delete Confirmation</h3>
           <button
             class="dialog-close-btn quick-tip"
             type="button"
-            aria-label="关闭"
-            data-quick-tip="关闭"
+            aria-label="Close"
+            data-quick-tip="Close"
             @click="closeConfirm"
           >
             ×
@@ -1421,10 +1421,10 @@ void load();
           <p>{{ confirmMessage }}</p>
           <div class="inline-actions">
             <button class="danger" type="button" :disabled="deleting" @click="confirmDelete">
-              {{ deleting ? '删除中...' : '确认删除' }}
+              {{ deleting ? 'Deleting...' : 'Confirm Delete' }}
             </button>
             <button class="ghost-btn" type="button" :disabled="deleting" @click="closeConfirm">
-              取消
+              Cancel
             </button>
           </div>
         </div>

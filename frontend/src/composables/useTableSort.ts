@@ -10,7 +10,7 @@ type UseTableSortOptions<T> = {
   getSortValue?: (row: T, key: string) => unknown;
 };
 
-const collator = new Intl.Collator('zh-CN', {
+const collator = new Intl.Collator('en-US', {
   numeric: true,
   sensitivity: 'base',
 });

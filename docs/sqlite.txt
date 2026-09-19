@@ -1,9 +1,9 @@
--- pure.db 表结构建表语句
+-- pure.db Table creation statement
 
--- 使用sqlite3命令创建pure.db：
+-- Use the `sqlite3` command to create `pure.db`.：
 -- sqlite3 pure.db ".read sqlite.txt"
 
--- 创建表语句
+-- CREATE TABLE statement
 CREATE TABLE actions (id INTEGER PRIMARY KEY AUTOINCREMENT,itemid INTEGER, actiondate integer, description, invoiceinfo, isauto, entrydate integer);
 CREATE TABLE agents (id INTEGER PRIMARY KEY AUTOINCREMENT, type integer, title, contactinfo, contacts, urls);
 CREATE TABLE contract2file (contractid integer, fileid integer);
@@ -42,36 +42,36 @@ CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, username, userdesc, pa
 CREATE TABLE viewhist (id INTEGER PRIMARY KEY AUTOINCREMENT, url,description);
 
 
--- 创建表数据语句
--- itemtypes（硬件类型）
-INSERT INTO "itemtypes" ("id", "typeid", "typedesc", "hassoftware") VALUES (1, NULL, '服务器', 1);
-INSERT INTO "itemtypes" ("id", "typeid", "typedesc", "hassoftware") VALUES (2, NULL, '存储', 1);
-INSERT INTO "itemtypes" ("id", "typeid", "typedesc", "hassoftware") VALUES (3, NULL, '交换机', 1);
-INSERT INTO "itemtypes" ("id", "typeid", "typedesc", "hassoftware") VALUES (4, NULL, '电话', 1);
-INSERT INTO "itemtypes" ("id", "typeid", "typedesc", "hassoftware") VALUES (5, NULL, '安防', 1);
+-- SQL statements to create table data
+-- itemtypes（Hardware Type）
+INSERT INTO "itemtypes" ("id", "typeid", "typedesc", "hassoftware") VALUES (1, NULL, 'Server', 1);
+INSERT INTO "itemtypes" ("id", "typeid", "typedesc", "hassoftware") VALUES (2, NULL, 'Storage', 1);
+INSERT INTO "itemtypes" ("id", "typeid", "typedesc", "hassoftware") VALUES (3, NULL, 'Switch', 1);
+INSERT INTO "itemtypes" ("id", "typeid", "typedesc", "hassoftware") VALUES (4, NULL, 'Telephone', 1);
+INSERT INTO "itemtypes" ("id", "typeid", "typedesc", "hassoftware") VALUES (5, NULL, 'Security', 1);
 
 -- contracttypes（合同类型）
 INSERT INTO "contracttypes" ("id", "name") VALUES (1, '支持 & 维护');
 
 -- statustypes（状态类型）
-INSERT INTO "statustypes" ("id", "statusdesc", "color") VALUES (1, '使用中', '#2f7fba');
-INSERT INTO "statustypes" ("id", "statusdesc", "color") VALUES (2, '库存', '#16a34a');
-INSERT INTO "statustypes" ("id", "statusdesc", "color") VALUES (3, '有故障', '#dc2626');
-INSERT INTO "statustypes" ("id", "statusdesc", "color") VALUES (4, '报废', '#9ca3af');
+INSERT INTO "statustypes" ("id", "statusdesc", "color") VALUES (1, 'In use', '#2f7fba');
+INSERT INTO "statustypes" ("id", "statusdesc", "color") VALUES (2, 'In stock', '#16a34a');
+INSERT INTO "statustypes" ("id", "statusdesc", "color") VALUES (3, 'Malfunctioning', '#dc2626');
+INSERT INTO "statustypes" ("id", "statusdesc", "color") VALUES (4, 'Scrapped', '#9ca3af');
 
 -- filetypes（文件类型）
-INSERT INTO "filetypes" ("id", "typedesc") VALUES (1, '照片');
-INSERT INTO "filetypes" ("id", "typedesc") VALUES (2, '手册');
-INSERT INTO "filetypes" ("id", "typedesc") VALUES (3, '发票');
-INSERT INTO "filetypes" ("id", "typedesc") VALUES (4, '报价');
-INSERT INTO "filetypes" ("id", "typedesc") VALUES (5, '订单');
-INSERT INTO "filetypes" ("id", "typedesc") VALUES (6, '服务');
-INSERT INTO "filetypes" ("id", "typedesc") VALUES (7, '报告');
-INSERT INTO "filetypes" ("id", "typedesc") VALUES (8, '许可证');
-INSERT INTO "filetypes" ("id", "typedesc") VALUES (9, '合同');
-INSERT INTO "filetypes" ("id", "typedesc") VALUES (10, '其他');
+INSERT INTO "filetypes" ("id", "typedesc") VALUES (1, 'Photo');
+INSERT INTO "filetypes" ("id", "typedesc") VALUES (2, 'Manual');
+INSERT INTO "filetypes" ("id", "typedesc") VALUES (3, 'Bill');
+INSERT INTO "filetypes" ("id", "typedesc") VALUES (4, 'Quotation');
+INSERT INTO "filetypes" ("id", "typedesc") VALUES (5, 'Order');
+INSERT INTO "filetypes" ("id", "typedesc") VALUES (6, 'Service');
+INSERT INTO "filetypes" ("id", "typedesc") VALUES (7, 'Report');
+INSERT INTO "filetypes" ("id", "typedesc") VALUES (8, 'License');
+INSERT INTO "filetypes" ("id", "typedesc") VALUES (9, 'Contract');
+INSERT INTO "filetypes" ("id", "typedesc") VALUES (10, 'Other');
 
--- labelpapers（打印标签数据）
+-- labelpapers（Print label data）
 INSERT INTO labelpapers (
   id, rows, cols, lwidth, lheight, vpitch, hpitch, tmargin, bmargin, lmargin, rmargin, name, border, padding, headerfontsize, idfontsize, wantheadertext, wantheaderimage, headertext, fontsize, wantbarcode, barcodesize, image, imagewidth, imageheight, papersize, qrtext, wantnotext, wantraligntext
 ) VALUES (

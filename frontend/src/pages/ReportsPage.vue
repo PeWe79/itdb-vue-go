@@ -27,18 +27,18 @@ const reportPickerOpen = ref(false);
 const reportPickerRoot = ref<HTMLElement | null>(null);
 
 const reportTitleMap: Record<string, string> = {
-  itemperagent: '每个厂商的硬件数量(代理)',
-  softwareperagent: '每个厂商已安装的软件数量(代理)',
-  invoicesperagent: '每个供应商的单据数量(代理)',
-  itemsperlocation: '每个地点的硬件数量',
-  percsupitems: '在保的硬件数量',
-  itemlistperlocation: '按地点显示硬件',
-  itemsendwarranty: '今日前后授权过期的硬件',
-  allips: '指定了 IPv4 的硬件清单',
-  noinvoice: '无单据的硬件',
-  nolocation: '无地点的硬件',
-  depreciation3: '硬件折旧价值 3 年',
-  depreciation5: '硬件折旧价值 5 年',
+  itemperagent: 'Number of hardware units per manufacturer (agent)',
+  softwareperagent: 'Number of software units per manufacturer (agent)',
+  invoicesperagent: 'Number of invoices per supplier (agent)',
+  itemsperlocation: 'Number of hardware units per location',
+  percsupitems: 'Number of hardware units under warranty',
+  itemlistperlocation: 'Hardware list by location',
+  itemsendwarranty: 'Hardware with expiring warranties',
+  allips: 'Hardware list with specified IPv4 addresses',
+  noinvoice: 'Hardware without invoices',
+  nolocation: 'Hardware without locations',
+  depreciation3: 'Hardware depreciation value over 3 years',
+  depreciation5: 'Hardware depreciation value over 5 years',
 };
 
 const reportColumnOrderMap: Record<string, string[]> = {
@@ -84,24 +84,24 @@ const reportColumnOrderMap: Record<string, string[]> = {
 };
 
 const reportColumnLabelMap: Record<string, string> = {
-  ID: '编号',
-  totalcount: '数量',
-  Agent: '厂商',
-  Location: '地点',
-  Type: '类型',
-  Items: '数量',
-  type: '类型',
-  manufacturer: '厂商',
-  model: '型号',
-  dnsname: '业务跳线',
-  label: '标签',
-  RemainingDays: '维保剩余天数',
+  ID: 'ID',
+  totalcount: 'Total Count',
+  Agent: 'Agent',
+  Location: 'Location',
+  Type: 'Type',
+  Items: 'Items',
+  type: 'Type',
+  manufacturer: 'Manufacturer',
+  model: 'Model',
+  dnsname: 'DNS Name',
+  label: 'Label',
+  RemainingDays: 'Remaining Days',
   ipv4: 'IPv4',
   ipv6: 'IPv6',
-  PurchaseDate: '采购日期',
-  PurchasePrice: '采购价格',
-  Months: '月数',
-  CurrentValue: '当前价值',
+  PurchaseDate: 'Purchase Date',
+  PurchasePrice: 'Purchase Price',
+  Months: 'Months',
+  CurrentValue: 'Current Value',
 };
 
 const reportEditTargetMap: Record<string, 'items' | 'agents'> = {
@@ -222,7 +222,7 @@ async function loadReport() {
   } catch (err: unknown) {
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '报表加载失败';
+      'Failed to load report';
   } finally {
     loading.value = false;
   }
@@ -241,7 +241,7 @@ onMounted(async () => {
   } catch (err: unknown) {
     error.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-      '报表目录加载失败';
+      'Failed to load report directory';
   }
 });
 
@@ -253,10 +253,10 @@ onBeforeUnmount(() => {
 <template>
   <section class="page-shell">
     <header class="page-header">
-      <h2>报告</h2>
+      <h2>Reports</h2>
       <div class="header-actions">
         <div class="search-inline">
-          <span class="search-label">选择报告</span>
+          <span class="search-label">Select Report</span>
           <div ref="reportPickerRoot" class="report-picker">
             <button
               type="button"
@@ -264,7 +264,7 @@ onBeforeUnmount(() => {
               :aria-expanded="reportPickerOpen ? 'true' : 'false'"
               @click="toggleReportPicker"
             >
-              <span>{{ activeReportTitle || '请选择报告' }}</span>
+              <span>{{ activeReportTitle || 'Please select a report' }}</span>
               <span class="report-picker-caret">{{ reportPickerOpen ? '▲' : '▼' }}</span>
             </button>
             <div v-if="reportPickerOpen" class="report-picker-menu">
@@ -278,25 +278,25 @@ onBeforeUnmount(() => {
               >
                 {{ reportDisplayName(report) }}
               </button>
-              <div v-if="reports.length === 0" class="report-picker-empty">暂无报告</div>
+              <div v-if="reports.length === 0" class="report-picker-empty">No reports available</div>
             </div>
           </div>
         </div>
         <div class="search-inline">
-          <span class="search-label">查询</span>
+          <span class="search-label">Search</span>
           <input
             v-model.trim="keyword"
             class="search-input"
             type="text"
-            placeholder="输入关键词过滤当前报告"
+            placeholder="Enter keywords to filter the current report"
           />
         </div>
-        <button class="ghost-btn" @click="loadReport">刷新</button>
+        <button class="ghost-btn" @click="loadReport">Refresh</button>
       </div>
     </header>
 
     <p class="muted-text">{{ activeReportTitle }}</p>
-    <p v-if="loading">加载中...</p>
+    <p v-if="loading">Loading...</p>
 
     <div v-else class="report-grid">
       <div v-if="chart.length > 0" class="metric-grid">
@@ -330,7 +330,7 @@ onBeforeUnmount(() => {
               </td>
             </tr>
             <tr v-if="tableRows.length === 0">
-              <td :colspan="(columns.length || 0) + 1">暂无报表数据</td>
+              <td :colspan="(columns.length || 0) + 1">No report data available</td>
             </tr>
           </tbody>
         </table>

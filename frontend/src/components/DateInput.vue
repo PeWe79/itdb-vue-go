@@ -45,7 +45,7 @@ const PANEL_GAP = 8;
 const MIN_PANEL_WIDTH = 286;
 const MAX_PANEL_WIDTH = 360;
 const DEFAULT_PANEL_HEIGHT = 332;
-const WEEK_LABELS = ['一', '二', '三', '四', '五', '六', '日'];
+const WEEK_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const draft = ref(props.modelValue ?? '');
 const open = ref(false);
@@ -98,9 +98,9 @@ function isValidDateParts(year: number, month: number, day: number) {
 function normalizeFlexibleInput(value: string) {
   return value
     .trim()
-    .replace(/[./年]/g, '-')
-    .replace(/月/g, '-')
-    .replace(/日/g, '')
+    .replace(/[./Year]/g, '-')
+    .replace(/moon/g, '-')
+    .replace(/day/g, '')
     .replace(/\s+/g, '');
 }
 
@@ -478,7 +478,7 @@ onBeforeUnmount(() => {
       class="app-date-input__trigger"
       type="button"
       :disabled="disabled || readonly"
-      aria-label="打开日期选择"
+      aria-label="Open date selection"
       @click="togglePanel"
     >
       📅
@@ -497,12 +497,12 @@ onBeforeUnmount(() => {
             <div class="app-date-panel__pickers">
               <select v-model.number="viewYear">
                 <option v-for="year in years" :key="`year-${year}`" :value="year">
-                  {{ year }} 年
+                  {{ year }} Year
                 </option>
               </select>
               <select v-model.number="viewMonth">
                 <option v-for="month in months" :key="`month-${month}`" :value="month">
-                  {{ month }} 月
+                  {{ month }} Month
                 </option>
               </select>
             </div>
@@ -529,8 +529,8 @@ onBeforeUnmount(() => {
           </div>
 
           <footer class="app-date-panel__footer">
-            <button type="button" class="ghost-btn small-btn" @click="clearValue">清空</button>
-            <button type="button" class="ghost-btn small-btn" @click="pickToday">今天</button>
+            <button type="button" class="ghost-btn small-btn" @click="clearValue">Clear</button>
+            <button type="button" class="ghost-btn small-btn" @click="pickToday">Today</button>
           </footer>
         </section>
       </transition>

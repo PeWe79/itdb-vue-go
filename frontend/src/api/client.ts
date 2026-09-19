@@ -26,23 +26,23 @@ api.interceptors.response.use(
     let message = (responseMessage ?? '').trim();
     if (!message) {
       if (code === 'ECONNABORTED') {
-        message = '请求超时，请稍后重试';
+        message = 'Request timed out; please try again later.';
       } else if (typeof navigator !== 'undefined' && navigator && navigator.onLine === false) {
-        message = '网络不可用，请检查网络连接';
+        message = 'Network is unavailable; please check your network connection.';
       } else if (status === 401) {
-        message = '登录已失效，请重新登录';
+        message = 'Session has expired; please log in again.';
         localStorage.removeItem('itdb_token');
         setTimeout(() => {
           window.location.href = '/login';
         }, 800);
       } else if (status === 403) {
-        message = '当前账号无权限执行该操作';
+        message = 'You do not have permission to perform this action.';
       } else if (status === 404) {
-        message = '请求的接口不存在';
+        message = 'The requested endpoint does not exist.';
       } else if (typeof status === 'number' && status >= 500) {
-        message = '服务端异常，请稍后重试';
+        message = 'Internal server error; please try again later.';
       } else {
-        message = '操作失败，请稍后重试';
+        message = 'Operation failed; please try again later.';
       }
     }
 

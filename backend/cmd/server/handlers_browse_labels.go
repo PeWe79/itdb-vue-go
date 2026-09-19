@@ -47,9 +47,9 @@ func (a *App) handleBrowseTree(w http.ResponseWriter, r *http.Request) {
 	id := strings.TrimSpace(r.URL.Query().Get("id"))
 	if id == "" || id == "0" {
 		writeJSON(w, http.StatusOK, []browseNode{
-			{ID: "itemtypes", Label: "硬件类型", Leaf: false},
-			{ID: "showusers", Label: "用户", Leaf: false},
-			{ID: "showagents", Label: "代理", Leaf: false},
+			{ID: "itemtypes", Label: "Hardware Type", Leaf: false},
+			{ID: "showusers", Label: "Users", Leaf: false},
+			{ID: "showagents", Label: "Agents", Leaf: false},
 		})
 		return
 	}
@@ -73,11 +73,11 @@ func (a *App) handleBrowseTree(w http.ResponseWriter, r *http.Request) {
 		return
 	case "showagents":
 		writeJSON(w, http.StatusOK, []browseNode{
-			{ID: "agents:items", Label: "硬件厂商", Leaf: false},
-			{ID: "agents:software", Label: "软件厂商", Leaf: false},
-			{ID: "agents:vendors", Label: "供应商", Leaf: false},
-			{ID: "agents:buyers", Label: "采购方", Leaf: false},
-			{ID: "agents:contractors", Label: "承包方", Leaf: false},
+			{ID: "agents:items", Label: "Hardware Vendors", Leaf: false},
+			{ID: "agents:software", Label: "Software Vendors", Leaf: false},
+			{ID: "agents:vendors", Label: "Suppliers", Leaf: false},
+			{ID: "agents:buyers", Label: "Buyers", Leaf: false},
+			{ID: "agents:contractors", Label: "Contractors", Leaf: false},
 		})
 		return
 	case "agents:items":
@@ -298,10 +298,10 @@ func (a *App) handleListLabelItems(w http.ResponseWriter, r *http.Request) {
         ` + where + `
         ORDER BY
             CASE COALESCE(TRIM(statustypes.statusdesc), '')
-                WHEN '使用中' THEN 0
-                WHEN '库存' THEN 1
-                WHEN '有故障' THEN 2
-                WHEN '报废' THEN 3
+                WHEN 'In use' THEN 0
+                WHEN 'In Stock' THEN 1
+                WHEN 'In Repair' THEN 2
+                WHEN 'Scrapped' THEN 3
                 ELSE 4
             END,
             items.status,

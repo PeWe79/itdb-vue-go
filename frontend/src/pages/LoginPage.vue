@@ -229,7 +229,7 @@ watch([password, showPassword], ([nextPassword, nextShowPassword]) => {
 async function onLogin() {
   const loginUsername = username.value.trim();
   if (!loginUsername || !password.value.trim()) {
-    noticeStore.error('请完整填写登录信息');
+    noticeStore.error('Please fill in the login information completely.');
     return;
   }
 
@@ -244,7 +244,7 @@ async function onLogin() {
     localStorage.removeItem(USERNAME_CACHE_KEY);
   }
 
-  noticeStore.success('登录成功');
+  noticeStore.success('Login successful');
   await new Promise(resolve => setTimeout(resolve, 220));
   await router.replace('/dashboard');
 }
@@ -255,7 +255,7 @@ async function onPrimaryAction() {
     await onLogin();
   } catch (err: unknown) {
     if (!(err as { response?: unknown })?.response) {
-      const message = (err as { message?: string })?.message ?? '登录失败';
+      const message = (err as { message?: string })?.message ?? 'Login failed';
       noticeStore.error(message);
     }
   } finally {
@@ -473,14 +473,14 @@ async function onPrimaryAction() {
           <div class="auth-panel-wrap">
             <div class="login-card">
               <header class="login-header">
-                <div class="login-mode-switch" role="tablist" aria-label="登录方式">
+                <div class="login-mode-switch" role="tablist" aria-label="Login Method">
                   <button
                     class="login-mode-btn"
                     :class="{ active: loginMode === 'local' }"
                     type="button"
                     @click="loginMode = 'local'"
                   >
-                    普通登录
+                    Local Login
                   </button>
                   <button
                     class="login-mode-btn"
@@ -488,42 +488,42 @@ async function onPrimaryAction() {
                     type="button"
                     @click="loginMode = 'ldap'"
                   >
-                    LDAP 登录
+                    LDAP Login
                   </button>
                 </div>
-                <p>欢迎使用 ITDB 资产管理系统</p>
+                <p>Welcome to the ITDB Asset Management System</p>
               </header>
 
               <form class="login-form" @submit.prevent="onPrimaryAction">
                 <div class="field-row">
-                  <label class="field-label" for="login-username">用户名</label>
+                  <label class="field-label" for="login-username">Username</label>
                   <input
                     id="login-username"
                     v-model="username"
                     type="text"
                     autocomplete="username"
-                    placeholder="请输入用户名"
+                    placeholder="Please enter your username"
                     @focus="setActiveField('username')"
                     @blur="setActiveField(null)"
                   />
                 </div>
 
                 <div class="field-row">
-                  <label class="field-label" for="login-password">密码</label>
+                  <label class="field-label" for="login-password">Password</label>
                   <div class="field-input-wrap">
                     <input
                       id="login-password"
                       v-model="password"
                       :type="showPassword ? 'text' : 'password'"
                       autocomplete="current-password"
-                      placeholder="请输入密码"
+                      placeholder="Please enter your password"
                       @focus="setActiveField('password')"
                       @blur="setActiveField(null)"
                     />
                     <button
                       class="field-visibility-btn"
                       type="button"
-                      :aria-label="showPassword ? '隐藏密码' : '显示密码'"
+                      :aria-label="showPassword ? 'Hide Password' : 'Show Password'"
                       @click="showPassword = !showPassword"
                     >
                       <svg v-if="!showPassword" viewBox="0 0 24 24" aria-hidden="true">
@@ -583,12 +583,12 @@ async function onPrimaryAction() {
                 <div class="login-options">
                   <label class="remember-box" for="remember-account">
                     <input id="remember-account" v-model="rememberMe" type="checkbox" />
-                    <span>记住账号</span>
+                    <span>Remember Account</span>
                   </label>
                 </div>
 
                 <button class="login-submit" :disabled="loading" type="submit">
-                  {{ loading ? '登录中...' : '登录' }}
+                  {{ loading ? 'Logging in...' : 'Login' }}
                 </button>
               </form>
             </div>
