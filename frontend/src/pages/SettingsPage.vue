@@ -133,12 +133,14 @@ onMounted(load);
       <div class="settings-ldap-intro">
         <h3>LDAP Configuration</h3>
         <p class="muted-text">
-          Connection testing must be performed based on the saved configuration. The test only verifies the LDAP
-          server connectivity and bind authentication, and does not actually execute user searches.
+          Connection testing must be performed based on the saved configuration. The test only
+          verifies the LDAP server connectivity and bind authentication, and does not actually
+          execute user searches.
         </p>
         <p class="muted-text settings-ldap-note">
-          %{attr} represents the LDAP attribute name participating in matching during login, and %{user}
-          represents the currently entered username; these placeholders are retained for use as search filter templates.
+          %{attr} represents the LDAP attribute name participating in matching during login, and
+          %{user} represents the currently entered username; these placeholders are retained for use
+          as search filter templates.
         </p>
       </div>
       <label class="settings-field">
@@ -203,7 +205,8 @@ onMounted(load);
           placeholder="For example: (%{attr}=%{user}) or (memberOf=CN=IT,OU=Groups,DC=example,DC=com)"
         />
         <small class="settings-field-help"
-          >You can directly fill in templates like (%{attr}=%{user}); where %{attr} is the attribute name placeholder and %{user} is the username placeholder.</small
+          >You can directly fill in templates like (%{attr}=%{user}); where %{attr} is the attribute
+          name placeholder and %{user} is the username placeholder.</small
         >
       </label>
 

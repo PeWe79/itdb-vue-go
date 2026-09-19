@@ -278,7 +278,9 @@ onBeforeUnmount(() => {
               >
                 {{ reportDisplayName(report) }}
               </button>
-              <div v-if="reports.length === 0" class="report-picker-empty">No reports available</div>
+              <div v-if="reports.length === 0" class="report-picker-empty">
+                No reports available
+              </div>
             </div>
           </div>
         </div>

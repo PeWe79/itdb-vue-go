@@ -522,14 +522,22 @@ const confirmMessage = computed(() =>
 const orderLinks = computed(() => [
   { key: 'type' as const, text: '[Type]', tip: 'Order: Status, Hardware Type, Manufacturer, ID' },
   { key: 'id' as const, text: '[ID]', tip: 'Order: Status, ID, Hardware Type, Manufacturer' },
-  { key: 'id_desc' as const, text: '[ID Desc]', tip: 'Order: Status, ID (Descending), Hardware Type, Manufacturer' },
-  { key: 'model' as const, text: '[Model]', tip: 'Order: Status, Model, Hardware Type, Manufacturer' },
+  {
+    key: 'id_desc' as const,
+    text: '[ID Desc]',
+    tip: 'Order: Status, ID (Descending), Hardware Type, Manufacturer',
+  },
+  {
+    key: 'model' as const,
+    text: '[Model]',
+    tip: 'Order: Status, Model, Hardware Type, Manufacturer',
+  },
 ]);
 const defaultStatusColorMap: Record<string, string> = {
   'In Use': '#2f7fba',
   'In Stock': '#16a34a',
-  'Defective': '#dc2626',
-  'Scrapped': '#9ca3af',
+  Defective: '#dc2626',
+  Scrapped: '#9ca3af',
 };
 
 const groupedItems = computed(() => {
@@ -1526,7 +1534,10 @@ loadPresets();
           <li>Select hardware that needs label printing from above</li>
           <li>Set label properties (manual or apply preset)</li>
           <li>Click "Generate Label Preview" to confirm data</li>
-          <li>When exporting PDF later, it is recommended to turn off automatic zooming in print settings</li>
+          <li>
+            When exporting PDF later, it is recommended to turn off automatic zooming in print
+            settings
+          </li>
         </ol>
       </section>
 
@@ -1942,7 +1953,11 @@ loadPresets();
                         v-if="previewImageSrc || previewHeaderLines.length > 0"
                         class="labels-preview-header"
                       >
-                        <img v-if="previewImageSrc" :src="previewImageSrc" alt="Label Header Image" />
+                        <img
+                          v-if="previewImageSrc"
+                          :src="previewImageSrc"
+                          alt="Label Header Image"
+                        />
                         <div
                           v-if="previewHeaderLines.length > 0"
                           class="labels-preview-header-text"

@@ -791,8 +791,10 @@ function getRackItemStatusClass(statusText: string) {
   const status = statusText.trim().toLowerCase();
   if (!status) return '';
   if (status.includes('In stock') || status.includes('stored')) return 'rack-view-status-stored';
-  if (status.includes('Defective') || status.includes('defective')) return 'rack-view-status-defective';
-  if (status.includes('Obsolete') || status.includes('obsolete')) return 'rack-view-status-obsolete';
+  if (status.includes('Defective') || status.includes('defective'))
+    return 'rack-view-status-defective';
+  if (status.includes('Obsolete') || status.includes('obsolete'))
+    return 'rack-view-status-obsolete';
   return 'rack-view-status-active';
 }
 
@@ -3398,7 +3400,9 @@ const itemLocAreaPlaceholderText = computed(() => {
 const itemRackPlaceholderText = computed(() => {
   const locationID = Number(form.locationId ?? 0);
   if (!Number.isFinite(locationID) || locationID <= 0) return 'Please select';
-  return itemRackOptions.value.length === 0 ? 'No racks available at this location' : 'Please select';
+  return itemRackOptions.value.length === 0
+    ? 'No racks available at this location'
+    : 'Please select';
 });
 
 function resetItemEditorState() {
@@ -4107,7 +4111,8 @@ async function save() {
     );
   } catch (err: unknown) {
     error.value =
-      (err as { response?: { data?: { error?: string } } })?.response?.data?.error ?? 'Save failed.';
+      (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
+      'Save failed.';
     if (error.value) noticeStore.error(error.value);
   } finally {
     saving.value = false;
@@ -4611,7 +4616,8 @@ async function mutateSoftwareTag(name: string, action: 'add' | 'remove') {
     await refreshBootstrapIfNeeded();
     await Promise.all([refreshSoftwareTags(), loadRows()]);
     broadcastEditorDataDirty({ bootstrapKeys: ['tags'] });
-    softwareTagMessage.value = action === 'add' ? 'Tag added successfully' : 'Tag association removed';
+    softwareTagMessage.value =
+      action === 'add' ? 'Tag added successfully' : 'Tag association removed';
   } catch (err: unknown) {
     softwareTagMessage.value =
       (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
@@ -5492,8 +5498,12 @@ onBeforeUnmount(() => {
         <span>Item</span>
       </div>
       <div class="table-toolbar-meta">
-        <div v-if="canWrite" class="table-selection-meta">Selected {{ selectedRowCount }} items</div>
-        <div class="table-meta">Showing {{ pageStart }} - {{ pageEnd }} of {{ totalRows }} items</div>
+        <div v-if="canWrite" class="table-selection-meta">
+          Selected {{ selectedRowCount }} items
+        </div>
+        <div class="table-meta">
+          Showing {{ pageStart }} - {{ pageEnd }} of {{ totalRows }} items
+        </div>
       </div>
     </div>
 
@@ -5751,7 +5761,9 @@ onBeforeUnmount(() => {
     </div>
 
     <div class="table-pagination" v-if="!loading && totalRows > 0 && pageSize !== -1">
-      <button class="ghost-btn small-btn" :disabled="page <= 1" @click="setPage(1)">First Page</button>
+      <button class="ghost-btn small-btn" :disabled="page <= 1" @click="setPage(1)">
+        First Page
+      </button>
       <button class="ghost-btn small-btn" :disabled="page <= 1" @click="setPage(page - 1)">
         Previous Page
       </button>
@@ -5863,7 +5875,10 @@ onBeforeUnmount(() => {
                   <h4>Intrinsic characteristics</h4>
                   <label>
                     <span>Hardware Type <sup class="req">*</sup></span>
-                    <span class="quick-tip field-select-tip" data-quick-tip="Group by hardware type">
+                    <span
+                      class="quick-tip field-select-tip"
+                      data-quick-tip="Group by hardware type"
+                    >
                       <select v-model="form.itemTypeId">
                         <option value="">Please select</option>
                         <option
@@ -5879,7 +5894,9 @@ onBeforeUnmount(() => {
 
                   <div class="item-radio-row">
                     <span>From subordinate parts <sup class="req">*</sup></span>
-                    <label><input v-model.number="form.isPart" type="radio" :value="1" /> Yes</label>
+                    <label
+                      ><input v-model.number="form.isPart" type="radio" :value="1" /> Yes</label
+                    >
                     <label><input v-model.number="form.isPart" type="radio" :value="0" /> No</label>
                   </div>
 
@@ -5897,10 +5914,7 @@ onBeforeUnmount(() => {
 
                   <label>
                     <span>Manufacturer <sup class="req">*</sup></span>
-                    <span
-                      class="quick-tip field-select-tip"
-                      data-quick-tip="Group by manufacturer"
-                    >
+                    <span class="quick-tip field-select-tip" data-quick-tip="Group by manufacturer">
                       <select v-model="form.manufacturerId">
                         <option value="">Please select</option>
                         <option
@@ -5926,8 +5940,12 @@ onBeforeUnmount(() => {
                       </option>
                     </select>
                   </label>
-                  <label><span>Device Serial Number</span><input v-model="form.sn" type="text" /></label>
-                  <label><span>Serial Number 2</span><input v-model="form.sn2" type="text" /></label>
+                  <label
+                    ><span>Device Serial Number</span><input v-model="form.sn" type="text"
+                  /></label>
+                  <label
+                    ><span>Serial Number 2</span><input v-model="form.sn2" type="text"
+                  /></label>
                   <label><span>Service Tag</span><input v-model="form.sn3" type="text" /></label>
                   <label><span>Comments</span><textarea v-model="form.comments" /></label>
                   <label>
@@ -6097,7 +6115,9 @@ onBeforeUnmount(() => {
                       </option>
                     </select>
                   </label>
-                  <label><span>Maintenance Record</span><textarea v-model="form.maintenanceInfo" /></label>
+                  <label
+                    ><span>Maintenance Record</span><textarea v-model="form.maintenanceInfo" />
+                  </label>
                   <h4>Accounts</h4>
                   <label>
                     <span>Supplier</span>
@@ -6117,15 +6137,22 @@ onBeforeUnmount(() => {
                   <h4>Maintenance</h4>
                   <label><span>Purchase Date</span><DateInput v-model="form.purchaseDate" /></label>
                   <label
-                    ><span>Warranty Months</span><input v-model.number="form.warrantyMonths" type="number"
+                    ><span>Warranty Months</span
+                    ><input v-model.number="form.warrantyMonths" type="number"
                   /></label>
-                  <label><span>Warranty Information</span><input v-model="form.warrInfo" type="text" /></label>
+                  <label
+                    ><span>Warranty Information</span><input v-model="form.warrInfo" type="text"
+                  /></label>
                   <h4>Hardware Configuration</h4>
                   <label><span>Hard Drive</span><input v-model="form.hd" type="text" /></label>
                   <label><span>Memory</span><input v-model="form.ram" type="text" /></label>
                   <label><span>CPU Model</span><input v-model="form.cpu" type="text" /></label>
-                  <label><span>Raid Card Model</span><input v-model="form.raid" type="text" /></label>
-                  <label><span>Raid Configuration</span><textarea v-model="form.raidConfig" /></label>
+                  <label
+                    ><span>Raid Card Model</span><input v-model="form.raid" type="text"
+                  /></label>
+                  <label
+                    ><span>Raid Configuration</span><textarea v-model="form.raidConfig" />
+                  </label>
                 </section>
 
                 <section class="item-block">
@@ -6136,8 +6163,12 @@ onBeforeUnmount(() => {
                   <label
                     ><span>Remote Management IP</span><input v-model="form.remAdmIp" type="text"
                   /></label>
-                  <label><span>Management Cable</span><input v-model="form.dnsName" type="text" /></label>
-                  <label><span>Bond Name</span><input v-model="form.panelPort" type="text" /></label>
+                  <label
+                    ><span>Management Cable</span><input v-model="form.dnsName" type="text"
+                  /></label>
+                  <label
+                    ><span>Bond Name</span><input v-model="form.panelPort" type="text"
+                  /></label>
                   <label
                     ><span>Business Cable</span><input v-model="form.switchPort" type="text"
                   /></label>
@@ -6213,7 +6244,9 @@ onBeforeUnmount(() => {
                         <span>{{ entry.text }}</span>
                       </button>
                     </div>
-                    <div v-if="itemOverviewRows.length === 0" class="muted-text">No associated records found.</div>
+                    <div v-if="itemOverviewRows.length === 0" class="muted-text">
+                      No associated records found.
+                    </div>
                   </div>
                 </section>
 
@@ -6379,7 +6412,9 @@ onBeforeUnmount(() => {
                       No associated files found.
                     </div>
                   </div>
-                  <p class="muted-text">Please upload files in the "Upload Files" tab or the "Files" menu.</p>
+                  <p class="muted-text">
+                    Please upload files in the "Upload Files" tab or the "Files" menu.
+                  </p>
                 </section>
               </div>
             </section>
@@ -6518,7 +6553,9 @@ onBeforeUnmount(() => {
                         <td>{{ row.sn || '-' }}</td>
                       </tr>
                       <tr v-if="itemItemRelationRows.length === 0">
-                        <td colspan="9" class="item-rel-empty-cell">No associated hardware found.</td>
+                        <td colspan="9" class="item-rel-empty-cell">
+                          No associated hardware found.
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -6666,7 +6703,9 @@ onBeforeUnmount(() => {
                         <td>{{ row.date || '-' }}</td>
                       </tr>
                       <tr v-if="itemInvoiceRelationRows.length === 0">
-                        <td colspan="6" class="item-rel-empty-cell">No associated invoices found.</td>
+                        <td colspan="6" class="item-rel-empty-cell">
+                          No associated invoices found.
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -6675,7 +6714,9 @@ onBeforeUnmount(() => {
             </section>
 
             <section v-show="activeItemTab === 'logs'" class="item-tab-pane">
-              <p v-if="!selectedId" class="muted-text">You can view the maintenance log after adding a new record.</p>
+              <p v-if="!selectedId" class="muted-text">
+                You can view the maintenance log after adding a new record.
+              </p>
               <div v-else class="table-wrap item-log-wrap">
                 <table class="item-log-table">
                   <thead>
@@ -6785,7 +6826,9 @@ onBeforeUnmount(() => {
                         <td>{{ `${row.title || '-'} ${row.version || ''}`.trim() }}</td>
                       </tr>
                       <tr v-if="itemSoftwareRelationRows.length === 0">
-                        <td colspan="4" class="item-rel-empty-cell">No associated software found.</td>
+                        <td colspan="4" class="item-rel-empty-cell">
+                          No associated software found.
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -6872,7 +6915,9 @@ onBeforeUnmount(() => {
                         <td>{{ row.title || '-' }}</td>
                       </tr>
                       <tr v-if="itemContractRelationRows.length === 0">
-                        <td colspan="4" class="item-rel-empty-cell">No associated contracts found.</td>
+                        <td colspan="4" class="item-rel-empty-cell">
+                          No associated contracts found.
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -6902,7 +6947,8 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'id')"
                           >
-                            Serial Number <span>{{ getSoftwareRelationSortIcon('files', 'id') }}</span>
+                            Serial Number
+                            <span>{{ getSoftwareRelationSortIcon('files', 'id') }}</span>
                           </button>
                         </th>
                         <th>
@@ -6939,7 +6985,8 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'date')"
                           >
-                            Signing Date <span>{{ getSoftwareRelationSortIcon('files', 'date') }}</span>
+                            Signing Date
+                            <span>{{ getSoftwareRelationSortIcon('files', 'date') }}</span>
                           </button>
                         </th>
                       </tr>
@@ -7040,7 +7087,10 @@ onBeforeUnmount(() => {
                   >
                     {{ itemUploading ? 'Uploading...' : 'Upload File' }}
                   </button>
-                  <span class="muted-text">Uploaded files will be automatically added to the "Files" menu and linked to the current hardware.</span>
+                  <span class="muted-text"
+                    >Uploaded files will be automatically added to the "Files" menu and linked to
+                    the current hardware.</span
+                  >
                 </div>
               </section>
             </section>
@@ -7089,7 +7139,8 @@ onBeforeUnmount(() => {
                     <section class="asset-block software-attr-block">
                       <h4>Software Properties</h4>
                       <label
-                        ><span>Serial Number</span><input :value="selectedId ?? '-'" type="text" disabled
+                        ><span>Serial Number</span
+                        ><input :value="selectedId ?? '-'" type="text" disabled
                       /></label>
                       <div class="asset-field-row">
                         <span class="field-label-with-icon">
@@ -7150,26 +7201,22 @@ onBeforeUnmount(() => {
                         <span>License Type</span>
                         <div class="license-type-group">
                           <label
-                            ><input
-                              v-model="form.licenseType"
-                              type="radio"
-                              value="0"
-                            />Per Device</label
+                            ><input v-model="form.licenseType" type="radio" value="0" />Per
+                            Device</label
                           >
                           <label
                             ><input v-model="form.licenseType" type="radio" value="1" />按
                             CPU</label
                           >
                           <label
-                            ><input
-                              v-model="form.licenseType"
-                              type="radio"
-                              value="2"
-                            />Per Core</label
+                            ><input v-model="form.licenseType" type="radio" value="2" />Per
+                            Core</label
                           >
                         </div>
                       </div>
-                      <label><span>License Information</span><textarea v-model="form.slicenseInfo" /></label>
+                      <label
+                        ><span>License Information</span><textarea v-model="form.slicenseInfo" />
+                      </label>
                       <label><span>Other Information</span><textarea v-model="form.info" /></label>
                     </section>
 
@@ -7522,12 +7569,17 @@ onBeforeUnmount(() => {
                             <td class="software-item-col-sn">{{ row.sn || '-' }}</td>
                           </tr>
                           <tr v-if="softwareItemRelationRows.length === 0">
-                            <td colspan="9" class="item-rel-empty-cell">No associated hardware available</td>
+                            <td colspan="9" class="item-rel-empty-cell">
+                              No associated hardware available
+                            </td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
-                    <p class="muted-text">Only displays hardware entries that support software in the "Hardware Type" category.</p>
+                    <p class="muted-text">
+                      Only displays hardware entries that support software in the "Hardware Type"
+                      category.
+                    </p>
                   </div>
                 </section>
 
@@ -7630,7 +7682,9 @@ onBeforeUnmount(() => {
                             <td>{{ row.date || '-' }}</td>
                           </tr>
                           <tr v-if="softwareInvoiceRelationRows.length === 0">
-                            <td colspan="6" class="item-rel-empty-cell">No associated documents available</td>
+                            <td colspan="6" class="item-rel-empty-cell">
+                              No associated documents available
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -7715,7 +7769,9 @@ onBeforeUnmount(() => {
                             <td>{{ row.title || '-' }}</td>
                           </tr>
                           <tr v-if="softwareContractRelationRows.length === 0">
-                            <td colspan="4" class="item-rel-empty-cell">No associated contracts available</td>
+                            <td colspan="4" class="item-rel-empty-cell">
+                              No associated contracts available
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -7819,7 +7875,9 @@ onBeforeUnmount(() => {
                             <td>{{ row.date || '-' }}</td>
                           </tr>
                           <tr v-if="softwareFileRelationRows.length === 0">
-                            <td colspan="6" class="item-rel-empty-cell">No associated files available</td>
+                            <td colspan="6" class="item-rel-empty-cell">
+                              No associated files available
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -7886,7 +7944,8 @@ onBeforeUnmount(() => {
                           {{ softwareUploading ? 'Uploading...' : 'Upload File' }}
                         </button>
                         <span class="muted-text"
-                          >Successfully uploaded files will be automatically added to the "Files" menu and linked to the current software.</span
+                          >Successfully uploaded files will be automatically added to the "Files"
+                          menu and linked to the current software.</span
                         >
                       </div>
                     </section>
@@ -8289,7 +8348,9 @@ onBeforeUnmount(() => {
                         <td>{{ row.sn || '-' }}</td>
                       </tr>
                       <tr v-if="invoiceItemRelationRows.length === 0">
-                        <td colspan="9" class="item-rel-empty-cell">No associated hardware available</td>
+                        <td colspan="9" class="item-rel-empty-cell">
+                          No associated hardware available
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -8382,7 +8443,9 @@ onBeforeUnmount(() => {
                         <td>{{ `${row.title || '-'} ${row.version || ''}`.trim() }}</td>
                       </tr>
                       <tr v-if="invoiceSoftwareRelationRows.length === 0">
-                        <td colspan="4" class="item-rel-empty-cell">No associated software available</td>
+                        <td colspan="4" class="item-rel-empty-cell">
+                          No associated software available
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -8471,7 +8534,9 @@ onBeforeUnmount(() => {
                         <td>{{ row.title || '-' }}</td>
                       </tr>
                       <tr v-if="invoiceContractRelationRows.length === 0">
-                        <td colspan="4" class="item-rel-empty-cell">No associated contracts available</td>
+                        <td colspan="4" class="item-rel-empty-cell">
+                          No associated contracts available
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -8538,7 +8603,8 @@ onBeforeUnmount(() => {
                             class="relation-sort-btn"
                             @click="toggleSoftwareRelationSort('files', 'date')"
                           >
-                            Signature Date <span>{{ getSoftwareRelationSortIcon('files', 'date') }}</span>
+                            Signature Date
+                            <span>{{ getSoftwareRelationSortIcon('files', 'date') }}</span>
                           </button>
                         </th>
                       </tr>
@@ -8572,7 +8638,9 @@ onBeforeUnmount(() => {
                         <td>{{ row.date || '-' }}</td>
                       </tr>
                       <tr v-if="invoiceFileRelationRows.length === 0">
-                        <td colspan="6" class="item-rel-empty-cell">No associated invoice files available</td>
+                        <td colspan="6" class="item-rel-empty-cell">
+                          No associated invoice files available
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -8631,7 +8699,10 @@ onBeforeUnmount(() => {
                   >
                     {{ invoiceUploading ? 'Uploading...' : 'Upload File' }}
                   </button>
-                  <span class="muted-text">Uploaded files will be automatically added to the "Files" menu and linked to the current document.</span>
+                  <span class="muted-text"
+                    >Uploaded files will be automatically added to the "Files" menu and linked to
+                    the current document.</span
+                  >
                 </div>
               </section>
             </section>
@@ -8777,7 +8848,9 @@ onBeforeUnmount(() => {
                   /></label>
                   <div class="contract-textarea-grid">
                     <div class="contract-description-offset">
-                      <label><span>Contract Description</span><textarea v-model="form.description" /></label>
+                      <label
+                        ><span>Contract Description</span><textarea v-model="form.description" />
+                      </label>
                     </div>
                     <div class="contract-comments-offset">
                       <label><span>Comments</span><textarea v-model="form.comments" /></label>
@@ -9000,7 +9073,9 @@ onBeforeUnmount(() => {
             </section>
 
             <section v-show="activeContractTab === 'events'" class="item-tab-pane">
-              <p v-if="!selectedId" class="muted-text">After adding and saving a contract, you can maintain the event history.</p>
+              <p v-if="!selectedId" class="muted-text">
+                After adding and saving a contract, you can maintain the event history.
+              </p>
               <template v-else>
                 <div class="table-wrap item-log-wrap">
                   <table class="item-log-table">
@@ -9224,7 +9299,9 @@ onBeforeUnmount(() => {
                         <td>{{ row.sn || '-' }}</td>
                       </tr>
                       <tr v-if="contractItemRelationRows.length === 0">
-                        <td colspan="9" class="item-rel-empty-cell">No hardware available for linking</td>
+                        <td colspan="9" class="item-rel-empty-cell">
+                          No hardware available for linking
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -9317,7 +9394,9 @@ onBeforeUnmount(() => {
                         <td>{{ `${row.title || '-'} ${row.version || ''}`.trim() }}</td>
                       </tr>
                       <tr v-if="contractSoftwareRelationRows.length === 0">
-                        <td colspan="4" class="item-rel-empty-cell">No software available for linking</td>
+                        <td colspan="4" class="item-rel-empty-cell">
+                          No software available for linking
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -9419,7 +9498,9 @@ onBeforeUnmount(() => {
                         <td>{{ row.date || '-' }}</td>
                       </tr>
                       <tr v-if="contractInvoiceRelationRows.length === 0">
-                        <td colspan="5" class="item-rel-empty-cell">No invoices available for linking</td>
+                        <td colspan="5" class="item-rel-empty-cell">
+                          No invoices available for linking
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -9520,7 +9601,9 @@ onBeforeUnmount(() => {
                         <td>{{ row.date || '-' }}</td>
                       </tr>
                       <tr v-if="softwareFileRelationRows.length === 0">
-                        <td colspan="6" class="item-rel-empty-cell">No files available for linking</td>
+                        <td colspan="6" class="item-rel-empty-cell">
+                          No files available for linking
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -9587,7 +9670,10 @@ onBeforeUnmount(() => {
                   >
                     {{ contractUploading ? 'Uploading...' : 'Upload File' }}
                   </button>
-                  <span class="muted-text">Uploaded files will be automatically added to the "Files" menu and linked to the current contract.</span>
+                  <span class="muted-text"
+                    >Uploaded files will be automatically added to the "Files" menu and linked to
+                    the current contract.</span
+                  >
                 </div>
               </section>
             </section>
@@ -9667,7 +9753,8 @@ onBeforeUnmount(() => {
                     <input :value="fileAssociationCount" type="text" disabled />
                   </label>
                   <label
-                    ><span>Uploaded By</span><input :value="fileUploadedByText" type="text" disabled
+                    ><span>Uploaded By</span
+                    ><input :value="fileUploadedByText" type="text" disabled
                   /></label>
                   <div class="asset-field-row">
                     <span>Upload File</span>
@@ -9698,7 +9785,8 @@ onBeforeUnmount(() => {
                     </div>
                   </div>
                   <p v-if="isInvoiceTypeFile" class="muted-text">
-                    The file type is “{{ invoiceFileTypeLabel }}”, and can only be associated through the “Document” function according to the original system logic.
+                    The file type is “{{ invoiceFileTypeLabel }}”, and can only be associated
+                    through the “Document” function according to the original system logic.
                   </p>
                 </section>
 
@@ -9750,7 +9838,9 @@ onBeforeUnmount(() => {
                         <span>{{ entry.text }}</span>
                       </button>
                     </div>
-                    <div v-if="fileOverviewRows.length === 0" class="muted-text">No associated records</div>
+                    <div v-if="fileOverviewRows.length === 0" class="muted-text">
+                      No associated records
+                    </div>
                   </div>
                 </section>
               </div>
@@ -9897,7 +9987,8 @@ onBeforeUnmount(() => {
                 </div>
               </div>
               <p v-else class="muted-text">
-                The file type is “{{ invoiceFileTypeLabel }}”, and hardware cannot be associated here.
+                The file type is “{{ invoiceFileTypeLabel }}”, and hardware cannot be associated
+                here.
               </p>
             </section>
 
@@ -9987,7 +10078,8 @@ onBeforeUnmount(() => {
                 </div>
               </div>
               <p v-else class="muted-text">
-                The file type is “{{ invoiceFileTypeLabel }}”, and software cannot be associated here.
+                The file type is “{{ invoiceFileTypeLabel }}”, and software cannot be associated
+                here.
               </p>
             </section>
 
@@ -10077,7 +10169,8 @@ onBeforeUnmount(() => {
                 </div>
               </div>
               <p v-else class="muted-text">
-                The file type is “{{ invoiceFileTypeLabel }}”, and contracts cannot be associated here.
+                The file type is “{{ invoiceFileTypeLabel }}”, and contracts cannot be associated
+                here.
               </p>
             </section>
 
@@ -10119,7 +10212,10 @@ onBeforeUnmount(() => {
                 </label>
                 <label>
                   <span>Contract Information</span>
-                  <span class="field-tip-wrap quick-tip" data-quick-tip="Address, phone number, and other information">
+                  <span
+                    class="field-tip-wrap quick-tip"
+                    data-quick-tip="Address, phone number, and other information"
+                  >
                     <textarea v-model="form.contactInfo" />
                   </span>
                 </label>
@@ -10173,7 +10269,9 @@ onBeforeUnmount(() => {
                       <span>{{ entry.text }}</span>
                     </button>
                   </div>
-                  <div v-if="agentOverviewRows.length === 0" class="muted-text">No associated records</div>
+                  <div v-if="agentOverviewRows.length === 0" class="muted-text">
+                    No associated records
+                  </div>
                 </div>
               </section>
             </div>
@@ -10222,7 +10320,8 @@ onBeforeUnmount(() => {
                 <div class="agent-urls-head">
                   <h4>URLs</h4>
                   <span class="agent-urls-tip"
-                    >Tip: When the description is filled with "service", the hardware modification page will display this link.</span
+                    >Tip: When the description is filled with "service", the hardware modification
+                    page will display this link.</span
                   >
                 </div>
                 <div class="asset-table-wrap">
@@ -10343,7 +10442,8 @@ onBeforeUnmount(() => {
                   </div>
                 </div>
                 <p class="muted-text">
-                  If you select a new file, it will replace the current file while preserving its associations.
+                  If you select a new file, it will replace the current file while preserving its
+                  associations.
                 </p>
               </section>
 
@@ -10392,7 +10492,11 @@ onBeforeUnmount(() => {
                   class="inline-form section-gap"
                   @submit.prevent="saveLocationArea"
                 >
-                  <input v-model="locationAreaName" type="text" placeholder="Please enter area name" />
+                  <input
+                    v-model="locationAreaName"
+                    type="text"
+                    placeholder="Please enter area name"
+                  />
                   <button :disabled="locationAreaSaving" type="submit">
                     {{
                       locationAreaSaving
@@ -10454,7 +10558,9 @@ onBeforeUnmount(() => {
                     alt="Floor Plan Preview"
                   />
                   <div v-else class="muted-text">
-                    {{ locationFloorplanLoading ? 'Loading floor plan...' : 'No floor plan available' }}
+                    {{
+                      locationFloorplanLoading ? 'Loading floor plan...' : 'No floor plan available'
+                    }}
                   </div>
                 </div>
               </section>
@@ -10491,7 +10597,9 @@ onBeforeUnmount(() => {
                     </option>
                   </select>
                 </label>
-                <label><span>User Description</span><input v-model="form.userDesc" type="text" /></label>
+                <label
+                  ><span>User Description</span><input v-model="form.userDesc" type="text"
+                /></label>
                 <label>
                   <span>Password <sup v-if="!selectedId" class="req">*</sup></span>
                   <input v-model="form.password" type="password" autocomplete="new-password" />
@@ -10500,8 +10608,15 @@ onBeforeUnmount(() => {
                   ><span>Hardware Count</span><input :value="userItemCount" type="text" disabled
                 /></label>
                 <ul class="asset-tip-list">
-                  <li><strong>Users who can log in to the website and are responsible for hardware</strong></li>
-                  <li><sup>1</sup> When editing a user, leaving the password blank means not modifying the password</li>
+                  <li>
+                    <strong
+                      >Users who can log in to the website and are responsible for hardware</strong
+                    >
+                  </li>
+                  <li>
+                    <sup>1</sup> When editing a user, leaving the password blank means not modifying
+                    the password
+                  </li>
                   <li><sup>2</sup> When adding a user, the password cannot be empty</li>
                 </ul>
               </section>
@@ -10524,7 +10639,9 @@ onBeforeUnmount(() => {
                       <span>{{ entry.text }}</span>
                     </button>
                   </div>
-                  <div v-if="userOverviewRows.length === 0" class="muted-text">No associated hardware</div>
+                  <div v-if="userOverviewRows.length === 0" class="muted-text">
+                    No associated hardware
+                  </div>
                 </div>
               </section>
             </div>
@@ -10711,7 +10828,10 @@ onBeforeUnmount(() => {
                   </div>
 
                   <div v-if="rackViewData.moreItems.length > 0" class="rack-view-side-note">
-                    <h5>Hardware allocated to this rack but not set with rack position, depth position or height</h5>
+                    <h5>
+                      Hardware allocated to this rack but not set with rack position, depth position
+                      or height
+                    </h5>
                     <ul>
                       <li v-for="row in rackViewData.moreItems" :key="`rack-more-${row.id}`">
                         <button

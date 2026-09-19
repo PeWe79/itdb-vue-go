@@ -400,7 +400,8 @@ async function recordRecentViewHistory(id: number, mode: EditorMode) {
       ? { subtypeEdit: String(rowID), vh: String(Date.now()) }
       : { edit: String(rowID), vh: String(Date.now()) };
   const resolved = router.resolve({ name: 'dictionaries', params: { tab }, query });
-  const title = mode === 'contractSubtype' ? 'Contract Subtype' : dictionaryConfig[active.value].title;
+  const title =
+    mode === 'contractSubtype' ? 'Contract Subtype' : dictionaryConfig[active.value].title;
 
   try {
     await api.post('/view-history', {
@@ -827,7 +828,8 @@ async function confirmDelete() {
         selectedDictionaryIds.value = [];
       }
       if (successCount > 0) noticeStore.success(`Deleted ${successCount} records`);
-      if (failedCount > 0) noticeStore.error(firstError || `Failed to delete ${failedCount} records`);
+      if (failedCount > 0)
+        noticeStore.error(firstError || `Failed to delete ${failedCount} records`);
     } else if (target.kind === 'contractSubtype') {
       await api.delete(`/dictionaries/contractsubtypes/${target.id}`);
       selectedContractSubtypeIds.value = selectedContractSubtypeIds.value.filter(
@@ -849,7 +851,8 @@ async function confirmDelete() {
     await refreshBootstrapLookups();
   } catch (err: unknown) {
     error.value =
-      (err as { response?: { data?: { error?: string } } })?.response?.data?.error ?? 'Delete failed';
+      (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
+      'Delete failed';
   } finally {
     deleting.value = false;
   }
@@ -1224,7 +1227,9 @@ void load();
 
             <section class="dict-panel tags-related-panel">
               <h3>Related Information</h3>
-              <p v-if="!selectedTagRow" class="muted-text">Click on "Related Hardware" or "Related Software" counts to view details</p>
+              <p v-if="!selectedTagRow" class="muted-text">
+                Click on "Related Hardware" or "Related Software" counts to view details
+              </p>
               <template v-else>
                 <p class="tag-selected-title">
                   <span class="tag-selected-label">Current Tag</span>
@@ -1247,10 +1252,14 @@ void load();
                         <span class="tag-related-index">{{ index + 1 }}:</span>
                         <span class="tag-related-text">{{ displayText(entry.txt) }}</span>
                       </a>
-                      <p v-if="activeTagRelatedRows.length === 0" class="muted-text">No data available</p>
+                      <p v-if="activeTagRelatedRows.length === 0" class="muted-text">
+                        No data available
+                      </p>
                     </div>
                   </div>
-                  <p v-else class="muted-text">Click on "Related Hardware" or "Related Software" counts to view details</p>
+                  <p v-else class="muted-text">
+                    Click on "Related Hardware" or "Related Software" counts to view details
+                  </p>
                 </div>
               </template>
             </section>

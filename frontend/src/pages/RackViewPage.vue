@@ -565,11 +565,17 @@ onMounted(() => {
           </div>
         </div>
         <p v-else class="rack-view-page-empty">
-          {{ rackTotalUnits > 0 ? 'Current rack has no content to display' : 'This rack is not configured with height (U)' }}
+          {{
+            rackTotalUnits > 0
+              ? 'Current rack has no content to display'
+              : 'This rack is not configured with height (U)'
+          }}
         </p>
 
         <div v-if="rackViewData.moreItems.length > 0" class="rack-view-side-note">
-          <h5>Hardware allocated to this rack but not configured with rack position, depth, or height</h5>
+          <h5>
+            Hardware allocated to this rack but not configured with rack position, depth, or height
+          </h5>
           <ul>
             <li v-for="row in rackViewData.moreItems" :key="`rack-view-more-${row.id}`">
               <button

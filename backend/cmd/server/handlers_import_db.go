@@ -17,20 +17,20 @@ import (
 func (a *App) handleImportDatabase(w http.ResponseWriter, r *http.Request) {
 	dbPath := strings.TrimSpace(a.cfg.DBPath)
 	if dbPath == "" || strings.EqualFold(dbPath, ":memory:") {
-		writeError(w, http.StatusBadRequest, "内存数据库不支持导入操作")
+		writeError(w, http.StatusBadRequest, "In-memory databases do not support import operations.")
 		return
 	}
 
 	// 限制上传大小 500MB
 	r.Body = http.MaxBytesReader(w, r.Body, 500<<20)
 	if err := r.ParseMultipartForm(32 << 20); err != nil {
-		writeError(w, http.StatusBadRequest, "文件过大或格式错误")
+		writeError(w, http.StatusBadRequest, "File too large or invalid format")
 		return
 	}
 
 	uploaded, _, err := r.FormFile("file")
 	if err != nil {
-		writeError(w, http.StatusBadRequest, "未找到上传文件")
+		writeError(w, http.StatusBadRequest, "File not found")
 		return
 	}
 	defer uploaded.Close()
@@ -38,7 +38,7 @@ func (a *App) handleImportDatabase(w http.ResponseWriter, r *http.Request) {
 	// 写入临时文件
 	tmpFile, err := os.CreateTemp("", "itdb-import-*.db")
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "创建临时文件失败")
+		writeError(w, http.StatusInternalServerError, "Failed to create temporary file.")
 		return
 	}
 	tmpPath := tmpFile.Name()
@@ -46,7 +46,7 @@ func (a *App) handleImportDatabase(w http.ResponseWriter, r *http.Request) {
 
 	if _, err := io.Copy(tmpFile, uploaded); err != nil {
 		tmpFile.Close()
-		writeError(w, http.StatusInternalServerError, "保存上传文件失败")
+		writeError(w, http.StatusInternalServerError, "Failed to save uploaded file.")
 		return
 	}
 	tmpFile.Close()
@@ -63,7 +63,7 @@ func (a *App) handleImportDatabase(w http.ResponseWriter, r *http.Request) {
 
 	absPath, err := filepath.Abs(dbPath)
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "解析数据库路径失败")
+		writeError(w, http.StatusInternalServerError, "Failed to resolve database path")
 		return
 	}
 
@@ -71,7 +71,7 @@ func (a *App) handleImportDatabase(w http.ResponseWriter, r *http.Request) {
 	backupPath, err := backupDatabaseBeforeAlter(a.db, dbPath, "import-database")
 	if err != nil {
 		log.Printf("Pre-import backup failed: %v", err)
-		writeError(w, http.StatusInternalServerError, "备份当前数据库失败，导入已取消")
+		writeError(w, http.StatusInternalServerError, "Failed to backup current database, import cancelled")
 		return
 	}
 	log.Printf("Pre-import backup completed: %s", backupPath)
@@ -94,7 +94,7 @@ func (a *App) handleImportDatabase(w http.ResponseWriter, r *http.Request) {
 		a.db.SetMaxIdleConns(1)
 		a.db.SetConnMaxLifetime(0)
 		a.db.SetConnMaxIdleTime(0)
-		writeError(w, http.StatusInternalServerError, "导入失败，已恢复原数据库")
+		writeError(w, http.StatusInternalServerError, "Failed to import database, original database has been restored")
 		return
 	}
 
@@ -110,7 +110,7 @@ func (a *App) handleImportDatabase(w http.ResponseWriter, r *http.Request) {
 		a.db.SetMaxIdleConns(1)
 		a.db.SetConnMaxLifetime(0)
 		a.db.SetConnMaxIdleTime(0)
-		writeError(w, http.StatusInternalServerError, "导入失败，已恢复原数据库")
+		writeError(w, http.StatusInternalServerError, "Failed to import database, original database has been restored")
 		return
 	}
 
@@ -129,7 +129,7 @@ func (a *App) handleImportDatabase(w http.ResponseWriter, r *http.Request) {
 		a.db.SetMaxIdleConns(1)
 		a.db.SetConnMaxLifetime(0)
 		a.db.SetConnMaxIdleTime(0)
-		writeError(w, http.StatusInternalServerError, "导入失败，已恢复原数据库")
+		writeError(w, http.StatusInternalServerError, "Failed to import database, original database has been restored")
 		return
 	}
 
@@ -147,7 +147,7 @@ func (a *App) handleImportDatabase(w http.ResponseWriter, r *http.Request) {
 		a.db.SetMaxIdleConns(1)
 		a.db.SetConnMaxLifetime(0)
 		a.db.SetConnMaxIdleTime(0)
-		writeError(w, http.StatusInternalServerError, fmt.Sprintf("数据库结构迁移失败: %v，已恢复原数据库", err))
+		writeError(w, http.StatusInternalServerError, fmt.Sprintf("Database structure migration failed.: %v, the original database has been restored.", err))
 		return
 	}
 
@@ -162,7 +162,7 @@ func (a *App) handleImportDatabase(w http.ResponseWriter, r *http.Request) {
 		a.db.SetMaxIdleConns(1)
 		a.db.SetConnMaxLifetime(0)
 		a.db.SetConnMaxIdleTime(0)
-		writeError(w, http.StatusInternalServerError, fmt.Sprintf("硬件类型支持软件默认值初始化失败: %v，已恢复原数据库", err))
+		writeError(w, http.StatusInternalServerError, fmt.Sprintf("Initialization of software defaults for the hardware type failed.: %v, the original database has been restored.", err))
 		return
 	}
 
@@ -178,29 +178,29 @@ func (a *App) handleImportDatabase(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Printf("Database import completed, backup file: %s", backupPath)
-	writeJSON(w, http.StatusOK, map[string]any{"ok": true, "message": "数据库导入成功"})
+	writeJSON(w, http.StatusOK, map[string]any{"ok": true, "message": "Database imported successfully"})
 }
 
 // validateSQLiteFile 验证文件是有效的 ITDB SQLite 数据库
 func validateSQLiteFile(path string) error {
 	testDB, err := sql.Open("sqlite", path)
 	if err != nil {
-		return fmt.Errorf("无法打开数据库文件")
+		return fmt.Errorf("Failed to open database file")
 	}
 	defer testDB.Close()
 
 	var result string
 	if err := testDB.QueryRow("PRAGMA integrity_check").Scan(&result); err != nil {
-		return fmt.Errorf("数据库完整性校验失败")
+		return fmt.Errorf("Database integrity check failed")
 	}
 	if result != "ok" {
-		return fmt.Errorf("数据库完整性校验未通过: %s", result)
+		return fmt.Errorf("Database integrity check failed: %s", result)
 	}
 
 	var name string
 	err = testDB.QueryRow("SELECT name FROM sqlite_master WHERE type='table' AND name='items' LIMIT 1").Scan(&name)
 	if err != nil {
-		return fmt.Errorf("上传的数据库缺少 items 表，不是有效的 ITDB 数据库")
+		return fmt.Errorf("Uploaded database is missing the 'items' table, not a valid ITDB database")
 	}
 	return nil
 }

@@ -42,9 +42,21 @@ const mainNavItems = [
   { to: '/resources/items', label: 'Hardware', tooltip: 'Hardware List' },
   { to: '/resources/software', label: 'Software', tooltip: 'Software List' },
   { to: '/resources/invoices', label: 'Invoices', tooltip: 'Invoice List' },
-  { to: '/resources/agents', label: 'Agents', tooltip: 'Suppliers/Procurement Parties/Contractors/Manufacturers' },
-  { to: '/resources/files', label: 'Files', tooltip: 'Documents, Manuals, Purchase Orders, Licenses, ...' },
-  { to: '/resources/contracts', label: 'Contracts', tooltip: 'Support & Maintenance, Leasing, ...' },
+  {
+    to: '/resources/agents',
+    label: 'Agents',
+    tooltip: 'Suppliers/Procurement Parties/Contractors/Manufacturers',
+  },
+  {
+    to: '/resources/files',
+    label: 'Files',
+    tooltip: 'Documents, Manuals, Purchase Orders, Licenses, ...',
+  },
+  {
+    to: '/resources/contracts',
+    label: 'Contracts',
+    tooltip: 'Support & Maintenance, Leasing, ...',
+  },
   { to: '/resources/locations', label: 'Locations' },
   { to: '/resources/users', label: 'Users' },
   { to: '/resources/racks', label: 'Racks' },
@@ -366,7 +378,9 @@ onBeforeUnmount(() => {
                 stroke-width="1.8"
               />
             </svg>
-            <span>{{ downloadingDatabaseBackup ? 'Database backup in progress...' : 'Database Backup' }}</span>
+            <span>{{
+              downloadingDatabaseBackup ? 'Database backup in progress...' : 'Database Backup'
+            }}</span>
           </span>
         </button>
         <button

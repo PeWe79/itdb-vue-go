@@ -67,7 +67,8 @@ const modules: HomeModule[] = [
   {
     key: 'items',
     title: 'Hardware',
-    description: 'Manage hardware assets, including equipment such as servers, switches, and telephones.',
+    description:
+      'Manage hardware assets, including equipment such as servers, switches, and telephones.',
     iconKey: 'items',
     countKey: 'items',
     entry: '/resources/items',
