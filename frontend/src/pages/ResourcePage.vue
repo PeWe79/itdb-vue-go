@@ -5446,7 +5446,7 @@ onBeforeUnmount(() => {
       <h2>{{ resource.title }}</h2>
       <div class="header-actions">
         <div class="search-inline">
-          <span class="search-label">Inquiry</span>
+          <span class="search-label">Search</span>
           <input
             :value="search"
             class="search-input"
